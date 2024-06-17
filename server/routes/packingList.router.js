@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
-// GET route for packing list
-router.get('/:trip_id', async (req, res) => {
+
+// GET route for master packing list for a trip
+router.get('/trip/:trip_id', async (req, res) => {
     const { trip_id } = req.params;
     try {
         const packingList = await pool.query('SELECT * FROM PackingList WHERE trip_id = $1', [trip_id]);
@@ -13,7 +14,6 @@ router.get('/:trip_id', async (req, res) => {
     }
 });
 
-// POST route for packing list
 // POST route for packing list
 router.post('/', async (req, res) => {
     const { trip_id, predefined_items, item_name, quantity, packed } = req.body;
@@ -63,3 +63,15 @@ router.delete('/:item_id', async (req, res) => {
     }
 });
 module.exports = router;
+
+
+// GET route for packing list for a specific day
+router.get('/trip/:trip_id/day/:trip_day', async (req, res) => {
+    const { trip_id, trip_day } = req.params;
+    try {
+        const packingList = await pool.query('SELECT * FROM PackingList WHERE trip_id = $1 AND trip_day = $2', [trip_id, trip_day]);
+        res.json(packingList.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});

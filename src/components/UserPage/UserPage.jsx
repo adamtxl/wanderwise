@@ -9,6 +9,22 @@ function UserPage() {
     <div className="container">
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{user.username}</td>
+            <td>{user.first_name}</td>
+            <td>{user.email}</td>
+          </tr>
+        </tbody>
+      </table>
       <LogOutButton className="btn" />
     </div>
   );
