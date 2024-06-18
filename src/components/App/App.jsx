@@ -17,6 +17,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import Trips from '../Trips/Trips';
 
 import './App.css';
+import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
 
 function App() {
 	const dispatch = useDispatch();
@@ -109,6 +110,13 @@ function App() {
 						path='/trip-details'
 					>
 						<TripDetails />
+					</ProtectedRoute>
+          <ProtectedRoute
+						// logged in shows TripDetails else shows LoginPage
+						exact
+						path='/edit-create-trip'
+					>
+						<EditCreateTrips />
 					</ProtectedRoute>
 
 					{/* If none of the other routes matched, we will show a 404. */}

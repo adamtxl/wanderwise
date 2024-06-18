@@ -42,7 +42,14 @@ const TripsComponent = () => {
 
     return (
         <Container>
-            <Row>
+           <Row>
+            <Col className="mb-4">
+            <Button variant="primary" onClick={() => history.push('/edit-create-trip')}>
+                    Create New Adventure
+                </Button>
+            </Col>
+        </Row>
+        <Row>
                 {trips.map((trip) => (
                     <Col key={trip.trip_id} md={4} className="mb-4">
                         <Card>
