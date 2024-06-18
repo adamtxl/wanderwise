@@ -1,38 +1,63 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
 const TripsComponent = () => {
     const dispatch = useDispatch();
-    const trips = useSelector(state => state.trip); // Ensure this matches the key in rootReducer
+    const trips = useSelector(state => state.trip);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const history = useHistory();
 
     useEffect(() => {
         console.log('Component: Dispatching FETCH_TRIPS action');
         dispatch({ type: 'FETCH_TRIPS' });
+
+        // Simulate loading and error states
+        const timer = setTimeout(() => {
+            setLoading(false);
+            // setError('Failed to fetch trips.'); // Uncomment to simulate an error
+        }, 1000);
+
+        return () => clearTimeout(timer);
     }, [dispatch]);
 
-    console.log('Component: trips state:', trips);
+    const editTrip = () => {
+        history.push({
+            pathname: '/trip-details',
+            state: { trip: mostRecentTrip }
+        });
+    };
+
+    if (loading) {
+        return <Spinner animation="border" />;
+    }
+
+    if (error) {
+        return <Alert variant="danger">{error}</Alert>;
+    }
+
+    const mostRecentTrip = trips.length > 0 ? trips[0] : null;
 
     return (
         <Container>
             <Row>
-                {trips.length > 0 ? (
-                    trips.map(trip => (
-                        <Col key={trip.trip_id} md={4} className="mb-4">
-                            <Card>
-                                <Card.Body>
-                                    <Card.Title>{trip.trip_name}</Card.Title>
-                                    <Card.Text>
-                                        <strong>Start Date:</strong> {trip.start_date}<br />
-                                        <strong>End Date:</strong> {trip.end_date}<br />
-                                        <strong>Locales:</strong> {trip.locales}<br />
-                                        <strong>Map Locations:</strong> {trip.map_locations}
-                                    </Card.Text>
-                                    <Button variant="primary">View Details</Button>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))
+                {mostRecentTrip ? (
+                    <Col key={mostRecentTrip.trip_id} md={4} className="mb-4">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>{mostRecentTrip.trip_name}</Card.Title>
+                                <Card.Text>
+                                    <strong>Start Date:</strong> {new Date(mostRecentTrip.start_date).toLocaleDateString()}<br />
+                                    <strong>End Date:</strong> {new Date(mostRecentTrip.end_date).toLocaleDateString()}<br />
+                                    <strong>Locales:</strong> {mostRecentTrip.locales}<br />
+                                    <strong>Map Locations:</strong> {mostRecentTrip.map_locations}
+                                </Card.Text>
+                                <Button variant="primary" onClick={editTrip}>View Details</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 ) : (
                     <Col>
                         <p>No trips available.</p>

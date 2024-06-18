@@ -8,11 +8,12 @@ const {
 /**
  Get all trips for that user
  */
-router.get('/', rejectUnauthenticated, (req, res) => {
-    const userId = req.user.id; // Use descriptive variable names
+ router.get('/', rejectUnauthenticated, (req, res) => {
+    const userId = req.user.id;
     const query = `
         SELECT * FROM "trips"
-        WHERE "user_id" = $1;
+        WHERE "user_id" = $1
+        ORDER BY "start_date" DESC;
     `;
     
     pool.query(query, [userId])

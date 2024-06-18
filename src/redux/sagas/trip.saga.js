@@ -7,7 +7,7 @@ function* fetchTrips() {
         console.log('Saga: Fetching trips...');
         const response = yield call(axios.get, '/api/trips'); 
         console.log('Saga: Trips fetched:', response.data);
-        yield put({ type: 'SET_TRIPS', payload: response.data.data }); // Ensure this is the correct path to the data
+        yield put({ type: 'SET_TRIPS', payload: response.data.data });
     } catch (error) {
         console.error('Saga: Error fetching trips', error);
     }
