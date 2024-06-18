@@ -32,6 +32,10 @@ function Nav() {
               Info Page
             </Link>
 
+            <Link className="navLink" to="/trips">
+              Trips
+            </Link>
+
             <LogOutButton className="navLink" />
           </>
         )}
@@ -39,6 +43,8 @@ function Nav() {
         <Link className="navLink" to="/about">
           About
         </Link>
+        
+        
       </div>
     </div>
   );

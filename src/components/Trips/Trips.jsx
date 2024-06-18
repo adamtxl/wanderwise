@@ -43,29 +43,32 @@ const TripsComponent = () => {
     return (
         <Container>
             <Row>
-                {mostRecentTrip ? (
-                    <Col key={mostRecentTrip.trip_id} md={4} className="mb-4">
+                {trips.map((trip) => (
+                    <Col key={trip.trip_id} md={4} className="mb-4">
                         <Card>
                             <Card.Body>
-                                <Card.Title>{mostRecentTrip.trip_name}</Card.Title>
+                                <Card.Title>{trip.trip_name}</Card.Title>
                                 <Card.Text>
-                                    <strong>Start Date:</strong> {new Date(mostRecentTrip.start_date).toLocaleDateString()}<br />
-                                    <strong>End Date:</strong> {new Date(mostRecentTrip.end_date).toLocaleDateString()}<br />
-                                    <strong>Locales:</strong> {mostRecentTrip.locales}<br />
-                                    <strong>Map Locations:</strong> {mostRecentTrip.map_locations}
+                                    <strong>Start Date:</strong> {new Date(trip.start_date).toLocaleDateString()}
+                                    <br />
+                                    <strong>End Date:</strong> {new Date(trip.end_date).toLocaleDateString()}
+                                    <br />
+                                    <strong>Location:</strong> {trip.locales}
+                                    <br />
+                                    <strong>Destinations</strong> {trip.map_locations}
                                 </Card.Text>
-                                <Button variant="primary" onClick={editTrip}>View Details</Button>
+                                <Button variant="primary" onClick={() => history.push({
+                                    pathname: '/trip-details',
+                                    state: { trip: trip }
+                                })}>
+                                    View Details
+                                </Button>
                             </Card.Body>
                         </Card>
                     </Col>
-                ) : (
-                    <Col>
-                        <p>No trips available.</p>
-                    </Col>
-                )}
+                ))}
             </Row>
         </Container>
-    );
-};
+    )};
 
 export default TripsComponent;
