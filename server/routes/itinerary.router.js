@@ -41,4 +41,139 @@ const {
         });
 });
 
+router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
+    const tripId = req.params.trip_id;
+    const { day, activity, location } = req.body;
+    const userId = req.user.id;
+
+    const query = `
+        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location")
+        VALUES ($1, $2, $3, $4)
+        RETURNING *;
+    `;
+
+    const values = [tripId, day, activity, location];
+
+    // Verify that the user owns the trip
+    const verifyTripQuery = `
+        SELECT "trip_id" FROM "trips"
+        WHERE "trip_id" = $1 AND "user_id" = $2;
+    `;
+
+    pool.query(verifyTripQuery, [tripId, userId])
+        .then(result => {
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Trip not found or unauthorized'
+                });
+            }
+
+            // Insert the new itinerary
+            pool.query(query, values)
+                .then(result => {
+                    res.status(201).json({
+                        success: true,
+                        data: result.rows[0],
+                        message: 'Itinerary created successfully'
+                    });
+                })
+                .catch(err => {
+                    console.error('Error creating itinerary:', err);
+                    res.status(500).json({
+                        success: false,
+                        message: 'Internal server error'
+                    });
+                });
+        })
+        .catch(err => {
+            console.error('Error verifying trip:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
+
+//deleting itinerary
+router.delete('/itineraries/:id', rejectUnauthenticated, (req, res) => {
+    const itineraryId = req.params.id;
+    const userId = req.user.id;
+
+    const query = `
+        DELETE FROM "itinerary"
+        WHERE "itinerary_id" = $1
+        AND "trip_id" IN (
+            SELECT "trip_id" FROM "trips" WHERE "user_id" = $2
+        )
+        RETURNING *;
+    `;
+
+    const values = [itineraryId, userId];
+
+    pool.query(query, values)
+        .then(result => {
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Itinerary not found or unauthorized'
+                });
+            }
+
+            res.status(200).json({
+                success: true,
+                message: 'Itinerary deleted successfully'
+            });
+        })
+        .catch(err => {
+            console.error('Error deleting itinerary:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
+
+
+//updating itinerary
+router.put('/itineraries/:id', rejectUnauthenticated, (req, res) => {
+    const itineraryId = req.params.id;
+    const { day, activity, location } = req.body;
+    const userId = req.user.id;
+
+    const query = `
+        UPDATE "itinerary"
+        SET "day" = $1, "activity" = $2, "location" = $3
+        WHERE "itinerary_id" = $4
+        AND "trip_id" IN (
+            SELECT "trip_id" FROM "trips" WHERE "user_id" = $5
+        )
+        RETURNING *;
+    `;
+
+    const values = [day, activity, location, itineraryId, userId];
+
+    pool.query(query, values)
+        .then(result => {
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Itinerary not found or unauthorized'
+                });
+            }
+
+            res.status(200).json({
+                success: true,
+                data: result.rows[0],
+                message: 'Itinerary updated successfully'
+            });
+        })
+        .catch(err => {
+            console.error('Error updating itinerary:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
 module.exports = router;

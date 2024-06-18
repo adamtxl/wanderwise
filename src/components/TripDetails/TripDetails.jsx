@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 const TripDetails = () => {
@@ -8,6 +10,12 @@ const TripDetails = () => {
     const trip = location.state.trip;
     const [isEditing, setIsEditing] = useState(false);
     const [editedTrip, setEditedTrip] = useState(trip);
+    const dispatch = useDispatch();
+    console.log('Trip:', trip);
+    useEffect(() => {
+        dispatch({ type: 'FETCH_ITINERARIES', payload: trip.trip_id });
+    }, [dispatch, trip.id]);
+
 
     const handleInputChange = (event) => {
         setEditedTrip({ ...editedTrip, [event.target.name]: event.target.value });
@@ -102,6 +110,7 @@ const TripDetails = () => {
                     )}
                 </Card.Body>
             </Card>
+            
         );
     } else {
         return (
@@ -118,5 +127,9 @@ const TripDetails = () => {
         );
     }
 };
+const mapStoreToProps = (store) => ({
+    trip: store.trip,
+    itineraries: store.itinerary,
+}); 
 
-export default TripDetails;
+export default connect(mapStoreToProps)(TripDetails);
