@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Button, Form, Card } from 'react-bootstrap';
 import axios from 'axios';
 
-const DailyItinerary = () => {
+const CreateDailyItinerary = () => {
     const history = useHistory();
     const [itinerary, setItinerary] = useState({
+        day: '',
         location: '',
         activity: '',
         notes: ''
     });
+    const location = useLocation();
+    const trip = location.state.trip;
+    const tripId = trip.trip_id;
 
     const handleInputChange = (event) => {
         setItinerary({
@@ -21,7 +25,7 @@ const DailyItinerary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post('/api/itinerary', itinerary);
+            await axios.post(`/api/itinerary/${tripId}/itineraries`, itinerary);
             history.push('/trips');
         } catch (error) {
             console.error('Error creating itinerary:', error);
@@ -30,6 +34,11 @@ const DailyItinerary = () => {
 
     return (
         <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="day">
+                <Form.Label>Day</Form.Label>
+                <Form.Control type="date" name="day" value={itinerary.day} onChange={handleInputChange} />
+            </Form.Group>
+
             <Form.Group controlId="location">
                 <Form.Label>Location</Form.Label>
                 <Form.Control type="text" name="location" value={itinerary.location} onChange={handleInputChange} />
@@ -52,4 +61,4 @@ const DailyItinerary = () => {
     );
 };
 
-export default DailyItinerary;
+export default CreateDailyItinerary;

@@ -18,7 +18,7 @@ import Trips from '../Trips/Trips';
 
 import './App.css';
 import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
-import DailyItinerary from '../DailyItinerary/DailyItinerary';
+import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
 
 function App() {
 	const dispatch = useDispatch();
@@ -107,8 +107,7 @@ function App() {
 					</ProtectedRoute>
 					<ProtectedRoute
 						// logged in shows TripDetails else shows LoginPage
-						exact
-						path='/trip-details'
+						path="/trip-details/:trip_id" component={TripDetails}
 					>
 						<TripDetails />
 					</ProtectedRoute>
@@ -122,7 +121,7 @@ function App() {
           <ProtectedRoute
 						// logged in shows TripDetails else shows LoginPage
 						exact
-						path='/daily-itinerary'
+						path='/create-daily-itinerary'
 					>
 						<DailyItinerary />
 					</ProtectedRoute>

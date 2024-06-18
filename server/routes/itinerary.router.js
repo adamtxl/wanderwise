@@ -41,18 +41,20 @@ const {
         });
 });
 
+//creating itinerary
+
 router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.trip_id;
-    const { day, activity, location } = req.body;
+    const { day, activity, location, notes } = req.body; // Include notes
     const userId = req.user.id;
 
     const query = `
-        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location")
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location", "notes")
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
     `;
 
-    const values = [tripId, day, activity, location];
+    const values = [tripId, day, activity, location, notes]; // Include notes in values
 
     // Verify that the user owns the trip
     const verifyTripQuery = `
@@ -138,20 +140,20 @@ router.delete('/itineraries/:id', rejectUnauthenticated, (req, res) => {
 //updating itinerary
 router.put('/itineraries/:id', rejectUnauthenticated, (req, res) => {
     const itineraryId = req.params.id;
-    const { day, activity, location } = req.body;
+    const { day, activity, location, notes } = req.body; // Include notes
     const userId = req.user.id;
 
     const query = `
         UPDATE "itinerary"
-        SET "day" = $1, "activity" = $2, "location" = $3
-        WHERE "itinerary_id" = $4
+        SET "day" = $1, "activity" = $2, "location" = $3, "notes" = $4
+        WHERE "itinerary_id" = $5
         AND "trip_id" IN (
-            SELECT "trip_id" FROM "trips" WHERE "user_id" = $5
+            SELECT "trip_id" FROM "trips" WHERE "user_id" = $6
         )
         RETURNING *;
     `;
 
-    const values = [day, activity, location, itineraryId, userId];
+    const values = [day, activity, location, notes, itineraryId, userId]; // Include notes in values
 
     pool.query(query, values)
         .then(result => {
@@ -176,4 +178,5 @@ router.put('/itineraries/:id', rejectUnauthenticated, (req, res) => {
             });
         });
 });
+
 module.exports = router;

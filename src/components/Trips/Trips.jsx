@@ -65,7 +65,7 @@ const TripsComponent = () => {
                                     <strong>Destinations</strong> {trip.map_locations}
                                 </Card.Text>
                                 <Button variant="primary" onClick={() => history.push({
-                                    pathname: '/trip-details',
+                                    pathname: `/trip-details/${trip.trip_id}`,
                                     state: { trip: trip }
                                 })}>
                                     View Details
