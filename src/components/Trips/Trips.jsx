@@ -4,12 +4,15 @@ import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 
 const TripsComponent = () => {
     const dispatch = useDispatch();
-    const trips = useSelector(state => state.trips || []); // Ensure trips is an empty array if undefined
+    const trips = useSelector(state => state.trip); // Ensure this matches the key in rootReducer
 
     useEffect(() => {
+        console.log('Component: Dispatching FETCH_TRIPS action');
         dispatch({ type: 'FETCH_TRIPS' });
     }, [dispatch]);
-console.log('trips!', trips);
+
+    console.log('Component: trips state:', trips);
+
     return (
         <Container>
             <Row>

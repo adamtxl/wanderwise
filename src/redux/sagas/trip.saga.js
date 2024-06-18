@@ -4,10 +4,12 @@ import axios from 'axios';
 // Worker saga to fetch trips
 function* fetchTrips() {
     try {
+        console.log('Saga: Fetching trips...');
         const response = yield call(axios.get, '/api/trips'); 
+        console.log('Saga: Trips fetched:', response.data);
         yield put({ type: 'SET_TRIPS', payload: response.data.data }); // Ensure this is the correct path to the data
     } catch (error) {
-        console.error('Error fetching trips', error);
+        console.error('Saga: Error fetching trips', error);
     }
 }
 
