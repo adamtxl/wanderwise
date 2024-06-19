@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require('../modules/pool');
 
 
-// GET route for master packing list for a specific day/itinerary
+// GET route for master packing list for a specific day
 router.get('/itinerary/:itinerary_id', async (req, res) => {
     const { itinerary_id } = req.params;
     try {
@@ -29,26 +29,48 @@ router.get('/itineraries/:trip_id', async (req, res) => {
 
 // POST route for packing list
 router.post('/', async (req, res) => {
-    const { itinerary_id, predefined_items, item_name, quantity, packed } = req.body;
+    const { itinerary_id, item_name, quantity, packed } = req.body;
+
+    // SQL query to insert a new packing list item
+    const insertText = `
+        INSERT INTO PackingList (itinerary_id, item_name, quantity, packed)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+    `;
+
     try {
         const client = await pool.connect();
-        await client.query('BEGIN');
-        const insertText = 'INSERT INTO PackingList (itinerary_id, predefined_item_id, item_name, quantity, packed) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-        for (let predefined_item_id of predefined_items) {
-            const newItem = await client.query(
-                insertText,
-                [itinerary_id, predefined_item_id, item_name, quantity, packed]
-            );
+        try {
+            // Starting a transaction
+            await client.query('BEGIN');
+
+            const result = await client.query(insertText, [
+                itinerary_id,
+                item_name,
+                quantity,
+                packed
+            ]);
+
+            // Committing the transaction
+            await client.query('COMMIT');
+            res.status(200).json(result.rows[0]);
+        } catch (err) {
+            // Rolling back the transaction in case of error
+            await client.query('ROLLBACK');
+            console.error('Transaction error:', err.message);
+            res.status(500).send('Server error');
+        } finally {
+            // Releasing the client back to the pool
+            client.release();
         }
-        await client.query('COMMIT');
-        res.status(200).send('Transaction complete.');
     } catch (err) {
-        await client.query('ROLLBACK');
-        console.error(err.message);
-    } finally {
-        client.release();
+        console.error('Connection error:', err.message);
+        res.status(500).send('Server error');
     }
 });
+
+module.exports = router;
+
 
 // PUT route for packing list
 router.put('/:item_id', async (req, res) => {
@@ -75,16 +97,5 @@ router.delete('/:item_id', async (req, res) => {
         console.error(err.message);
     }
 });
+
 module.exports = router;
-
-
-// GET route for packing list for a specific day
-router.get('/trip/:trip_id/day/:trip_day', async (req, res) => {
-    const { trip_id, trip_day } = req.params;
-    try {
-        const packingList = await pool.query('SELECT * FROM PackingList WHERE trip_id = $1 AND trip_day = $2', [trip_id, trip_day]);
-        res.json(packingList.rows);
-    } catch (err) {
-        console.error(err.message);
-    }
-});

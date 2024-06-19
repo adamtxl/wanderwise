@@ -12,6 +12,7 @@ const userRouter = require('./routes/user.router');
 const tripRouter = require('./routes/trip.router')
 const packingListRouter = require('./routes/packingList.router');
 const itineraryRouter = require('./routes/itinerary.router');
+const predefined_itemsRouter = require('./routes/predefinedItems.router');
 
 // Express Middleware
 app.use(express.json());
@@ -30,7 +31,7 @@ app.use('/api/user', userRouter);
 app.use('/api/trips', tripRouter);
 app.use('/api/packing-list', packingListRouter);
 app.use('/api/itinerary', itineraryRouter);
-
+app.use('/api/predefined_items', predefined_itemsRouter);
 
 // Listen Server & Port
 app.listen(PORT, () => {
