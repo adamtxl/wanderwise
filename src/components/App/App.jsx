@@ -19,6 +19,7 @@ import Trips from '../Trips/Trips';
 import './App.css';
 import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
 import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
+import PackingList from '../PackingList/PackingList';
 
 function App() {
 	const dispatch = useDispatch();
@@ -107,24 +108,28 @@ function App() {
 					</ProtectedRoute>
 					<ProtectedRoute
 						// logged in shows TripDetails else shows LoginPage
-						path="/trip-details/:trip_id" component={TripDetails}
+						path='/trip-details/:trip_id'
+						component={TripDetails}
 					>
 						<TripDetails />
 					</ProtectedRoute>
-          <ProtectedRoute
+					<ProtectedRoute
 						// logged in shows TripDetails else shows LoginPage
 						exact
 						path='/edit-create-trip'
 					>
 						<EditCreateTrips />
 					</ProtectedRoute>
-          <ProtectedRoute
+					<ProtectedRoute
 						// logged in shows TripDetails else shows LoginPage
 						exact
 						path='/create-daily-itinerary'
 					>
 						<DailyItinerary />
 					</ProtectedRoute>
+					<ProtectedRoute  path='/packing-list/:tripId/:itineraryId'>
+						<PackingList />
+					</ProtectedRoute >
 					{/* If none of the other routes matched, we will show a 404. */}
 					<Route>
 						<h1>404</h1>

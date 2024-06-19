@@ -10,7 +10,7 @@ const TripDetails = ({ itineraries }) => {
     const trip = location.state?.trip || {};
     const [isEditing, setIsEditing] = useState(false);
     const [editedTrip, setEditedTrip] = useState(trip);
-    const [selectedItinerary, setSelectedItinerary] = useState(null); // New state for selected itinerary
+    const [selectedItinerary, setSelectedItinerary] = useState(null);
     const dispatch = useDispatch();
     const history = useHistory();
     const { trip_id } = useParams();
@@ -24,6 +24,14 @@ const TripDetails = ({ itineraries }) => {
             pathname: '/create-daily-itinerary',
             state: { trip: trip }
         });
+    };
+
+    const goToPackingList = () => {
+        if (selectedItinerary) {
+            history.push(`/packing-list/${trip.trip_id}/${selectedItinerary.itinerary_id}`);
+        } else {
+            alert('Please select an itinerary first.');
+        }
     };
 
     const handleInputChange = (event) => {
@@ -45,8 +53,8 @@ const TripDetails = ({ itineraries }) => {
 
     const handleSaveItinerary = async (itinerary) => {
         try {
-            await axios.put(`/api/itinerary/itineraries/${itinerary.itinerary_id}`, itinerary); // Ensure the endpoint matches the router
-            setSelectedItinerary(null); // Clear selected itinerary after saving
+            await axios.put(`/api/itinerary/itineraries/${itinerary.itinerary_id}`, itinerary);
+            setSelectedItinerary(null);
             dispatch({ type: 'FETCH_ITINERARIES', payload: trip.trip_id });
         } catch (error) {
             console.error('Error updating itinerary:', error);
@@ -130,6 +138,7 @@ const TripDetails = ({ itineraries }) => {
                                 </Button>
                             )}
                             <Button onClick={createItinerary}>Create Daily Itinerary</Button>
+                            <Button onClick={goToPackingList}>Go to Packing List</Button>
                         </Card.Body>
                     </Card>
                 </Col>
