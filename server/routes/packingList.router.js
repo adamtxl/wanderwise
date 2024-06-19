@@ -75,11 +75,11 @@ module.exports = router;
 // PUT route for packing list
 router.put('/:item_id', async (req, res) => {
     const { item_id } = req.params;
-    const { trip_id, predefined_item_id, item_name, quantity, packed } = req.body;
+    const { itinerary_id, item_name, quantity, packed } = req.body;
     try {
         const updateItem = await pool.query(
-            'UPDATE PackingList SET trip_id = $1, predefined_item_id = $2, item_name = $3, quantity = $4, packed = $5 WHERE item_id = $6 RETURNING *',
-            [trip_id, predefined_item_id, item_name, quantity, packed, item_id]
+            'UPDATE PackingList SET itinerary_id = $1, item_name = $2, quantity = $3, packed = $4 WHERE item_id = $5 RETURNING *',
+            [itinerary_id, item_name, quantity, packed, item_id]
         );
         res.json(updateItem.rows[0]);
     } catch (err) {

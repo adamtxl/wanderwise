@@ -45,7 +45,7 @@ const TripDetails = ({ itineraries }) => {
 
     const handleSaveItinerary = async (itinerary) => {
         try {
-            await axios.put(`/api/itineraries/${itinerary.itinerary_id}`, itinerary);
+            await axios.put(`/api/itinerary/itineraries/${itinerary.itinerary_id}`, itinerary); // Ensure the endpoint matches the router
             setSelectedItinerary(null); // Clear selected itinerary after saving
             dispatch({ type: 'FETCH_ITINERARIES', payload: trip.trip_id });
         } catch (error) {

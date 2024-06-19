@@ -12,7 +12,7 @@ const userRouter = require('./routes/user.router');
 const tripRouter = require('./routes/trip.router')
 const packingListRouter = require('./routes/packingList.router');
 const itineraryRouter = require('./routes/itinerary.router');
-const predefined_itemsRouter = require('./routes/predefinedItems.router');
+const predefined_itemsRouter = require('./routes/userItems.router');
 
 // Express Middleware
 app.use(express.json());
