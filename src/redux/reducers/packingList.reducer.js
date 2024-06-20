@@ -1,4 +1,5 @@
 const packingList = (state = [], action) => {
+    console.log('Action:', action); // Add this line
     switch (action.type) {
         case 'SET_PACKING_LIST':
             return action.payload;
@@ -6,5 +7,4 @@ const packingList = (state = [], action) => {
             return state;
     }
 };
-
 export default packingList;
