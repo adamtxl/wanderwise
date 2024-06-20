@@ -32,11 +32,26 @@ function* updateItinerary(action) {
         console.log('Error with updating itinerary:', error);
     }
 }
+
+
+
+
+// Worker Saga: will be fired on "DELETE_ITINERARY" actions
+function* deleteItinerary(action) {
+    try {
+        yield axios.delete(`/api/itinerary/itineraries/${action.payload}`);
+        yield put({ type: 'FETCH_ITINERARIES', payload: action.payload.tripId });
+    } catch (error) {
+        console.log('Error with deleting itinerary:', error);
+    }
+}
+
 // Root saga
 function* itinerarySaga() {
     yield takeEvery('FETCH_ITINERARIES', fetchItineraries);
     yield takeEvery('ADD_ITINERARY', addItinerary);
     yield takeEvery('UPDATE_ITINERARY', updateItinerary);
+    yield takeEvery('DELETE_ITINERARY', deleteItinerary);
 }
 
 export default itinerarySaga;

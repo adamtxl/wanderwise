@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 const EditCreateTrips = () => {
+    const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
     const trip = location.state ? location.state.trip : null;
@@ -24,11 +26,7 @@ const EditCreateTrips = () => {
 
     const handleSaveClick = async () => {
         try {
-            if (trip) {
-                await axios.put(`/api/trips/${trip.trip_id}`, editedTrip);
-            } else {
-                await axios.post('/api/trips', editedTrip);
-            }
+            dispatch({ type: 'CREATE_TRIP', payload: editedTrip });
             history.push('/trips');
         } catch (error) {
             console.error('Error updating trip:', error);

@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
-
+const {
+    rejectUnauthenticated,
+  } = require('../modules/authentication-middleware');
 
 // GET route for master packing list for a specific day
-router.get('/itinerary/:itinerary_id', async (req, res) => {
+router.get('/itinerary/:itinerary_id', rejectUnauthenticated, async (req, res) => {
     const { itinerary_id } = req.params;
     try {
         const packingList = await pool.query('SELECT * FROM PackingList WHERE itinerary_id = $1', [itinerary_id]);
@@ -15,7 +17,7 @@ router.get('/itinerary/:itinerary_id', async (req, res) => {
 });
 
 // GET route for packing list for a whole trip
-router.get('/itineraries/:trip_id', async (req, res) => {
+router.get('/itineraries/:trip_id', rejectUnauthenticated, async (req, res) => {
     const { trip_id } = req.params;
     try {
         const packingList = await pool.query('SELECT * FROM PackingList JOIN itinerary ON itinerary.itinerary_id = packinglist.itinerary_id WHERE trip_id = $1', [trip_id]);
@@ -28,7 +30,7 @@ router.get('/itineraries/:trip_id', async (req, res) => {
 
 
 // POST route for packing list
-router.post('/', async (req, res) => {
+router.post('/', rejectUnauthenticated, async (req, res) => {
     const { itinerary_id, item_name, quantity, packed } = req.body;
 
     // SQL query to insert a new packing list item
@@ -73,7 +75,7 @@ module.exports = router;
 
 
 // PUT route for packing list
-router.put('/:item_id', async (req, res) => {
+router.put('/:item_id', rejectUnauthenticated, async (req, res) => {
     const { item_id } = req.params;
     const { itinerary_id, item_name, quantity, packed } = req.body;
     try {
