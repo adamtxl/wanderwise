@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 const TripsComponent = () => {
     const dispatch = useDispatch();
-    const trips = useSelector(state => state.trip);
+    const trips = useSelector(state => state.trip.trips || []); // Default to an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const history = useHistory();
@@ -62,12 +62,9 @@ const TripsComponent = () => {
                                     <br />
                                     <strong>Location:</strong> {trip.locales}
                                     <br />
-                                    <strong>Destinations</strong> {trip.map_locations}
+                                    <strong>Destinations:</strong> {trip.map_locations}
                                 </Card.Text>
-                                <Button variant="primary" onClick={() => history.push({
-                                    pathname: `/trip-details/${trip.trip_id}`,
-                                    state: { trip: trip }
-                                })}>
+                                <Button variant="primary" onClick={() => history.push(`/trip-details/${trip.trip_id}`)}>
                                     View Details
                                 </Button>
                             </Card.Body>
@@ -76,6 +73,7 @@ const TripsComponent = () => {
                 ))}
             </Row>
         </Container>
-    )};
+    );
+};
 
 export default TripsComponent;

@@ -4,7 +4,8 @@ import axios from 'axios';
 // Worker Saga: will be fired on "FETCH_ITINERARIES" actions
 function* fetchItineraries(action) {
     try {
-        const response = yield axios.get(`/api/itinerary/${action.payload}/itineraries`);
+        const tripId = action.payload;
+        const response = yield axios.get(`/api/itinerary/${tripId}/itineraries`);
         yield put({ type: 'SET_ITINERARIES', payload: response.data });
     } catch (error) {
         console.log('Itineraries get request failed', error);

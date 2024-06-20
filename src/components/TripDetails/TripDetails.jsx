@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
-import axios from 'axios';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 
-const TripDetails = ({ itineraries }) => {
-	const location = useLocation();
-	const trip = location.state?.trip || {};
-	const [isEditing, setIsEditing] = useState(false);
-	const [editedTrip, setEditedTrip] = useState(trip);
-	const [selectedItinerary, setSelectedItinerary] = useState(null);
-	const dispatch = useDispatch();
-	const history = useHistory();
-	const { trip_id } = useParams();
+const TripDetails = () => {
+    const location = useLocation();
+    const trip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data) || {
+        trip_id: '',
+        trip_name: '',
+        start_date: '',
+        end_date: '',
+        locales: '',
+        map_locations: '',
+      };
+      console.log('Trip data:', trip);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedTrip, setEditedTrip] = useState(trip);
+    const [selectedItinerary, setSelectedItinerary] = useState(null);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const { trip_id: tripIdFromParams } = useParams();
+    const trip_id = tripIdFromParams;    
+    const state = useSelector((state) => state);
+    console.log(state);
 
-	useEffect(() => {
-		dispatch({ type: 'FETCH_ITINERARIES', payload: trip.trip_id });
-	}, [dispatch, trip.trip_id]);
+    useEffect(() => {
+        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: trip_id }); // Dispatch with trip_id
+    }, [dispatch, trip_id]);
+
+   
+
+
+
 
 	const createItinerary = () => {
 		history.push({
@@ -27,12 +42,8 @@ const TripDetails = ({ itineraries }) => {
 	};
 
 	const goToPackingList = () => {
-		if (selectedItinerary) {
-			history.push(`/packing-list/${trip.trip_id}/${selectedItinerary.itinerary_id}`);
-		} else {
-			alert('Please select an itinerary first.');
-		}
-	};
+        history.push(`/packing-list/${trip.trip_id}`);
+    };
 
 	const handleInputChange = (event) => {
 		setEditedTrip({ ...editedTrip, [event.target.name]: event.target.value });
@@ -151,6 +162,7 @@ const TripDetails = ({ itineraries }) => {
 						onSelectItinerary={setSelectedItinerary}
 						selectedItinerary={selectedItinerary}
 						onSaveItinerary={handleSaveItinerary}
+                        trip_id={trip_id}
 					/>
 				</Col>
 			</Row>

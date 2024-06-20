@@ -5,6 +5,7 @@ import trip from './trip.reducer';
 import itineraryReducer from './itinerary.reducer';
 import packingList from './packingList.reducer';
 import userItems from './userItems.reducer';
+import tripDetailReducer from './tripDetail.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   trip, // will have an array of trips
   itineraryReducer, // will have an array of itineraries
   packingList, // will have an array of packing list items
-  userItems
+  userItems, // will have an array of user items
+  tripDetailReducer // will have an array of trip details
 });
 
 export default rootReducer;

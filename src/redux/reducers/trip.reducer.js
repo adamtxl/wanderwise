@@ -1,12 +1,17 @@
-const tripsReducer = (state = [], action) => {
-    console.log('Reducer: Action received:', action);
+const initialState = {
+    trips: [], // Ensure this is an empty array initially
+    loading: false,
+    error: null,
+};
+
+const tripReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_TRIPS':
-            console.log('Reducer: Setting trips:', action.payload);
-            return action.payload;
+            return { ...state, trips: action.payload, loading: false };
+        // Other cases...
         default:
             return state;
     }
 };
 
-export default tripsReducer;
+export default tripReducer;

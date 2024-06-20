@@ -3,6 +3,7 @@ import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
 
+import './App.css';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 import TripDetails from '../TripDetails/TripDetails';
@@ -16,7 +17,6 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import Trips from '../Trips/Trips';
 
-import './App.css';
 import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
 import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
 import PackingList from '../PackingList/PackingList';
@@ -111,7 +111,6 @@ function App() {
 						path='/trip-details/:trip_id'
 						component={TripDetails}
 					>
-						<TripDetails />
 					</ProtectedRoute>
 					<ProtectedRoute
 						// logged in shows TripDetails else shows LoginPage
@@ -127,7 +126,7 @@ function App() {
 					>
 						<DailyItinerary />
 					</ProtectedRoute>
-					<ProtectedRoute  path='/packing-list/:tripId/:itineraryId'>
+					<ProtectedRoute  path='/packing-list/:tripId/'>
 						<PackingList />
 					</ProtectedRoute >
 					{/* If none of the other routes matched, we will show a 404. */}
