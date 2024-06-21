@@ -31,7 +31,7 @@ router.get('/itineraries/:trip_id', rejectUnauthenticated, async (req, res) => {
 
 // POST route for packing list
 router.post('/', rejectUnauthenticated, async (req, res) => {
-    const { item_name, quantity, packed, trip_id } = req.body; // Include trip_id
+    const { item_name, quantity, packed, trip_id } = req.body;
 
     // SQL query to insert a new packing list item
     const insertText = `
@@ -47,11 +47,10 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
             await client.query('BEGIN');
 
             const result = await client.query(insertText, [
-                
                 item_name,
                 quantity,
                 packed,
-                trip_id // Include trip_id
+                trip_id
             ]);
 
             // Committing the transaction
@@ -71,14 +70,14 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-
 module.exports = router;
 
 
 // PUT route for packing list
 router.put('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
     const { packinglist_id } = req.params;
-    const { item_name, quantity, packed } = req.body;
+    const { item_name, quantity, packed } = req.body; // Correct the trip_id destructuring
+
     try {
         const updateItem = await pool.query(
             'UPDATE PackingList SET item_name = $1, quantity = $2, packed = $3 WHERE packinglist_id = $4 RETURNING *',
@@ -86,23 +85,28 @@ router.put('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
         );
         res.json(updateItem.rows[0]);
     } catch (err) {
-        console.error('Error updating packing list item:', err);
-        res.status(500).json({ error: 'An unexpected error occurred' });
-    }
-});
-
-// DELETE route for packing list
-router.delete('/:item_id', rejectUnauthenticated, async (req, res) => {
-    const { item_id } = req.params; // Correctly getting item_id from req.params
-    try {
-        const deleteItem = await pool.query('DELETE FROM PackingList WHERE packinglist_id = $1', [item_id]);
-        res.json({ message: 'Item was deleted' });
-    } catch (err) {
-        console.error(err.message);
+        console.error('Error updating packing list item:', err.message);
         res.status(500).send('Server error');
     }
 });
 
-module.exports = router;
+// DELETE route for packing list
+// DELETE route for packing list
+router.delete('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
+    const { packinglist_id } = req.params;
 
+    try {
+        const deleteQuery = 'DELETE FROM PackingList WHERE packinglist_id = $1 RETURNING *';
+        const result = await pool.query(deleteQuery, [packinglist_id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'Item not found' });
+        }
+
+        res.status(200).json({ message: 'Item was deleted' });
+    } catch (err) {
+        console.error('Error deleting packing list item:', err.message);
+        res.status(500).send('Server error');
+    }
+});
 module.exports = router;

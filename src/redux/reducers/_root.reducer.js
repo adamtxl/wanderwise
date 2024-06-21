@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
   trip, // will have an array of trips
-  itineraryReducer, // will have an array of itineraries
+  itineraries: itineraryReducer, // will have an array of itineraries
   packingList, // will have an array of packing list items
   userItems, // will have an array of user items
   tripDetailReducer // will have an array of trip details

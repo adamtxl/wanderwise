@@ -98,7 +98,7 @@ router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
 });
 
 //deleting itinerary
-router.delete('/itineraries/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
     const itineraryId = req.params.id;
     const userId = req.user.id;
 

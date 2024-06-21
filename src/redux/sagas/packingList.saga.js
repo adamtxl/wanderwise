@@ -52,15 +52,17 @@ function* updatePackingListItem(action) {
             quantity,
             packed,
         });
+        // Ensure you are sending the correct trip ID in the payload
         yield put({ type: 'FETCH_PACKING_LIST', payload: { tripId: response.data.trip_id } });
     } catch (error) {
         console.error('Error updating packing list item:', error);
     }
 }
+
 function* deletePackingListItem(action) {
     try {
-        const { itemId, tripId } = action.payload;
-        yield call(axios.delete, `/api/packing-list/${itemId}`);
+        const { packinglist_id, tripId } = action.payload;
+        yield call(axios.delete, `/api/packing-list/${packinglist_id}`);
         yield put({ type: 'FETCH_PACKING_LIST', payload: { tripId } });
     } catch (error) {
         console.error('Error deleting packing list item:', error);

@@ -1,14 +1,13 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeEvery, call } from 'redux-saga/effects';
 import axios from 'axios';
 
 // Worker Saga: will be fired on "FETCH_ITINERARIES" actions
 function* fetchItineraries(action) {
     try {
-        const tripId = action.payload;
-        const response = yield axios.get(`/api/itinerary/${tripId}/itineraries`);
+        const response = yield call(axios.get, `/api/itinerary/${action.payload}/itineraries`);
         yield put({ type: 'SET_ITINERARIES', payload: response.data });
     } catch (error) {
-        console.log('Itineraries get request failed', error);
+        console.error('Fetch itineraries failed', error);
     }
 }
 
@@ -40,10 +39,11 @@ function* updateItinerary(action) {
 // Worker Saga: will be fired on "DELETE_ITINERARY" actions
 function* deleteItinerary(action) {
     try {
-        yield axios.delete(`/api/itinerary/itineraries/${action.payload}`);
-        yield put({ type: 'FETCH_ITINERARIES', payload: action.payload.tripId });
+        const { itineraryId } = action.payload;
+        yield call(axios.delete, `/api/itinerary/${itineraryId}`);
+        yield put({ type: 'DELETE_ITINERARY_SUCCESS', payload: itineraryId });
     } catch (error) {
-        console.log('Error with deleting itinerary:', error);
+        console.error('Delete itinerary failed', error);
     }
 }
 

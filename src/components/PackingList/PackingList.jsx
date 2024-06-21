@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import PackingListItemCard from './PackingListItemCard';
 
 const PackingList = () => {
     const { tripId } = useParams();
@@ -30,6 +31,7 @@ const PackingList = () => {
             quantity: 1,
             packed: false,
             trip_id: tripId, // Ensure tripId is included in the payload
+            packinglist_id: item.packinglist_id // Ensure packinglist_id is included in the payload
         };
         dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem });
     };
@@ -38,22 +40,18 @@ const PackingList = () => {
         dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: item });
     };
 
-    const handleDeleteItem = (packinglist_id) => { // Correct parameter name here
-        dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: { itemId: packinglist_id, tripId } });
+    const handleDeleteItem = (packinglist_id) => {
+        dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: { packinglist_id, tripId } });
     };
-
+    
     return (
         <div>
             <h2>Packing List</h2>
-            <ul>
+            <div>
                 {packingList.map((item) => (
-                    <li key={item.packinglist_id}>
-                        {item.item_name} - Quantity: {item.quantity} - Packed: {item.packed ? 'Yes' : 'No'}
-                        <button onClick={() => handleUpdateItem(item)}>Update</button>
-                        <button onClick={() => handleDeleteItem(item.packinglist_id)}>Delete</button>
-                    </li>
+                    <PackingListItemCard key={item.packinglist_id} item={item} />
                 ))}
-            </ul>
+            </div>
             <h2>Items</h2>
             <ul>
                 {userItems.map((item) => (
@@ -82,3 +80,5 @@ const PackingList = () => {
 };
 
 export default PackingList;
+
+
