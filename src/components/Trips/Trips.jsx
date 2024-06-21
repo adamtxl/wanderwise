@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 const TripsComponent = () => {
     const dispatch = useDispatch();
@@ -9,6 +10,7 @@ const TripsComponent = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const history = useHistory();
+    const [countdown, setCountdown] = useState(null);
 
     useEffect(() => {
         console.log('Component: Dispatching FETCH_TRIPS action');
@@ -23,10 +25,35 @@ const TripsComponent = () => {
         return () => clearTimeout(timer);
     }, [dispatch]);
 
+    useEffect(() => {
+        const findNextTrip = () => {
+            const now = moment();
+            const nextTrip = trips.find(trip => moment(trip.start_date).isAfter(now));
+            
+            if (nextTrip) {
+                const startDate = moment(nextTrip.start_date);
+                const timeDiff = moment.duration(startDate.diff(now));
+        
+                // Calculate countdown
+                const days = timeDiff.days();
+                const hours = timeDiff.hours();
+                const minutes = timeDiff.minutes();
+        
+                setCountdown(`Next trip starts in ${days} days, ${hours} hours, and ${minutes} minutes!`);
+            } else {
+                setCountdown('No upcoming trips');
+            }
+        };
+    
+        if (!loading && !error && trips.length > 0) {
+            findNextTrip();
+        }
+    }, [loading, error, trips]);
+
     const editTrip = () => {
         history.push({
             pathname: '/trip-details',
-            state: { trip: mostRecentTrip }
+            state: { trip: trips[0] }
         });
     };
 
@@ -38,21 +65,19 @@ const TripsComponent = () => {
         return <Alert variant="danger">{error}</Alert>;
     }
 
-    const mostRecentTrip = trips.length > 0 ? trips[0] : null;
-
     return (
         <Container>
-           <Row>
-            <Col className="mb-4">
-            <Button variant="primary" onClick={() => history.push('/edit-create-trip')}>
-                    Create New Adventure
-                </Button>
-            </Col>
-        </Row>
-        <Row>
-                {trips.map((trip) => (
+            <Row>
+                <Col className="mb-4">
+                    <Button variant="primary" onClick={() => history.push('/edit-create-trip')}>
+                        Create New Adventure
+                    </Button>
+                </Col>
+            </Row>
+            <Row>
+                {trips.map((trip, index) => (
                     <Col key={trip.trip_id} md={4} className="mb-4">
-                        <Card>
+                        <Card className={index === 0 ? 'bg-warning' : 'bg-light'}>
                             <Card.Body>
                                 <Card.Title>{trip.trip_name}</Card.Title>
                                 <Card.Text>
@@ -71,6 +96,18 @@ const TripsComponent = () => {
                         </Card>
                     </Col>
                 ))}
+            </Row>
+            <Row>
+                <Col md={4} className="mb-4">
+                    {countdown && (
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>Countdown to Next Trip</Card.Title>
+                                <Card.Text>{countdown}</Card.Text>
+                            </Card.Body>
+                        </Card>
+                    )}
+                </Col>
             </Row>
         </Container>
     );

@@ -13,7 +13,7 @@ const {
     const query = `
         SELECT * FROM "trips"
         WHERE "user_id" = $1
-        ORDER BY "start_date" DESC;
+        ORDER BY "start_date" ASC;
     `;
     
     pool.query(query, [userId])
