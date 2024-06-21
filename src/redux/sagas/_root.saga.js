@@ -5,6 +5,7 @@ import userSaga from './user.saga';
 import tripsSaga from './trip.saga';
 import itinerarySaga from './itinerary.saga';
 import packingListSaga from './packingList.saga';
+import userItems from './userItems.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -21,5 +22,6 @@ export default function* rootSaga() {
     tripsSaga(),
     itinerarySaga(),
     packingListSaga(),
+    userItems(),
   ]);
 }

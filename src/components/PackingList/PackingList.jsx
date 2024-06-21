@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import PackingListItemCard from './PackingListItemCard';
+import UserItems from './UserItems';
 
 const PackingList = () => {
     const { tripId } = useParams();
@@ -31,7 +32,7 @@ const PackingList = () => {
             quantity: 1,
             packed: false,
             trip_id: tripId, // Ensure tripId is included in the payload
-            packinglist_id: item.packinglist_id // Ensure packinglist_id is included in the payload
+            packinglist_id: item.packinglist_id, // Ensure packinglist_id is included in the payload
         };
         dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem });
     };
@@ -44,6 +45,14 @@ const PackingList = () => {
         dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: { packinglist_id, tripId } });
     };
     
+    const handleDeleteUserItem = (itemId) => {
+        dispatch({ type: 'DELETE_USER_ITEM', payload: itemId });
+    };
+
+    const handleUpdateUserItem = (item) => {
+        dispatch({ type: 'UPDATE_USER_ITEM', payload: item });
+    };
+
     return (
         <div>
             <h2>Packing List</h2>
@@ -52,15 +61,12 @@ const PackingList = () => {
                     <PackingListItemCard key={item.packinglist_id} item={item} />
                 ))}
             </div>
-            <h2>Items</h2>
-            <ul>
-                {userItems.map((item) => (
-                    <li key={item.item_id}>
-                        {item.item_name} ({item.category}){' '}
-                        <button onClick={() => handleAddToPackingList(item)}>Add to Packing List</button>
-                    </li>
-                ))}
-            </ul>
+            <UserItems
+                userItems={userItems}
+                handleAddToPackingList={handleAddToPackingList}
+                handleDeleteUserItem={handleDeleteUserItem}
+                handleUpdateUserItem={handleUpdateUserItem}
+            />
             <h2>Add New Item</h2>
             <input
                 type='text'
@@ -80,5 +86,3 @@ const PackingList = () => {
 };
 
 export default PackingList;
-
-
