@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Row, Col, Container } from 'react-bootstrap'; // Import Row and Col from react-bootstrap
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
 
@@ -44,7 +45,7 @@ const PackingList = () => {
     const handleDeleteItem = (packinglist_id) => {
         dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: { packinglist_id, tripId } });
     };
-    
+
     const handleDeleteUserItem = (itemId) => {
         dispatch({ type: 'DELETE_USER_ITEM', payload: itemId });
     };
@@ -54,35 +55,49 @@ const PackingList = () => {
     };
 
     return (
-        <div>
-            <h2>Packing List</h2>
-            <div>
-                {packingList.map((item) => (
-                    <PackingListItemCard key={item.packinglist_id} item={item} />
-                ))}
-            </div>
-            <UserItems
-                userItems={userItems}
-                handleAddToPackingList={handleAddToPackingList}
-                handleDeleteUserItem={handleDeleteUserItem}
-                handleUpdateUserItem={handleUpdateUserItem}
-            />
-            <h2>Add New Item</h2>
-            <input
-                type='text'
-                value={newItem.item_name}
-                onChange={(e) => setNewItem({ ...newItem, item_name: e.target.value })}
-                placeholder='Item Name'
-            />
-            <input
-                type='text'
-                value={newItem.category}
-                onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                placeholder='Category'
-            />
-            <button onClick={handleAddUserItem}>Add Item</button>
-        </div>
+        <Container>
+            <Row>
+                <Col>
+                    <h2>Packing List</h2>
+                    <Row>
+                        {packingList.map((item) => (
+                            <Col key={item.packinglist_id} xs={12} sm={6} md={4} lg={3}>
+                                <PackingListItemCard item={item} />
+                            </Col>
+                        ))}
+                    </Row>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <UserItems
+                        userItems={userItems}
+                        handleAddToPackingList={handleAddToPackingList}
+                        handleDeleteUserItem={handleDeleteUserItem}
+                        handleUpdateUserItem={handleUpdateUserItem}
+                    />
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Add New Item</h2>
+                    <input
+                        type='text'
+                        value={newItem.item_name}
+                        onChange={(e) => setNewItem({ ...newItem, item_name: e.target.value })}
+                        placeholder='Item Name'
+                    />
+                    <input
+                        type='text'
+                        value={newItem.category}
+                        onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+                        placeholder='Category'
+                    />
+                    <button onClick={handleAddUserItem}>Add Item</button>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
-export default PackingList; 
+export default PackingList;

@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   packingList, // will have an array of packing list items
   userItems, // will have an array of user items
   tripDetailReducer, // will have an array of trip details
-  mapItemReducer
+  mapItems: mapItemReducer
 });
 
 export default rootReducer;

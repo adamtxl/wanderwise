@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Don't forget to create your own mapbox API key @ mapbox.com
-const mapboxToken = 'pk.eyJ1IjoiYWRhbXR4bCIsImEiOiJjbHhod29nNm4xbGVoMmxvYjNhZGhxdnppIn0.oc6h71poS282jLMmDWxieQ';
+// const mapboxToken = process.env.REACT_APP_MAPBOX_API_KEY;
 
 class SimpleMap extends Component {
    state = {
@@ -27,7 +27,7 @@ class SimpleMap extends Component {
          <div className="map-container">
             <ReactMapGL
                {...this.state.viewport}
-               mapboxApiAccessToken={mapboxToken}
+            //    mapboxApiAccessToken={mapboxToken}
                // mapStyle="mapbox://styles/mapbox/dark-v9"
                mapStyle="mapbox://styles/mapbox/streets-v11"
                // This is from the react-map-gl examples. It updates our local state with

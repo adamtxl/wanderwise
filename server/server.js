@@ -13,6 +13,7 @@ const tripRouter = require('./routes/trip.router')
 const packingListRouter = require('./routes/packingList.router');
 const itineraryRouter = require('./routes/itinerary.router');
 const user_itemsRouter = require('./routes/userItems.router');
+const mapItemRouter = require('./routes/map.router');
 
 
 // Express Middleware
@@ -33,6 +34,7 @@ app.use('/api/trips', tripRouter);
 app.use('/api/packing-list', packingListRouter);
 app.use('/api/itinerary', itineraryRouter);
 app.use('/api/user-items', user_itemsRouter);
+app.use('api/map-item', mapItemRouter);
 
 
 // Listen Server & Port

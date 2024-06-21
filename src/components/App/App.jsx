@@ -21,6 +21,7 @@ import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
 import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
 import PackingList from '../PackingList/PackingList';
 import Map from '../Maps/Map';
+import MapPage from '../Maps/MapPage';
 
 function App() {
 	const dispatch = useDispatch();
@@ -131,8 +132,8 @@ function App() {
 						<PackingList />
 					</ProtectedRoute >
 
-          <ProtectedRoute  path='/map/:tripId/'>
-						<Map />
+          <ProtectedRoute  path='/map/'>
+						<MapPage/>
 					</ProtectedRoute >
 					{/* If none of the other routes matched, we will show a 404. */}
 					<Route>
