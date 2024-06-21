@@ -30,6 +30,7 @@ const PackingListItemCard = ({ item }) => {
 
 	const handleDeleteItem = (event) => {
 		event.stopPropagation();
+        console.log('item', item)
 		dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item });
 	};
 

@@ -45,9 +45,9 @@ function* updatePackingListItem(action) {
 
 function* deletePackingListItem(action) {
     try {
-        const { packinglist_id, tripId } = action.payload;
+        const { packinglist_id, trip_id } = action.payload; // Ensure consistent naming
         yield call(axios.delete, `/api/packing-list/${packinglist_id}`);
-        yield put({ type: 'FETCH_PACKING_LIST', payload: { tripId } });
+        yield put({ type: 'FETCH_PACKING_LIST', payload: { tripId: trip_id } }); // Use the correct payload key
     } catch (error) {
         console.error('Error deleting packing list item:', error);
     }
