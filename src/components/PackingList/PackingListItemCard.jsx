@@ -1,47 +1,47 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Card, Form } from 'react-bootstrap';
+import { Card, Form, Button } from 'react-bootstrap';
 
 const PackingListItemCard = ({ item }) => {
-    const dispatch = useDispatch();
-    const [editMode, setEditMode] = useState(false);
-    const [editedItem, setEditedItem] = useState({ ...item });
+	const dispatch = useDispatch();
+	const [editMode, setEditMode] = useState(false);
+	const [editedItem, setEditedItem] = useState({ ...item });
 
-    const handleToggleEditMode = (event) => {
-        event.stopPropagation();
-        setEditMode(!editMode);
-        setEditedItem({ ...item }); // Reset edited item state
-    };
+	const handleToggleEditMode = (event) => {
+		event.stopPropagation();
+		setEditMode(!editMode);
+		setEditedItem({ ...item });
+	};
 
-    const handleInputChange = (event) => {
-        event.stopPropagation(); // Stop event propagation for input fields
-        const { name, value } = event.target;
-        setEditedItem({
-            ...editedItem,
-            [name]: name === 'packed' ? event.target.checked : value,
-        });
-    };
+	const handleInputChange = (event) => {
+		event.stopPropagation();
+		const { name, value } = event.target;
+		setEditedItem({
+			...editedItem,
+			[name]: name === 'packed' ? event.target.checked : value,
+		});
+	};
 
-    const handleUpdateItem = (event) => {
-        event.stopPropagation();
-        dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: editedItem });
-        setEditMode(false);
-    };
+	const handleUpdateItem = (event) => {
+		event.stopPropagation();
+		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: editedItem });
+		setEditMode(false);
+	};
 
-    const handleDeleteItem = (event) => {
-        event.stopPropagation();
-        dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item });
-    };
+	const handleDeleteItem = (event) => {
+		event.stopPropagation();
+		dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item });
+	};
 
-    const handleTogglePacked = () => {
-        const updatedItem = { ...item, packed: !item.packed };
-        dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: updatedItem });
-    };
+	const handleTogglePacked = () => {
+		const updatedItem = { ...item, packed: !item.packed };
+		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: updatedItem });
+	};
 
     return (
         <Card
             className={`packing-list-item-card ${item.packed ? 'bg-success text-white' : 'bg-light'}`}
-            style={{ cursor: 'pointer', marginBottom: '10px' }}
+            style={{ cursor: 'pointer', marginBottom: '2px' }}
             onClick={handleTogglePacked}
         >
             <Card.Body>
@@ -54,20 +54,20 @@ const PackingListItemCard = ({ item }) => {
                                 name='item_name'
                                 value={editedItem.item_name}
                                 onChange={handleInputChange}
-                                onClick={(event) => event.stopPropagation()} // Stop event propagation for input fields
-                                onFocus={(event) => event.stopPropagation()} // Stop event propagation when input fields gain focus
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()}
                             />
                         </Form.Group>
 
                         <Form.Group controlId='quantity'>
-                            <Form.Label>Quantity</Form.Label>
+                            <Form.Label><strong>Quantity</strong></Form.Label>
                             <Form.Control
                                 type='number'
                                 name='quantity'
                                 value={editedItem.quantity}
                                 onChange={handleInputChange}
-                                onClick={(event) => event.stopPropagation()} // Stop event propagation for input fields
-                                onFocus={(event) => event.stopPropagation()} // Stop event propagation when input fields gain focus
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()}
                             />
                         </Form.Group>
 
@@ -78,31 +78,31 @@ const PackingListItemCard = ({ item }) => {
                                 name='packed'
                                 checked={editedItem.packed}
                                 onChange={handleInputChange}
-                                onClick={(event) => event.stopPropagation()} // Stop event propagation for checkbox
+                                onClick={(event) => event.stopPropagation()}
                                 onFocus={(event) => event.stopPropagation()}
                             />
                         </Form.Group>
                     </Form>
                 ) : (
                     <>
-                        <Card.Title>{item.item_name}</Card.Title>
-                        <Card.Text>Quantity: {item.quantity}</Card.Text>
-                        <Card.Text>Packed: {item.packed ? 'Yes' : 'No'}</Card.Text>
+                        <Card.Title className='compact-card-text'>{item.item_name}</Card.Title>
+                        <Card.Text className='compact-card-text'><strong>Qty:</strong> {item.quantity}</Card.Text>
+                        <Card.Text className='compact-card-text'><strong>Packed:</strong> {item.packed ? 'Yes' : 'No'}</Card.Text>
                     </>
                 )}
                 <div className='card-buttons'>
                     {editMode ? (
-                        <button className='btn btn-primary' onClick={handleUpdateItem}>
+                        <Button className='btn btn-primary btn-sm' onClick={handleUpdateItem}>
                             Save
-                        </button>
+                        </Button>
                     ) : (
-                        <button className='btn btn-secondary' onClick={handleToggleEditMode}>
+                        <Button className='btn btn-secondary btn-sm' onClick={handleToggleEditMode}>
                             Edit
-                        </button>
+                        </Button>
                     )}
-                    <button className='btn btn-danger' onClick={handleDeleteItem}>
+                    <Button className='btn btn-danger btn-sm' onClick={handleDeleteItem}>
                         Delete
-                    </button>
+                    </Button>
                 </div>
             </Card.Body>
         </Card>

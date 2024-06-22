@@ -4,6 +4,38 @@ body,
   height: 100%;
 }
 
+/* App.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+}
+
+footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
@@ -27,7 +59,7 @@ Container
 Button
 -------------------------------------------------------------------------------- */
 
-.btn {
+/* .btn {
   display: inline-block;
   padding: 10px 20px;
   border-color: #014041;
@@ -58,7 +90,7 @@ Button
 .btn:hover {
   background-color: #008183;
   text-decoration: none;
-}
+} */
 
 /* This line makes the "Register" and "Login" buttons look like links */
 .btn_asLink {

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Row, Col, Container } from 'react-bootstrap'; // Import Row and Col from react-bootstrap
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
+import './PackingList.css';
 
 const PackingList = () => {
     const { tripId } = useParams();
@@ -61,7 +62,7 @@ const PackingList = () => {
                     <h2>Packing List</h2>
                     <Row>
                         {packingList.map((item) => (
-                            <Col key={item.packinglist_id} xs={12} sm={6} md={4} lg={3}>
+                            <Col key={item.packinglist_id} xs={4} sm={3} md={3} lg={2}>
                                 <PackingListItemCard item={item} />
                             </Col>
                         ))}
