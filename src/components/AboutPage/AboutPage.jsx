@@ -15,7 +15,7 @@ function AboutPage() {
             <Card.Body>
               <Card.Title>About the App</Card.Title>
               <Card.Text>
-                Our app helps users manage their trips efficiently by providing a comprehensive packing list feature. You can easily add, update, and manage your items to ensure you never forget anything important.
+                This app helps users manage their trips efficiently by providing a comprehensive packing list feature. You can easily add, update, and manage your items to ensure you never forget anything important.
               </Card.Text>
             </Card.Body>
           </Card>

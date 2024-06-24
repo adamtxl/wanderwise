@@ -3,6 +3,7 @@ import MapForm from './MapForm';
 import Map from './Map';
 import MapInfo from './MapInfo';
 import { connect } from 'react-redux';
+import './MapPage.css';
 
 class MapPage extends Component {
     componentDidMount = () => {
@@ -12,7 +13,7 @@ class MapPage extends Component {
     render = () => {
         return (
             <>
-                <h1>Mapbox GL Demo</h1>
+                <h1 className='white-black'>WanderWise Mapping</h1>
                 <Map />
                 <MapInfo />
                 <MapForm />

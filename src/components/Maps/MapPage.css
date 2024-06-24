@@ -1,0 +1,27 @@
+/* h2 {
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px; 
+    text-align: center;
+}
+
+h3 {
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px; 
+    text-align: center;
+}
+
+p {
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px; 
+    text-align: center;
+}    */
+
+.white-black {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px; 
+    text-align: center;
+}
