@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import TripMap from './TripMap'; // Adjust path as per your actual file structure
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 
 const TripDetails = () => {
@@ -147,6 +148,11 @@ const TripDetails = () => {
                             </Button>
                         </Card.Body>
                     </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <TripMap tripId={trip.trip_id} />
                 </Col>
             </Row>
             <Row>

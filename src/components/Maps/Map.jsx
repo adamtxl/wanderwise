@@ -5,7 +5,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Don't forget to create your own mapbox API key @ mapbox.com
 const mapboxToken = process.env.REACT_APP_MAPBOX_API_KEY;
-console.log('mapboxToken:', mapboxToken);
 
 class SimpleMap extends Component {
    state = {
@@ -21,15 +20,15 @@ class SimpleMap extends Component {
    setCurrentItem = (item) => {
       // When a marker is clicked, just set redux to whatever was clicked on
       this.props.dispatch({ type: 'SET_CURRENT_ITEM', payload: item });
+      // Call the callback function passed via props to update the parent component
+      this.props.onItemClick(item);
    };
 
    render() {
-      // {console.log('Render token:', mapboxToken)}
       return (
          <div className="map-container">
             <ReactMapGL
                {...this.state.viewport}
-               
                mapboxApiAccessToken={mapboxToken}
                mapStyle="mapbox://styles/mapbox/streets-v11"
                onViewportChange={(viewport) => this.setState({ viewport })}

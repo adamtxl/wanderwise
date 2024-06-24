@@ -7,6 +7,7 @@ import itinerarySaga from './itinerary.saga';
 import packingListSaga from './packingList.saga';
 import userItems from './userItems.saga';
 import mapItemSaga from './mapItemSaga';
+import locationSaga from './location.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -25,5 +26,6 @@ export default function* rootSaga() {
     packingListSaga(),
     userItems(),
     mapItemSaga(),
+    locationSaga(),
   ]);
 }

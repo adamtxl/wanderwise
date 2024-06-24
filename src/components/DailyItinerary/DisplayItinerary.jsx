@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { Card, Button, Form, Row, Col } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItinerary, trip_id }) => {
-    const [itineraries, setItineraries] = useState([]);
+    const selectItineraries = state => state.itineraries; 
+
+    const reduxItineraries = useSelector(selectItineraries) || [];
     const dispatch = useDispatch();
+    // const getReduxItineraries = (state) => state.reduxItineraries;
+
+    // Somewhere in your component or store setup
+    // console.log(getReduxItineraries(store.getState())); // Log to check the value
+    
+    if (!Array.isArray(reduxItineraries)) {
+        console.error('reduxItineraries is not an array', reduxItineraries);
+        return null; // or some fallback UI
+      }
 
     useEffect(() => {
         if (trip_id) {
-            const fetchItineraries = async () => {
-                try {
-                    const response = await axios.get(`/api/itinerary/${trip_id}/itineraries`);
-                    setItineraries(response.data.data);
-                } catch (error) {
-                    console.error('Error fetching itineraries:', error);
-                }
-            };
-            fetchItineraries();
+            // Dispatch an action to fetch itineraries
+            dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id });
         }
-    }, [trip_id]);
+    }, [trip_id, dispatch]);
 
     const handleItineraryChange = (event) => {
         onSelectItinerary({ ...selectedItinerary, [event.target.name]: event.target.value });
@@ -31,7 +34,7 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 
     return (
         <Row>
-            {itineraries.map((itinerary, index) => (
+            {reduxItineraries.map((itinerary, index) => (
                 <Col xs={12} sm={6} md={4} lg={3} key={index}>
                     <Card className="mb-4">
                         <Card.Body>

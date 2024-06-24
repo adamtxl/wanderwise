@@ -45,16 +45,16 @@ const {
 
 router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.trip_id;
-    const { day, activity, location, notes } = req.body; // Include notes
+    const { day, activity, location, notes, longitude, latitude, created_at } = req.body; // Include notes
     const userId = req.user.id;
 
     const query = `
-        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location", "notes")
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location", "notes", "longitude", "latitude")
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `;
 
-    const values = [tripId, day, activity, location, notes]; // Include notes in values
+    const values = [tripId, day, activity, location, notes, longitude, latitude]; // Include notes in values
 
     // Verify that the user owns the trip
     const verifyTripQuery = `

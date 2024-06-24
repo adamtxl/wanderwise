@@ -39,9 +39,10 @@ function* updateItinerary(action) {
 // Worker Saga: will be fired on "DELETE_ITINERARY" actions
 function* deleteItinerary(action) {
     try {
-        const { itineraryId } = action.payload;
+        const { itineraryId, tripId } = action.payload; // Corrected destructuring
         yield call(axios.delete, `/api/itinerary/${itineraryId}`);
         yield put({ type: 'DELETE_ITINERARY_SUCCESS', payload: itineraryId });
+        yield put({ type: 'FETCH_ITINERARIES', payload: tripId });
     } catch (error) {
         console.error('Delete itinerary failed', error);
     }

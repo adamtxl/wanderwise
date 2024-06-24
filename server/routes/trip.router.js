@@ -202,7 +202,38 @@ router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
         });
 });
 
+router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) => {
+    const tripId = req.params.trip_id;
+    const userId = req.user.id;
 
+    const query = `
+        SELECT longitude, latitude 
+        FROM "itinerary" 
+        WHERE "trip_id" = $1
+        AND EXISTS (
+            SELECT 1
+            FROM "trips"
+            WHERE "trip_id" = $1
+            AND "user_id" = $2
+        );
+    `;
+
+    pool.query(query, [tripId, userId])
+        .then(result => {
+            res.status(200).json({
+                success: true,
+                data: result.rows,
+                message: 'Locations retrieved successfully'
+            });
+        })
+        .catch(err => {
+            console.error('Error retrieving locations:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
 
 
 

@@ -55,6 +55,7 @@ function* deleteTrip(action) {
     }
 }
 
+
 // Watcher saga to trigger worker saga
 function* tripsSaga() {
     yield takeEvery('FETCH_TRIPS', fetchTrips);

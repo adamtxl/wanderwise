@@ -1,0 +1,42 @@
+/* General form styling */
+form {
+    margin: 20px;
+}
+
+.form-label {
+    background-color: rgba(0, 0, 0, 0.5); /* black with 50% opacity */
+    color: white; /* text color */
+    padding: 5px 10px; /* space around the text */
+    border-radius: 5px; /* rounded corners */
+    display: inline-block;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Adjust form controls margin */
+.form-control {
+    margin-bottom: 15px;
+}
+
+/* Media queries for mobile devices */
+@media (max-width: 768px) {
+    .form-group {
+        width: 100%;
+    }
+
+    .map-container {
+        height: 300px; /* adjust map height for mobile */
+    }
+}
+
+/* Additional styling for the map */
+.map-container {
+    margin-top: 20px;
+    width: 100%;
+    height: 500px; /* default map height */
+}
+
+/* Ensure the form and map are responsive */
+.container-fluid {
+    padding: 0 15px;
+}
