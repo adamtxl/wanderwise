@@ -65,7 +65,7 @@ function App() {
                             </Route>
                             <Route exact path='/home'>
                                 {user.id ? (
-                                    <Redirect to='/user' />
+                                    <Redirect to='/trips' />
                                 ) : (
                                     <LandingPage />
                                 )}

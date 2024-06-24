@@ -8,12 +8,16 @@ h2 {
 
 @media (max-width: 576px) {
     .compact-card-text {
-        line-height: 1.2; 
+        line-height: 1; 
         margin-bottom: 5px; 
-        font-size: small;
+        font-size: medium;
     }
     .card-buttons .btn {
         padding: 0.25rem 0.5rem;
         font-size: 0.8rem;
     }
+    .Card.Body {
+        padding: 1000px
+    }
 }
+
