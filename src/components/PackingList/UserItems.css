@@ -1,0 +1,11 @@
+@media (max-width: 768px) {
+    .category-select {
+      font-size: 1.2em; /* Adjust if needed */
+      padding: 10px;
+    }
+
+    /* Attempt to style <option> elements */
+    .category-select option {
+      font-size: 1.2em; /* Adjust to make text larger */
+    }
+}

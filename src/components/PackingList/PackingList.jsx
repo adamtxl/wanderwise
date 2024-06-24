@@ -62,7 +62,7 @@ const PackingList = () => {
                     <h2>Packing List</h2>
                     <Row>
                         {packingList.map((item) => (
-                            <Col key={item.packinglist_id} xs={12} sm={3} md={3} lg={2}>
+                            <Col key={item.packinglist_id} xs={12} sm={8} md={6} lg={4}>
                                 <PackingListItemCard item={item} />
                             </Col>
                         ))}
