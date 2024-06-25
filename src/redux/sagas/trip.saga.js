@@ -15,6 +15,17 @@ function* fetchTrips() {
     }
 }
 
+function* fetchPastTrips() {
+    try {
+        console.log('Saga: Fetching trips...');
+        const response = yield call(axios.get, '/api/trips/past');
+        console.log('Saga: Trips fetched:', response.data);
+        yield put({ type: 'SET_TRIPS', payload: response.data.data });
+    } catch (error) {
+        console.error('Saga: Error fetching trips', error);
+    }
+}
+
 // Worker saga to fetch a single trip by ID
 function* fetchTripById(action) {
     try {
@@ -63,6 +74,7 @@ function* tripsSaga() {
     yield takeEvery('CREATE_TRIP', createTrip);
     yield takeEvery('UPDATE_TRIP', updateTrip);
     yield takeEvery('DELETE_TRIP', deleteTrip);
+    yield takeEvery('FETCH_PAST_TRIPS', fetchPastTrips);
 }
 
 export default tripsSaga;

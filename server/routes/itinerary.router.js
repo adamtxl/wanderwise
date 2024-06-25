@@ -13,7 +13,7 @@ const {
         SELECT i.*
         FROM "itinerary" i
         JOIN "trips" t ON i.trip_id = t.trip_id
-        WHERE i.trip_id = $1 AND t.user_id = $2
+        WHERE i.trip_id = $1 AND t.user_id = $2 OR "collaborator" = $2
         ORDER BY i.day;
     `;
     

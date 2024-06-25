@@ -11,10 +11,11 @@ const {
  router.get('/', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
     const query = `
-        SELECT * FROM "trips"
-        WHERE "user_id" = $1
-        ORDER BY "start_date" ASC;
-    `;
+    SELECT * FROM "trips"
+    WHERE ("user_id" = $1 OR "collaborator" = $1)
+    AND "start_date" > CURRENT_DATE
+    ORDER BY "start_date" ASC;
+`;
     
     pool.query(query, [userId])
         .then(result => {
@@ -34,6 +35,31 @@ const {
 });
 
 
+router.get('/past', rejectUnauthenticated, (req, res) => {
+    const userId = req.user.id;
+    const query = `
+        SELECT * FROM "trips"
+        WHERE ("user_id" = $1 OR "collaborator" = $1)
+        AND "end_date" < CURRENT_DATE
+        ORDER BY "start_date" ASC;
+    `;
+    
+    pool.query(query, [userId])
+        .then(result => {
+            res.status(200).json({
+                success: true,
+                data: result.rows,
+                message: 'Past trips retrieved successfully'
+            });
+        })
+        .catch(err => {
+            console.error('Error getting past trips:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
 
 // Get individual trip for the user
 router.get('/:id', rejectUnauthenticated, (req, res) => {

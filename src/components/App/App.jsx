@@ -22,6 +22,7 @@ import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
 import PackingList from '../PackingList/PackingList';
 import Map from '../Maps/Map';
 import MapPage from '../Maps/MapPage';
+import PastTrips from '../Trips/PastTrips';
 
 function App() {
     const dispatch = useDispatch();
@@ -72,6 +73,9 @@ function App() {
                             </Route>
                             <ProtectedRoute exact path='/trips'>
                                 <Trips />
+                            </ProtectedRoute>
+                            <ProtectedRoute exact path='/past-trips'>
+                                <PastTrips />
                             </ProtectedRoute>
                             <ProtectedRoute path='/trip-details/:trip_id' component={TripDetails} />
                             <ProtectedRoute exact path='/edit-create-trip'>
