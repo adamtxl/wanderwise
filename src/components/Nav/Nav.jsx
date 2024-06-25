@@ -36,6 +36,10 @@ function Nav() {
               Trips
             </Link>
 
+            <Link className="navLink" to="/map">
+              Add Map Point
+            </Link>
+
             <LogOutButton className="navLink" />
           </>
         )}

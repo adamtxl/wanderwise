@@ -14,9 +14,9 @@ const TripMap = () => {
     const [viewport, setViewport] = useState({
         width: '100%',
         height: '100%',
-        latitude: 46.877186, // Default coordinates
+        latitude: 40.813600, // Default coordinates
         longitude: -96.789803,
-        zoom: 10
+        zoom: 4
     });
 
     useEffect(() => {

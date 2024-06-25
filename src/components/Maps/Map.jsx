@@ -13,7 +13,7 @@ class SimpleMap extends Component {
          height: '100%', // 100% of container, set container in CSS
          latitude: 46.877186, // Fargo, ND
          longitude: -96.789803,
-         zoom: 10
+         zoom: 4
       }
    };
 
