@@ -10,6 +10,7 @@ import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 import TripDetails from '../TripDetails/TripDetails';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import AdminRoute from '../ProtectedRoute/AdminRoute';
 
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
@@ -25,6 +26,7 @@ import PackingList from '../PackingList/PackingList';
 import Map from '../Maps/Map';
 import MapPage from '../Maps/MapPage';
 import PastTrips from '../Trips/PastTrips';
+import AdminPage from '../AdminPage/AdminPage';
 
 function App() {
     const dispatch = useDispatch();
@@ -92,6 +94,9 @@ function App() {
                             <ProtectedRoute path='/map/'>
                                 <MapPage />
                             </ProtectedRoute>
+                            <AdminRoute path='/admin/'>
+                                <AdminPage />
+                            </AdminRoute>
                             <Route>
                                 <h1>404</h1>
                             </Route>
