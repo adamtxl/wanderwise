@@ -5,9 +5,12 @@ import './Nav.css';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
+
+
 function Nav() {
   const user = useSelector((store) => store.user);
   const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 768px)' });
+
 
   return (
     <div className="nav">
@@ -76,7 +79,11 @@ function Nav() {
             )}
         
         </Link>
-        
+        {user.admin === true && (
+          <Link className="navLink" to="/admin">
+          Admin
+        </Link>
+        )}
         
       </div>
     </div>
