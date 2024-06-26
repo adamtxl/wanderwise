@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import { Row } from 'react-bootstrap';
 
 // This is one of our simplest components
 // It doesn't have local state, so it can be a function component.
@@ -7,7 +8,14 @@ import './Footer.css';
 // or even care what the redux state is, so it doesn't need 'connect()'
 
 function Footer() {
-  return <footer>&copy; WanderWise</footer>;
+	return (
+		<>
+    
+			<footer>&copy; WanderWise</footer>
+     <p className='summerfooter'> <a href='mailto:adamtxl@hotmail.com ?
+     &subject=WanderWise Feedback'>Suggestions?</a> </p>
+		</>
+	);
 }
 
 export default Footer;

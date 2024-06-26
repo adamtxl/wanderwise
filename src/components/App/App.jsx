@@ -54,14 +54,14 @@ function App() {
                             </ProtectedRoute>
                             <Route exact path='/login'>
                                 {user.id ? (
-                                    <Redirect to='/user' />
+                                    <Redirect to='/trips' />
                                 ) : (
                                     <LoginPage />
                                 )}
                             </Route>
                             <Route exact path='/registration'>
                                 {user.id ? (
-                                    <Redirect to='/user' />
+                                    <Redirect to='/info' />
                                 ) : (
                                     <RegisterPage />
                                 )}

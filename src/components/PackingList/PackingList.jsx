@@ -57,6 +57,24 @@ const PackingList = () => {
 
     return (
         <Container>
+               <Row>
+                <Col>
+                    <h2>Add New Item</h2>
+                    <input
+                        type='text'
+                        value={newItem.item_name}
+                        onChange={(e) => setNewItem({ ...newItem, item_name: e.target.value })}
+                        placeholder='Item Name'
+                    />
+                    <input
+                        type='text'
+                        value={newItem.category}
+                        onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+                        placeholder='Category'
+                    />
+                    <button onClick={handleAddUserItem}>Add Item</button>
+                </Col>
+            </Row>
             <Row>
                 <Col>
                     <h2>Packing List</h2>
@@ -79,24 +97,7 @@ const PackingList = () => {
                     />
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <h2>Add New Item</h2>
-                    <input
-                        type='text'
-                        value={newItem.item_name}
-                        onChange={(e) => setNewItem({ ...newItem, item_name: e.target.value })}
-                        placeholder='Item Name'
-                    />
-                    <input
-                        type='text'
-                        value={newItem.category}
-                        onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                        placeholder='Category'
-                    />
-                    <button onClick={handleAddUserItem}>Add Item</button>
-                </Col>
-            </Row>
+         
         </Container>
     );
 };
