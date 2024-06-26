@@ -17,7 +17,7 @@ function* fetchTrips() {
 
 function* fetchPastTrips() {
     try {
-        console.log('Saga: Fetching trips...');
+        console.log('Saga: Fetching Past trips...');
         const response = yield call(axios.get, '/api/trips/past');
         console.log('Saga: Trips fetched:', response.data);
         yield put({ type: 'SET_TRIPS', payload: response.data.data });

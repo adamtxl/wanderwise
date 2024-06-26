@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 import { useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 
 function Nav() {
   const user = useSelector((store) => store.user);
+  const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 768px)' });
 
   return (
     <div className="nav">
       <Link to="/home">
-        <h2 className="nav-title">WanderWise</h2>
+        <h2 className="nav-title">𝕎𝕒𝕟𝕕𝕖𝕣𝕎𝕚𝕤𝕖</h2>
       </Link>
       <div>
         {/* If no user is logged in, show these links */}
@@ -27,11 +29,23 @@ function Nav() {
             
 
             <Link className="navLink" to="/info">
-              Info Page
+            {isDesktopOrLaptop ? (
+          <>
+            <i class="bi bi-info-circle-fill"></i> Info Page
+          </>
+        ) : (
+          <i class="bi bi-info-circle-fill"></i>
+        )}
             </Link>
 
             <Link className="navLink" to="/trips">
-              Trips
+            {isDesktopOrLaptop ? (
+          <>
+            <i class="bi bi-airplane-fill"></i> Trips
+          </>
+        ) : (
+          <i class="bi bi-airplane-fill"></i>
+        )}
             </Link>
 
             {/* <Link className="navLink" to="/past-trips">
@@ -39,7 +53,13 @@ function Nav() {
             </Link> */}
 
             <Link className="navLink" to="/map">
-              Add to map
+              {isDesktopOrLaptop ? (
+                <>
+            <i class="bi bi-geo-alt-fill"></i>  Add to map
+                </>
+              ) : (
+                <i class="bi bi-geo-alt-fill"></i>
+              )}
             </Link>
 
             <LogOutButton className="navLink" />
@@ -47,7 +67,14 @@ function Nav() {
         )}
 
         <Link className="navLink" to="/about">
-          About
+          {isDesktopOrLaptop ? (
+            <>
+            <i class="bi bi-file-person-fill"></i>  About 
+            </>
+            ) : (
+              <i class="bi bi-file-person-fill"></i>
+            )}
+        
         </Link>
         
         
