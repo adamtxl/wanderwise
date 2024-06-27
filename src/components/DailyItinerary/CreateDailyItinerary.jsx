@@ -5,6 +5,7 @@ import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import Map from '../Maps/Map';
 import './itinerary.css';
+import moment from 'moment';
 
 const CreateDailyItinerary = () => {
     const history = useHistory();
@@ -54,17 +55,7 @@ const CreateDailyItinerary = () => {
         });
     };
 
-    const formatDate = (date) => {
-        const d = new Date(date);
-        let month = '' + (d.getMonth() + 1);
-        let day = '' + d.getDate();
-        const year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    };
+    const formatDate = (date) => moment(date).format('YYYY-MM-DD');
 
     const tripStartDate = formatDate(trip.start_date);
     const tripEndDate = formatDate(trip.end_date);
