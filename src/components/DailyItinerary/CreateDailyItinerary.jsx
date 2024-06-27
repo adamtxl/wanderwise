@@ -18,8 +18,8 @@ const CreateDailyItinerary = () => {
     const [itinerary, setItinerary] = useState({
         day: '',
         location: '',
-        latitude: '',
-        longitude: '',
+        latitude: '40.813600',
+        longitude: '-96.789800',
         activity: '',
         notes: ''
     });
@@ -29,10 +29,11 @@ const CreateDailyItinerary = () => {
     }, [dispatch]);
 
     const handleInputChange = (event) => {
-        setItinerary({
-            ...itinerary,
-            [event.target.name]: event.target.value
-        });
+        const { name, value } = event.target;
+        setItinerary(prevItinerary => ({
+            ...prevItinerary,
+            [name]: value
+        }));
     };
 
     const handleSubmit = async (event) => {
@@ -116,9 +117,9 @@ const CreateDailyItinerary = () => {
                 <Row>
                     <Col xs={12} md={6}>
                         <Form.Group controlId="Latitude">
-                            <Form.Label className="form-label">Latitude</Form.Label>
+                            
                             <Form.Control
-                                type="text"
+                                type="hidden"
                                 name="Latitude"
                                 value={itinerary.latitude}
                                 onChange={handleInputChange}
@@ -127,9 +128,8 @@ const CreateDailyItinerary = () => {
                     </Col>
                     <Col xs={12} md={6}>
                         <Form.Group controlId="Longitude">
-                            <Form.Label className="form-label">Longitude</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="hidden"
                                 name="Longitude"
                                 value={itinerary.longitude}
                                 onChange={handleInputChange}

@@ -152,11 +152,6 @@ const TripDetails = () => {
             </Row>
             <Row>
                 <Col>
-                    <TripMap tripId={trip.trip_id} />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
                     <DisplayItineraries
                         onSelectItinerary={setSelectedItinerary}
                         selectedItinerary={selectedItinerary}
@@ -165,6 +160,12 @@ const TripDetails = () => {
                     />
                 </Col>
             </Row>
+            <Row>
+                <Col>
+                    <TripMap tripId={trip.trip_id} />
+                </Col>
+            </Row>
+          
         </Container>
     );
 };

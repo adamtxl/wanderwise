@@ -5,7 +5,9 @@ h2 {
     padding: 10px; 
     text-align: center;
 }
-
+.Card.Body {
+    opacity: 0.7;
+}
 @media (max-width: 576px) {
     .compact-card-text {
         line-height: 1; 
@@ -20,4 +22,23 @@ h2 {
         padding: 1000px
     }
 }
+.lb-bg {
+    background-color: lightblue;
+    opacity: 0.7;
+}
+.bigger {
+    font-size: 1.1em;
+}
 
+.smaller {
+    font-size: 0.9em;
+}
+
+.buttontext {
+    font-size: 1em;
+    text-decoration: italic;
+}
+
+.op {
+    opacity: 0.7;
+}

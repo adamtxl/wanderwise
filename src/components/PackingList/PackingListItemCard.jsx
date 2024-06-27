@@ -41,80 +41,64 @@ const PackingListItemCard = ({ item }) => {
 	return (
 		<div className='d-flex justify-content-between align-items-start'>
 			<Card
-    className={`packing-list-item-card ${item.packed ? 'bg-success text-white' : 'bg-light'}`}
-    style={{ cursor: 'pointer', marginBottom: '2px', flex: 1 }}
-    onClick={handleTogglePacked}
->
-    <Card.Body className="d-flex justify-content-between">
-        <div>
-            {editMode ? (
-                <Form>
-                    <Form.Group controlId='item_name'>
-                        <Form.Label>Item Name</Form.Label>
-                        <Form.Control
-                            type='text'
-                            name='item_name'
-                            value={editedItem.item_name}
-                            onChange={handleInputChange}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()}
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId='quantity'>
-                        <Form.Label>
-                            <strong>Quantity</strong>
-                        </Form.Label>
-                        <Form.Control
-                            type='number'
-                            name='quantity'
-                            value={editedItem.quantity}
-                            onChange={handleInputChange}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()}
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId='packed'>
-                        <Form.Check
-                            type='checkbox'
-                            label='Packed'
-                            name='packed'
-                            checked={editedItem.packed}
-                            onChange={handleInputChange}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()}
-                        />
-                    </Form.Group>
-                </Form>
-            ) : (
-                <>
-                    <Card.Title className='compact-card-text'><strong>{item.item_name}</strong></Card.Title>
-                    <Card.Text className='compact-card-text'>
-                        <strong>Qty:</strong> {item.quantity}
-                    </Card.Text>
-                    <Card.Text className='compact-card-text'>
-                        <strong>Packed:</strong> {item.packed ? 'Yes' : 'No'}
-                    </Card.Text>
-                </>
-            )}
-        </div>
-        <div className='d-flex flex-column align-items-end'>
-            {editMode ? (
-                <Button className='btn btn-primary btn-sm mb-2' onClick={handleUpdateItem}>
-                    Save
-                </Button>
-            ) : (
-                <Button className='btn btn-secondary btn-sm mb-2' onClick={handleToggleEditMode}>
-                    Edit
-                </Button>
-            )}
-            <Button className='btn btn-danger btn-sm' onClick={handleDeleteItem}>
-                Delete
-            </Button>
-        </div>
-    </Card.Body>
-</Card>
+				className={`packing-list-item-card ${item.packed ? 'bg-success text-white op' : 'lb-bg'}`}
+				style={{ cursor: 'pointer', marginBottom: '2px', flex: 1 }}
+				onClick={handleTogglePacked}
+			>
+				<Card.Body className='d-flex justify-content-between align-items-center '>
+					<div className='flex-grow-1 d-flex align-items-center'>
+						{editMode ? (
+							<Form inline>
+								{/* Form inputs for editing */}
+								<Form.Group controlId='item_name' className='mr-2'>
+									<Form.Control
+										type='text'
+										name='item_name'
+										value={editedItem.item_name}
+										onChange={handleInputChange}
+									/>
+								</Form.Group>
+								<Form.Group controlId='quantity' className='mr-2'>
+									<Form.Control
+										type='number'
+										name='quantity'
+										value={editedItem.quantity}
+										onChange={handleInputChange}
+									/>
+								</Form.Group>
+								<Form.Group controlId='packed' className='mr-2'>
+									<Form.Check
+										type='checkbox'
+										label='Packed'
+										name='packed'
+										checked={editedItem.packed}
+										onChange={handleInputChange}
+									/>
+								</Form.Group>
+							</Form>
+						) : (
+							<>
+								<strong className='bigger'>{item.item_name}</strong> ~ <span className='smaller'><strong ><em>Qty:</em></strong> {' '} {item.quantity} <strong><em>Packed:</em></strong>{' '} 
+								{item.packed ? 'Yes' : 'No'}{' '}</span>
+							</>
+						)}
+					</div>
+					<div>
+						{editMode ? (
+							<Button className='btn btn-primary btn-sm mr-2' onClick={handleUpdateItem}>
+								<i class="bi bi-floppy-fill"></i>
+							</Button>
+						) : (
+							<Button className='btn btn-secondary btn-sm mr-2' onClick={handleToggleEditMode}>
+								<i class="bi bi-pencil-square"></i>
+							</Button>
+						)}
+						<Button className='btn btn-danger btn-sm' onClick={handleDeleteItem}>
+                        <i class="bi bi-x-lg"></i>
+						</Button>
+					</div>
+				</Card.Body>
+			</Card>
 		</div>
 	);
 };

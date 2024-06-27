@@ -9,3 +9,11 @@
       font-size: 1.2em; /* Adjust to make text larger */
     }
 }
+
+.card-custom-margin {
+  margin: 0px;
+  padding: 0px; /* Adjust this value as needed */
+  align-content: space-evenly;
+  opacity: 0.7;
+  background-color: lightblue;
+}

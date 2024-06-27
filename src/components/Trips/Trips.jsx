@@ -40,8 +40,9 @@ const TripsComponent = () => {
 				const days = timeDiff.days();
 				const hours = timeDiff.hours();
 				const minutes = timeDiff.minutes();
+                const months = timeDiff.months();
 
-				setCountdown(`Next trip starts in ${days} days, ${hours} hours, and ${minutes} minutes!`);
+				setCountdown(`${months} months, ${days} days, ${hours} hours, and ${minutes} minutes!`);
 			} else {
 				setCountdown('No upcoming trips');
 			}

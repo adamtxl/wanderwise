@@ -70,7 +70,7 @@ const PackingList = () => {
 		<Container>
 			<Row>
 				<Col>
-					<h2>Add New Item</h2>
+					<h2>Add New Item to Database</h2>
 					<form onSubmit={handleAddUserItem}>
 						<input
 							type='text'
@@ -95,7 +95,7 @@ const PackingList = () => {
 					<h2>Packing List</h2>
 					<Row>
 						{packingList.map((item) => (
-							<Col key={item.packinglist_id} xs={12} sm={8} md={6} lg={4}>
+							<Col key={item.packinglist_id} xs={12} sm={12} md={6} lg={4}>
 								<PackingListItemCard item={item} />
 							</Col>
 						))}
