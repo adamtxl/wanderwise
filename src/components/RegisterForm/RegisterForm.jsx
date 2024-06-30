@@ -53,7 +53,7 @@ function RegisterForm() {
         </label>
       </div>
       <div>
-      <Button variant='primary' type='Submit'>
+      <Button variant='primary' className='button-proceed' type='Submit'>
 					Register
 				</Button>
         

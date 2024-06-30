@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Container } from 'react-bootstrap'; // Import Row and Col from react-bootstrap
+import { Row, Col, Container, Button } from 'react-bootstrap'; // Import Row and Col from react-bootstrap
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
 import './PackingList.css';
+
 
 const PackingList = () => {
 	const { tripId } = useParams();
@@ -70,7 +71,8 @@ const PackingList = () => {
 		<Container>
 			<Row>
 				<Col>
-					<h2>Add New Item to Database</h2>
+				<div className='border-container'> 
+					<h3>Add New Item to Database</h3>
 					<form onSubmit={handleAddUserItem}>
 						<input
 							type='text'
@@ -86,13 +88,15 @@ const PackingList = () => {
 							placeholder='Category'
                             required
 						/>
-						<button type='submit'>Add Item</button>
+						<Button className='btn button-proceed mr-2 btn-xs' type='submit'><i class="bi bi-plus"></i>Item</Button>
 					</form>
+					</div>
 				</Col>
 			</Row>
 			<Row>
 				<Col>
-					<h2>Packing List</h2>
+				<div className='border-container'> 
+					<h3>Packing List</h3>
 					<Row>
 						{packingList.map((item) => (
 							<Col key={item.packinglist_id} xs={12} sm={12} md={6} lg={4}>
@@ -100,16 +104,19 @@ const PackingList = () => {
 							</Col>
 						))}
 					</Row>
+					</div>
 				</Col>
 			</Row>
 			<Row>
 				<Col>
+				<div className='border-container'> 
 					<UserItems
 						userItems={userItems}
 						handleAddToPackingList={handleAddToPackingList}
 						handleDeleteUserItem={handleDeleteUserItem}
 						handleUpdateUserItem={handleUpdateUserItem}
 					/>
+					</div>
 				</Col>
 			</Row>
 		</Container>

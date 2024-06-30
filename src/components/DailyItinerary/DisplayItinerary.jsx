@@ -36,7 +36,7 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
         <Row>
             {reduxItineraries.map((itinerary, index) => (
                 <Col xs={12} sm={6} md={4} lg={3} key={index}>
-                    <Card className="mb-4">
+                    <Card className="mb-4 op">
                         <Card.Body>
                             {selectedItinerary?.itinerary_id === itinerary.itinerary_id ? (
                                 <div>
@@ -94,10 +94,10 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
                                         <strong>Activity:</strong> {itinerary.activity} <br />
                                         <strong>Notes:</strong> {itinerary.notes || 'No notes available'}
                                     </Card.Text>
-                                    <Button variant='primary' onClick={() => onSelectItinerary(itinerary)}>
+                                    <Button variant='primary' className='button-proceed' onClick={() => onSelectItinerary(itinerary)}>
                                         Edit
                                     </Button>
-                                    <Button variant='danger' onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}>
+                                    <Button variant='danger' className='button-remove' onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}>
                                         Delete
                                     </Button>
                                 </div>

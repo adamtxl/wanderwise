@@ -4,9 +4,10 @@ h2 {
     background-color: rgba(0, 0, 0, 0.5); 
     padding: 10px; 
     text-align: center;
+    border: 1px solid #7dd216;
 }
 .Card.Body {
-    opacity: 0.7;
+    opacity: 0.8;
 }
 @media (max-width: 576px) {
     .compact-card-text {
@@ -23,8 +24,8 @@ h2 {
     }
 }
 .lb-bg {
-    background-color: lightblue;
-    opacity: 0.7;
+    opacity: 0.8;
+    background-color: white;
 }
 .bigger {
     font-size: 1.1em;
@@ -40,5 +41,18 @@ h2 {
 }
 
 .op {
-    opacity: 0.7;
+    opacity: 0.8;
+}
+
+.border-container {
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px; 
+    text-align: center;
+    border: 1px solid #7dd216;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    opacity: 0.0;
 }

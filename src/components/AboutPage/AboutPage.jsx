@@ -4,11 +4,11 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 
 function AboutPage() {
   return (
-    <Container>
+    <Container className='border-container'>
       <Row className="mb-4">
         <Col>
           <Card>
-            <Card.Body className='summer'>
+            <Card.Body>
               <Card.Title>About the App</Card.Title>
               <Card.Text>
                 This app helps users manage their trips efficiently by providing a comprehensive packing list feature. You can easily add, update, and manage your items to ensure you never forget anything important.
@@ -24,14 +24,14 @@ function AboutPage() {
             <Card.Body className='summer'>
               <Card.Title>About the Creator</Card.Title>
               <Card.Text>
-                Hi, I'm Adam Troxell, a passionate junior developer with experience in React, Redux, Node, HTML, CSS and SQL. I created this app to solve the common problem of forgetting essential items when packing for trips. Feel free to reach out to me at <a href="mailto:adamtxl@hotmail.com">adamtxl@hotmail.com</a> or follow me on <a href="https://www.linkedin.com/in/adam-troxell1/">https://www.linkedin.com/in/adam-troxell1/</a>.
+                Hi, I'm Adam Troxell, a passionate junior developer with experience in React, Redux, Node, HTML, CSS and SQL. I created this app to solve the common problem of forgetting essential items when packing for trips. Feel free to reach out to me at <span className='no-shadow'> <a href="mailto:adamtxl@hotmail.com">adamtxl@hotmail.com</a> </span>or follow me on <span className='no-shadow'><a href="https://www.linkedin.com/in/adam-troxell1/">https://www.linkedin.com/in/adam-troxell1/</a></span>.
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      <Row className="mb-4">
+      <Row className="mb-2">
         <Col>
           <Card>
             <Card.Body className='summer'>

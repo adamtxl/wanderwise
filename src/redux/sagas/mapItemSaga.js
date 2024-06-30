@@ -22,7 +22,7 @@ function* createMapItem(action) {
 // Refresh the global list of uploads from the database
 function* fetchMapItems() {
   try {
-    const response = yield axios.get('/api/map-item');
+    const response = yield axios.get('/api/map_item');
     // add the upload to the redux store
     yield put({type: 'SET_MAP_ITEMS', payload: response.data});
   } catch (error) {

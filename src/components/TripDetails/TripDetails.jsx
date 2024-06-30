@@ -4,6 +4,7 @@ import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import TripMap from './TripMap'; // Adjust path as per your actual file structure
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 const TripDetails = () => {
     const location = useLocation();
@@ -58,13 +59,16 @@ const TripDetails = () => {
 
     const handleSaveItinerary = async (itinerary) => {
         try {
+            console.log('itinerary', itinerary);
             dispatch({ type: 'UPDATE_ITINERARY', payload: itinerary });
             setSelectedItinerary(null);
-            dispatch({ type: 'FETCH_ITINERARIES', payload: trip.trip_id });
+        
+            dispatch({ type: 'FETCH_ITINERARIES', payload: itinerary.trip_id });
         } catch (error) {
             console.error('Error updating itinerary:', error);
         }
     };
+    
 
     const handleDeleteClick = async () => {
         try {
@@ -77,9 +81,9 @@ const TripDetails = () => {
 
     return (
         <Container>
-            <Row>
-                <Col>
-                    <Card className="mb-4">
+            <Row >
+                <Col >
+                    <Card className="mb-4 op fullwidth">
                         <Card.Body>
                             <Card.Title>
                                 {isEditing ? (
@@ -90,7 +94,7 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    trip.trip_name
+                                    <strong>{trip.trip_name}</strong>
                                 )}
                             </Card.Title>
                             <Card.Text>
@@ -137,13 +141,13 @@ const TripDetails = () => {
                                     Save
                                 </Button>
                             ) : (
-                                <Button variant='primary' onClick={handleEditClick}>
+                                <Button variant='primary' className='button-proceed' onClick={handleEditClick}>
                                     Edit Trip
                                 </Button>
                             )}
-                            <Button className="m-2" onClick={createItinerary}>Create Daily Itinerary</Button>
-                            <Button className="m-2" onClick={goToPackingList}>Go to Packing List</Button>
-                            <Button variant='danger' onClick={handleDeleteClick}>
+                            <Button className="m-2 button-proceed" onClick={createItinerary}>Create Daily Itinerary</Button>
+                            <Button className="m-2 button-proceed" onClick={goToPackingList}>Go to Packing List</Button>
+                            <Button variant='danger' className='button-remove' onClick={handleDeleteClick}>
                                 Delete Trip
                             </Button>
                         </Card.Body>

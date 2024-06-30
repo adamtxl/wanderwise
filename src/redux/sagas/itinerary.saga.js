@@ -24,14 +24,16 @@ function* addItinerary(action) {
 // Worker Saga: will be fired on "UPDATE_ITINERARY" actions
 function* updateItinerary(action) {
     try {
-        const { itineraryId, day, activity, location, notes, tripId } = action.payload;
-        console.log(`PUT request to /api/itinerary/itineraries/${itineraryId}`); // Log URL
-        yield axios.put(`/api/itinerary/itineraries/${itineraryId}`, { day, activity, location, notes });
-        yield put({ type: 'FETCH_ITINERARIES', payload: tripId });
+        console.log('updateItinerary action.payload:', action.payload);
+        const { itinerary_id, day, activity, location, notes, trip_id } = action.payload;
+        console.log(`PUT request to /api/itinerary/${action.payload.itinerary_id}`); // Log URL
+        yield axios.put(`/api/itinerary/${action.payload.itinerary_id}`, { itinerary_id, day, activity, location, notes });
+        yield put({ type: 'FETCH_ITINERARIES', payload: action.payload.trip_id });
     } catch (error) {
         console.log('Error with updating itinerary:', error);
     }
 }
+
 
 
 

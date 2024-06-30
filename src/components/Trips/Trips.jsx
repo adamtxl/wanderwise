@@ -71,8 +71,13 @@ const TripsComponent = () => {
 	return (
 		<Container>
 			<Row>
+				<Col>
+				<Button className='button-proceed' to='/past-trips'>
+					View Past Trips
+				</Button>
+				</Col>
 				<Col className='mb-4 d-flex justify-content-center'>
-					<Button variant='primary' onClick={() => history.push('/edit-create-trip')}>
+					<Button variant='primary' className='button-proceed' onClick={() => history.push('/edit-create-trip')}>
 						<i class='bi bi-plus-square-fill'></i> Adventure
 					</Button>
 				</Col>
@@ -80,9 +85,9 @@ const TripsComponent = () => {
 			<Row>
 				{trips.map((trip, index) => (
 					<Col key={trip.trip_id} md={4} className='mb-4'>
-						<Card className={index === 0 ? 'bg-warning' : 'bg-light'}>
+						<Card className={index === 0 ? 'next-trip' : 'bg-light'}>
 							<Card.Body>
-								<Card.Title>{trip.trip_name}</Card.Title>
+								<Card.Title >{trip.trip_name}</Card.Title>
 								<Card.Text>
 									<strong>Start Date:</strong> {new Date(trip.start_date).toLocaleDateString()}
 									<br />
@@ -92,7 +97,7 @@ const TripsComponent = () => {
 									<br />
 									<strong>Destinations:</strong> {trip.map_locations}
 								</Card.Text>
-								<Button variant='primary' onClick={() => history.push(`/trip-details/${trip.trip_id}`)}>
+								<Button variant='primary' className='button-proceed' onClick={() => history.push(`/trip-details/${trip.trip_id}`)}>
 									<i class='bi bi-body-text'></i> Details
 								</Button>
 							</Card.Body>
@@ -111,11 +116,6 @@ const TripsComponent = () => {
 						</Card>
 					)}
 				</Col>
-			</Row>
-			<Row>
-				<Link className='navLink' to='/past-trips'>
-					View Past Trips
-				</Link>
 			</Row>
 		</Container>
 	);

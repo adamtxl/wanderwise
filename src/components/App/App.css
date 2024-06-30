@@ -39,7 +39,7 @@ footer {
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
-  background-image: url('/images/Denali.jpg');
+  background-image: url('/images/Alaska-Desktop-Summer.jpeg');
 }
 
 img {
@@ -160,7 +160,48 @@ input {
 }
 
 .summer {
+  background-color:rgba(0, 0, 0, 0.5);
+  color: white;
+  text-shadow: black 1px 1px 4px;
+  padding: 1em;
+  /* opacity: 0.8; */
+  border: solid 1px #7dd216;;
+}
+
+.button-proceed {
+  background-color: #6B16D2;
+  color: white;
+  padding: 1em;
+  opacity: 0.8;
+}
+
+.button-remove {
+  background-color: #D2161F;
+  color: white;
+  padding: 1em;
+  opacity: 0.8;
+
+}
+
+.button-edit {
+  /* background-color: #16D2C9; */
+  color: white;
+  padding: 1em;
+  opacity: 0.8;
+  ;
+}
+
+.fullwidth {
+  width: 100%;
+} 
+
+.no-shadow {
+  text-shadow: none;
+}
+
+.next-trip {
   background-color: #7dd216;
   color: white;
   padding: 1em;
+text-shadow: black 1px 1px 4px;
 }

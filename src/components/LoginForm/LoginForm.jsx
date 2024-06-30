@@ -58,7 +58,7 @@ function LoginForm() {
 				</label>
 			</div>
 			<div>
-				<Button variant='primary' type='Submit'>
+				<Button variant='primary' className='button-proceed' type='Submit'>
 					Log In
 				</Button>
 			</div>

@@ -39,13 +39,13 @@ const PackingListItemCard = ({ item }) => {
 	};
 
 	return (
-		<div className='d-flex justify-content-between align-items-start'>
+		<div className='d-flex justify-content-between align-items-start '>
 			<Card
 				className={`packing-list-item-card ${item.packed ? 'bg-success text-white op' : 'lb-bg'}`}
-				style={{ cursor: 'pointer', marginBottom: '2px', flex: 1 }}
+				style={{ cursor: 'pointer', marginBottom: '.5em', flex: 1 }}
 				onClick={handleTogglePacked}
 			>
-				<Card.Body className='d-flex justify-content-between align-items-center '>
+				<Card.Body className='d-flex justify-content-between align-items-center'>
 					<div className='flex-grow-1 d-flex align-items-center'>
 						{editMode ? (
 							<Form inline>
@@ -78,22 +78,22 @@ const PackingListItemCard = ({ item }) => {
 							</Form>
 						) : (
 							<>
-								<strong className='bigger'>{item.item_name}</strong> ~ <span className='smaller'><strong ><em>Qty:</em></strong> {' '} {item.quantity} <strong><em>Packed:</em></strong>{' '} 
-								{item.packed ? 'Yes' : 'No'}{' '}</span>
+								<strong className='bigger'> {item.item_name} </strong> <span className='hidden'> - </span> <span className='smaller'><strong><em>Qty:</em></strong> {item.quantity} <strong><em> Packed: </em></strong> 
+								{item.packed ? ' Yes' : ' No'}</span>
 							</>
 						)}
 					</div>
 					<div>
 						{editMode ? (
-							<Button className='btn btn-primary btn-sm mr-2' onClick={handleUpdateItem}>
+							<Button className='btn btn-primary btn-xs mr-2' onClick={handleUpdateItem}>
 								<i class="bi bi-floppy-fill"></i>
 							</Button>
 						) : (
-							<Button className='btn btn-secondary btn-sm mr-2' onClick={handleToggleEditMode}>
+							<Button className='btn btn-secondary btn-xs mr-2' onClick={handleToggleEditMode}>
 								<i class="bi bi-pencil-square"></i>
 							</Button>
 						)}
-						<Button className='btn btn-danger btn-sm' onClick={handleDeleteItem}>
+						<Button className='btn btn-danger btn-xs' onClick={handleDeleteItem}>
                         <i class="bi bi-x-lg"></i>
 						</Button>
 					</div>

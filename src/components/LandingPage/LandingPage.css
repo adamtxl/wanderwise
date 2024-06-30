@@ -78,3 +78,16 @@ Grid
   flex-basis: 100%;
   max-width: 100%;
 }
+
+/* Add this media query for small screens */
+@media (max-width: 768px) {
+  .grid {
+    flex-direction: column;
+  }
+  
+  /* Optional: Adjust grid-col widths for small screens */
+  .grid-col {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}

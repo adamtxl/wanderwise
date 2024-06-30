@@ -28,7 +28,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 
     return (
         <div>
-            <h2>User Items</h2>
+            <h3>User Items</h3>
             <Form.Group controlId="categorySelect">
                 <Form.Label>Select Category</Form.Label>
                 <Form.Control className="category-select" as="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
@@ -40,9 +40,8 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
             </Form.Group>
             <Row xs={1} sm={2} md={3} lg={12} > 
                 {filteredItems.map((item) => (
-                    <Card key={item.item_id} className="card-custom-margin">
-                        <Card.Body>
-                            {editItemId === item.item_id ? (
+                    <Card key={item.item_id} className='margin'>
+<Card.Body className='d-flex justify-content-between align-items-center '>                            {editItemId === item.item_id ? (
                                 <>
                                     <Form.Control
                                         type='text'
@@ -63,24 +62,27 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
                                 </>
                             ) : (
                                 <>
-                                <Row>
-                                <Col>
-                                    <Card.Title>{item.item_name}
-                                    </Card.Title>
-                                    </Col>
-                                    <Col>
-                                    <Button variant='primary' onClick={() => handleAddToPackingList(item)}>
-                                    <i class="bi bi-journal-plus"></i> 
+                                
+                                <div className='flex-grow-1 d-flex align-items-center '>
+
+                                    <strong>{item.item_name}</strong>
+                                    
+                                </div>
+                                    <div>
+
+                                    <Button variant='primary' className='button-proceed btn-xs' onClick={() => handleAddToPackingList(item)}>
+                                    <i class="bi bi-plus"></i>
                                     </Button>
-                                    <Button variant='danger' onClick={() => handleDeleteUserItem(item.item_id)}>
-                                    <i class="bi bi-x-lg"></i>
-                                    </Button>
-                                    <Button variant='secondary' onClick={() => handleEditClick(item)}>
+                                    <Button variant='secondary' className='button-edit btn-xs' onClick={() => handleEditClick(item)}>
                                     <i class="bi bi-pencil-square"></i>
                                     </Button>
+                                    <Button variant='danger' className='button-remove btn-xs' onClick={() => handleDeleteUserItem(item.item_id)}>
+                                    <i class="bi bi-x-lg"></i>
+                                    </Button>
+                                    </div>
                                     
-                                    </Col>
-                                    </Row>
+                                    
+                                    
                                 </>
                             )}
                         </Card.Body>

@@ -137,10 +137,10 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
 });
 
 
-//updating itinerary
-router.put('/itineraries/:id', rejectUnauthenticated, (req, res) => {
+// updating itinerary
+router.put('/:id', rejectUnauthenticated, (req, res) => {
     const itineraryId = req.params.id;
-    const { day, activity, location, notes } = req.body; // Include notes
+    const { day, activity, location, notes, itinerary_id } = req.body; 
     const userId = req.user.id;
 
     const query = `
