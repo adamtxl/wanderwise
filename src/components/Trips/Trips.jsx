@@ -40,7 +40,7 @@ const TripsComponent = () => {
 				const days = timeDiff.days();
 				const hours = timeDiff.hours();
 				const minutes = timeDiff.minutes();
-                const months = timeDiff.months();
+				const months = timeDiff.months();
 
 				setCountdown(`${months} months, ${days} days, ${hours} hours, and ${minutes} minutes!`);
 			} else {
@@ -72,9 +72,9 @@ const TripsComponent = () => {
 		<Container>
 			<Row>
 				<Col>
-				<Button className='button-proceed' to='/past-trips'>
-					View Past Trips
-				</Button>
+					<Button className='button-proceed' onClick={() => history.push('/past-trips')}>
+						View Past Trips
+					</Button>
 				</Col>
 				<Col className='mb-4 d-flex justify-content-center'>
 					<Button variant='primary' className='button-proceed' onClick={() => history.push('/edit-create-trip')}>
@@ -97,7 +97,11 @@ const TripsComponent = () => {
 									<br />
 									<strong>Destinations:</strong> {trip.map_locations}
 								</Card.Text>
-								<Button variant='primary' className='button-proceed' onClick={() => history.push(`/trip-details/${trip.trip_id}`)}>
+								<Button
+									variant='primary'
+									className='button-proceed'
+									onClick={() => history.push(`/trip-details/${trip.trip_id}`)}
+								>
 									<i class='bi bi-body-text'></i> Details
 								</Button>
 							</Card.Body>

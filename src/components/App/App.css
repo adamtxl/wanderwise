@@ -157,6 +157,8 @@ input {
 
 .log-register {
   background-color: #7dd216;
+  color: white;
+  text-shadow: black 1px 1px 4px;
 }
 
 .summer {
@@ -204,4 +206,49 @@ input {
   color: white;
   padding: 1em;
 text-shadow: black 1px 1px 4px;
+}
+@media (min-width: 100px) {
+  .bg-travel {
+    position: relative;
+    color: black;
+    text-shadow: white 1px 1px 8px;
+    font-size: 1.5em;
+    z-index: 1;
+  }
+  
+  .bg-travel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/planetravel.jpeg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4; /* Adjust the opacity as needed */
+    z-index: -1;
+  }
+}
+.bg-travel2 {
+  background-image: url('/images/Designer\ \(4\).jpeg');
+  background-size: cover; /* Cover the entire card */
+  background-position: center; /* Center the background image */
+  color: black;
+  text-shadow: white 1px 1px 8px;
+}
+
+.about {
+  background-color: white;
+  color: black;
+  padding: 1em;
+  text-shadow: white 1px 1px 4px;
+}
+
+.margin-top {
+  margin-top: 20px;
+}
+
+.label {
+  font-size: 1.3em;
 }

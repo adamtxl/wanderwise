@@ -71,20 +71,23 @@ const TripDetails = () => {
     
 
     const handleDeleteClick = async () => {
-        try {
-            dispatch({ type: 'DELETE_TRIP', payload: trip.trip_id });
-            history.push('/trips');
-        } catch (error) {
-            console.error('Error deleting trip:', error);
+        const isConfirmed = window.confirm('Are you sure you want to delete this trip? This action cannot be undone.');
+        if (isConfirmed) {
+            try {
+                dispatch({ type: 'DELETE_TRIP', payload: trip.trip_id });
+                history.push('/trips');
+            } catch (error) {
+                console.error('Error deleting trip:', error);
+            }
         }
     };
 
     return (
-        <Container>
+        <Container >
             <Row >
-                <Col >
+                <Col className='border-container'>
                     <Card className="mb-4 op fullwidth">
-                        <Card.Body>
+                        <Card.Body className='bg-travel'>
                             <Card.Title>
                                 {isEditing ? (
                                     <Form.Control
@@ -94,11 +97,11 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <strong>{trip.trip_name}</strong>
+                                    <strong><strong className='label'>{trip.trip_name}</strong></strong>
                                 )}
                             </Card.Title>
                             <Card.Text>
-                                <strong>Start Date:</strong>
+                                <strong> <strong>Start Date: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control
                                         type='date'
@@ -107,24 +110,24 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    new Date(trip.start_date).toLocaleDateString()
+                                    <strong>{new Date(trip.start_date).toLocaleDateString()}</strong>
                                 )}
                                 <br />
-                                <strong>End Date:</strong>
+                               <strong> <strong>End Date: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control type='date' name='end_date' value={editedTrip.end_date} onChange={handleInputChange} />
                                 ) : (
-                                    new Date(trip.end_date).toLocaleDateString()
+                                    <strong>{new Date(trip.end_date).toLocaleDateString()}</strong>
                                 )}
                                 <br />
-                                <strong>Locales:</strong>
+                               <strong> <strong>Locations: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control type='text' name='locales' value={editedTrip.locales} onChange={handleInputChange} />
                                 ) : (
-                                    trip.locales
+                                   <strong> {trip.locales}</strong>
                                 )}
                                 <br />
-                                <strong>Map Locations:</strong>
+                                <strong><strong>Map Locations: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control
                                         type='text'
@@ -133,7 +136,7 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    trip.map_locations
+                                    <strong>{trip.map_locations}</strong>
                                 )}
                             </Card.Text>
                             {isEditing ? (
@@ -154,7 +157,7 @@ const TripDetails = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row>
+            <Row className='border-container'>
                 <Col>
                     <DisplayItineraries
                         onSelectItinerary={setSelectedItinerary}
@@ -164,7 +167,7 @@ const TripDetails = () => {
                     />
                 </Col>
             </Row>
-            <Row>
+            <Row className=''>
                 <Col>
                     <TripMap tripId={trip.trip_id} />
                 </Col>

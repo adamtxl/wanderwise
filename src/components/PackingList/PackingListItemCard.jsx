@@ -50,7 +50,7 @@ const PackingListItemCard = ({ item }) => {
 						{editMode ? (
 							<Form inline>
 								{/* Form inputs for editing */}
-								<Form.Group controlId='item_name' className='mr-2'>
+								<Form.Group controlId='item_name' className='mr-2 '>
 									<Form.Control
 										type='text'
 										name='item_name'
@@ -85,15 +85,15 @@ const PackingListItemCard = ({ item }) => {
 					</div>
 					<div>
 						{editMode ? (
-							<Button className='btn btn-primary btn-xs mr-2' onClick={handleUpdateItem}>
+							<Button className=' btn-primary btn-xs mr-2' onClick={handleUpdateItem}>
 								<i class="bi bi-floppy-fill"></i>
 							</Button>
 						) : (
-							<Button className='btn btn-secondary btn-xs mr-2' onClick={handleToggleEditMode}>
+							<Button className=' btn-secondary btn-xs op mr-2' onClick={handleToggleEditMode}>
 								<i class="bi bi-pencil-square"></i>
 							</Button>
 						)}
-						<Button className='btn btn-danger btn-xs' onClick={handleDeleteItem}>
+						<Button className='button-remove btn-xs' onClick={handleDeleteItem}>
                         <i class="bi bi-x-lg"></i>
 						</Button>
 					</div>

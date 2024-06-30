@@ -40,8 +40,8 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
             </Form.Group>
             <Row xs={1} sm={2} md={3} lg={12} > 
                 {filteredItems.map((item) => (
-                    <Card key={item.item_id} className='margin'>
-<Card.Body className='d-flex justify-content-between align-items-center '>                            {editItemId === item.item_id ? (
+                    <Card key={item.item_id} className='margin op'>
+<Card.Body className='d-flex justify-content-between align-items-center op'>                            {editItemId === item.item_id ? (
                                 <>
                                     <Form.Control
                                         type='text'
@@ -73,7 +73,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
                                     <Button variant='primary' className='button-proceed btn-xs' onClick={() => handleAddToPackingList(item)}>
                                     <i class="bi bi-plus"></i>
                                     </Button>
-                                    <Button variant='secondary' className='button-edit btn-xs' onClick={() => handleEditClick(item)}>
+                                    <Button className='btn btn-secondary btn-xs mr-2' onClick={() => handleEditClick(item)}>
                                     <i class="bi bi-pencil-square"></i>
                                     </Button>
                                     <Button variant='danger' className='button-remove btn-xs' onClick={() => handleDeleteUserItem(item.item_id)}>

@@ -48,9 +48,12 @@ h2 {
     color: white; 
     background-color: rgba(0, 0, 0, 0.5); 
     padding: 10px; 
-    text-align: center;
     border: 1px solid #7dd216;
     margin-bottom: 10px;
+}
+
+.center {
+    text-align: center;
 }
 
 .hidden {
