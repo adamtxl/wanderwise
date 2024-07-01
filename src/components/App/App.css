@@ -257,3 +257,8 @@ input {
 	text-shadow: black 0px 0px 1px;
   font-weight: bold;
 }
+
+.visible {
+  background-color: white;
+  font-weight: bold;
+}

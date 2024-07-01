@@ -40,7 +40,7 @@ function AdminPage() {
        <>
        <section>
         <h2> Upload CSV file to Add to existing Map locations </h2>
-        <p>Important to note: csv columns must be <strong>EXACTLY</strong> named: "name", "description", "latitude", "longitude".</p>
+        <p className='shadow, visible'>Important to note: csv columns must be <strong>EXACTLY</strong> named: "name", "description", "latitude", "longitude".</p>
         <FileUpload />
        </section>
        </>
