@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -37,6 +37,7 @@ const EditCreateTrips = () => {
 
 
     return (
+        <Container className='border-container'>
         <Form>
             <Form.Group controlId="tripName">
                 <Form.Label>Trip Name</Form.Label>
@@ -77,6 +78,7 @@ const EditCreateTrips = () => {
                 Save
             </Button>
         </Form>
+        </Container>
     )};
 
 export default EditCreateTrips;
