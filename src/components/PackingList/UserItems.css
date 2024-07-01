@@ -9,3 +9,63 @@
       font-size: 1.2em; /* Adjust to make text larger */
     }
 }
+
+.packing-list-item-card {
+  cursor: pointer;
+  margin-bottom: 2px;
+  flex: 1;
+  opacity: 0.8;
+  background-color: white;
+  
+}
+
+.packing-list-item-card.lb-bg {
+  cursor: pointer;
+  margin-bottom: 2px;
+  flex: 1;
+  opacity: 0.8;
+  background-color: white;
+  
+}
+
+.packing-list-item-card.bg-success {
+  background-color: white; /* Adjust the color as needed */
+  color: white;
+  
+}
+
+/* .packing-list-item-card.lb-bg {
+  background-color: lightblue;
+} */
+
+/* .card-body {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  padding: 0.4rem; 
+  
+} */
+
+/* Ensure the .btn-xs class matches the styling from PackingListItemCard.jsx */
+.btn-xs {
+  padding: .25rem .4rem;
+  font-size: 1rem;
+  line-height: .8;
+  border-radius: .2rem;
+}
+@media (min-width: 576px) {
+.margin {
+  margin-right: 1rem;
+  margin-left: 1rem;
+  margin-bottom: .5rem;
+  max-width: 30.8%;
+}
+}
+@media (max-width: 576px) {
+.margin {
+  margin-right: 1.5rem;
+  margin-left: 1rem;
+  margin-bottom: .5rem;
+  max-width: 92%;
+}
+}

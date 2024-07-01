@@ -11,7 +11,7 @@ function LoginPage() {
       <LoginForm />
 
       <center>
-      <Button variant='primary' onClick={() => history.push(`/registration`)}>
+      <Button variant='primary' className='button-proceed' onClick={() => history.push(`/registration`)}>
 									 Switch to Register
 								</Button>
       </center>

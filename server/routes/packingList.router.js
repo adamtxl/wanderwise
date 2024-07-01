@@ -20,7 +20,7 @@ router.get('/itinerary/:itinerary_id', rejectUnauthenticated, async (req, res) =
 router.get('/itineraries/:trip_id', rejectUnauthenticated, async (req, res) => {
     const { trip_id } = req.params;
     try {
-        const packingList = await pool.query('SELECT * FROM PackingList WHERE trip_id = $1', [trip_id]);
+        const packingList = await pool.query('SELECT * FROM PackingList WHERE trip_id = $1 ORDER BY item_name ASC', [trip_id]);
         res.json(packingList.rows);
     } catch (err) {
         console.error(err.message);

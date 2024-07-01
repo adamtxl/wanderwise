@@ -4,8 +4,11 @@ h2 {
     background-color: rgba(0, 0, 0, 0.5); 
     padding: 10px; 
     text-align: center;
+    border: 1px solid #7dd216;
 }
-
+.Card.Body {
+    opacity: 0.8;
+}
 @media (max-width: 576px) {
     .compact-card-text {
         line-height: 1; 
@@ -20,4 +23,39 @@ h2 {
         padding: 1000px
     }
 }
+.lb-bg {
+    opacity: 0.8;
+    background-color: white;
+}
+.bigger {
+    font-size: 1.1em;
+}
 
+.smaller {
+    font-size: 0.9em;
+}
+
+.buttontext {
+    font-size: 1em;
+    text-decoration: italic;
+}
+
+.op {
+    opacity: .9;
+}
+
+.border-container {
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px; 
+    border: 1px solid #7dd216;
+    margin-bottom: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+.hidden {
+    opacity: 0.0;
+}

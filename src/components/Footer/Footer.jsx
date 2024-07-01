@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 // This is one of our simplest components
 // It doesn't have local state, so it can be a function component.

@@ -3,11 +3,12 @@ footer {
   /* padding: 20px; */
   text-align: center;
   background-color: #7dd216;
+  opacity: 0.8;
 
 }
 
 .summerfooter {
-  
+  opacity: 0.8;
   padding-bottom: 20px;
   padding-right: 10px;
   text-align: right;

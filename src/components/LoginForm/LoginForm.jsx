@@ -26,7 +26,7 @@ function LoginForm() {
 	}; // end login
 
 	return (
-		<form className='formPanel' onSubmit={login}>
+		<form className='formPanel op margin-top' onSubmit={login}>
 			<h2 className='log-register'>Login</h2>
 			{errors.loginMessage && (
 				<h3 className='alert' role='alert'>
@@ -58,7 +58,7 @@ function LoginForm() {
 				</label>
 			</div>
 			<div>
-				<Button variant='primary' type='Submit'>
+				<Button variant='primary' className='button-proceed' type='Submit'>
 					Log In
 				</Button>
 			</div>

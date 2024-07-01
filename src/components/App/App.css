@@ -1,50 +1,51 @@
 html,
 body,
 #react-root {
-  height: 100%;
+	height: 100%;
 }
 
 /* App.css */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+html,
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 #root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 }
 
 .App {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 }
 
 .content {
-  flex: 1;
+	flex: 1;
 }
 
 footer {
-  background-color: #f1f1f1;
-  text-align: center;
-  padding: 10px;
-  position: relative;
-  width: 100%;
-  bottom: 0;
+	background-color: #f1f1f1;
+	text-align: center;
+	padding: 10px;
+	position: relative;
+	width: 100%;
+	bottom: 0;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0px;
-  background-image: url('/images/Denali.jpg');
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0px;
+	background-image: url('/images/Alaska-Desktop-Summer.jpeg');
 }
 
 img {
-  display: inline-block;
-  max-width: 100%;
+	display: inline-block;
+	max-width: 100%;
 }
 
 /* --------------------------------------------------------------------------------
@@ -52,7 +53,7 @@ Container
 -------------------------------------------------------------------------------- */
 
 .container {
-  padding: 20px;
+	padding: 20px;
 }
 
 /* --------------------------------------------------------------------------------
@@ -94,19 +95,19 @@ Button
 
 /* This line makes the "Register" and "Login" buttons look like links */
 .btn_asLink {
-  padding: 0;
-  border-width: 0;
-  border-bottom: 1px solid #444;
-  border-radius: 0;
-  background: none;
-  font: inherit;
-  color: #444;
+	padding: 0;
+	border-width: 0;
+	border-bottom: 1px solid #444;
+	border-radius: 0;
+	background: none;
+	font: inherit;
+	color: #444;
 }
 
 .btn_asLink:hover {
-  background-color: transparent;
-  border-color: #008183;
-  color: #008183;
+	background-color: transparent;
+	border-color: #008183;
+	color: #008183;
 }
 
 /* --------------------------------------------------------------------------------
@@ -114,14 +115,14 @@ Alert
 -------------------------------------------------------------------------------- */
 
 .alert {
-  box-sizing: border-box;
-  padding: 15px 10px;
-  margin: 15px 0;
-  border: 2px solid #e01616;
-  background-color: #efefef;
-  border-radius: 3px;
-  color: #e01616;
-  font-size: 0.8rem;
+	box-sizing: border-box;
+	padding: 15px 10px;
+	margin: 15px 0;
+	border: 2px solid #e01616;
+	background-color: #efefef;
+	border-radius: 3px;
+	color: #e01616;
+	font-size: 0.8rem;
 }
 
 /* --------------------------------------------------------------------------------
@@ -129,38 +130,135 @@ Form Treatment
 -------------------------------------------------------------------------------- */
 
 .formPanel {
-  box-sizing: border-box;
-  width: 400px;
-  max-width: 100%;
-  padding: 25px;
-  margin: 0 auto 20px;
-  background-color: #7dd216;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+	box-sizing: border-box;
+	width: 400px;
+	max-width: 100%;
+	padding: 25px;
+	margin: 0 auto 20px;
+	background-color: #7dd216;
+	border-radius: 3px;
+	box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
 }
 
 input {
-  margin: 5px;
-  margin-bottom: 10px;
+	margin: 5px;
+	margin-bottom: 10px;
 }
 
-
 .map-container {
-  position: relative;
-  width: 100%;
-  height: 400px;
+	position: relative;
+	width: 100%;
+	height: 400px;
 }
 
 .map-marker {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .log-register {
-  background-color: #7dd216;
+	background-color: #7dd216;
+	color: white;
+	text-shadow: black 1px 1px 4px;
 }
 
 .summer {
-  background-color: #7dd216;
-  color: white;
-  padding: 1em;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+	font-weight: bold;
+	font-size: 1.5em;
+	text-shadow: black 1px 1px 4px;
+	padding: 1em;
+	opacity: 1;
+	border: solid 1px #7dd216;
+}
+
+.button-proceed {
+	background-color: #6b16d2;
+	color: white;
+	padding: 1em;
+	opacity: 0.8;
+}
+
+.button-remove {
+	background-color: #d2161f;
+	color: white;
+	padding: 1em;
+	opacity: 0.8;
+}
+
+.button-edit {
+	/* background-color: #16D2C9; */
+	color: white;
+	padding: 1em;
+	opacity: 0.8;
+}
+
+.fullwidth {
+	width: 100%;
+}
+
+.no-shadow {
+	text-shadow: none;
+}
+
+.next-trip {
+	background-color: #7dd216;
+	color: white;
+	padding: 1em;
+	text-shadow: black 1px 1px 4px;
+}
+@media (min-width: 100px) {
+	.bg-travel {
+		position: relative;
+		color: black;
+		text-shadow: white 1px 1px 8px;
+		font-size: 1.5em;
+		z-index: 1;
+	}
+
+	.bg-travel::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-image: url('/images/planetravel.jpeg');
+		background-size: cover;
+		background-position: center;
+		opacity: 0.4; /* Adjust the opacity as needed */
+		z-index: -1;
+	}
+}
+.bg-travel2 {
+	background-image: url('/images/Designer\ \(4\).jpeg');
+	background-size: cover; /* Cover the entire card */
+	background-position: center; /* Center the background image */
+	color: black;
+	text-shadow: white 1px 1px 8px;
+}
+
+.about {
+	background-color: white;
+	color: black;
+	padding: 1em;
+	text-shadow: white 1px 1px 4px;
+}
+
+.margin-top {
+	margin-top: 20px;
+}
+
+.label {
+	font-size: 1.3em;
+}
+
+.shadow {
+	text-shadow: black 0px 0px 1px;
+  font-weight: bold;
+}
+
+.visible {
+  background-color: white;
+  font-weight: bold;
 }

@@ -4,6 +4,7 @@ import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import TripMap from './TripMap'; // Adjust path as per your actual file structure
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 const TripDetails = () => {
     const location = useLocation();
@@ -58,29 +59,35 @@ const TripDetails = () => {
 
     const handleSaveItinerary = async (itinerary) => {
         try {
+            console.log('itinerary', itinerary);
             dispatch({ type: 'UPDATE_ITINERARY', payload: itinerary });
             setSelectedItinerary(null);
-            dispatch({ type: 'FETCH_ITINERARIES', payload: trip.trip_id });
+        
+            dispatch({ type: 'FETCH_ITINERARIES', payload: itinerary.trip_id });
         } catch (error) {
             console.error('Error updating itinerary:', error);
         }
     };
+    
 
     const handleDeleteClick = async () => {
-        try {
-            dispatch({ type: 'DELETE_TRIP', payload: trip.trip_id });
-            history.push('/trips');
-        } catch (error) {
-            console.error('Error deleting trip:', error);
+        const isConfirmed = window.confirm('Are you sure you want to delete this trip? This action cannot be undone.');
+        if (isConfirmed) {
+            try {
+                dispatch({ type: 'DELETE_TRIP', payload: trip.trip_id });
+                history.push('/trips');
+            } catch (error) {
+                console.error('Error deleting trip:', error);
+            }
         }
     };
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Card className="mb-4">
-                        <Card.Body>
+        <Container >
+            <Row >
+                <Col className='border-container'>
+                    <Card className="mb-4 op fullwidth">
+                        <Card.Body className='bg-travel'>
                             <Card.Title>
                                 {isEditing ? (
                                     <Form.Control
@@ -90,11 +97,11 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    trip.trip_name
+                                    <strong><strong className='label'>{trip.trip_name}</strong></strong>
                                 )}
                             </Card.Title>
                             <Card.Text>
-                                <strong>Start Date:</strong>
+                                <strong> <strong>Start Date: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control
                                         type='date'
@@ -103,24 +110,24 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    new Date(trip.start_date).toLocaleDateString()
+                                    <strong>{new Date(trip.start_date).toLocaleDateString()}</strong>
                                 )}
                                 <br />
-                                <strong>End Date:</strong>
+                               <strong> <strong>End Date: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control type='date' name='end_date' value={editedTrip.end_date} onChange={handleInputChange} />
                                 ) : (
-                                    new Date(trip.end_date).toLocaleDateString()
+                                    <strong>{new Date(trip.end_date).toLocaleDateString()}</strong>
                                 )}
                                 <br />
-                                <strong>Locales:</strong>
+                               <strong> <strong>Locations: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control type='text' name='locales' value={editedTrip.locales} onChange={handleInputChange} />
                                 ) : (
-                                    trip.locales
+                                   <strong> {trip.locales}</strong>
                                 )}
                                 <br />
-                                <strong>Map Locations:</strong>
+                                <strong><strong>Map Locations: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control
                                         type='text'
@@ -129,7 +136,7 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    trip.map_locations
+                                    <strong>{trip.map_locations}</strong>
                                 )}
                             </Card.Text>
                             {isEditing ? (
@@ -137,25 +144,20 @@ const TripDetails = () => {
                                     Save
                                 </Button>
                             ) : (
-                                <Button variant='primary' onClick={handleEditClick}>
+                                <Button variant='primary' className='button-proceed' onClick={handleEditClick}>
                                     Edit Trip
                                 </Button>
                             )}
-                            <Button className="m-2" onClick={createItinerary}>Create Daily Itinerary</Button>
-                            <Button className="m-2" onClick={goToPackingList}>Go to Packing List</Button>
-                            <Button variant='danger' onClick={handleDeleteClick}>
+                            <Button className="m-2 button-proceed" onClick={createItinerary}>Create Daily Itinerary</Button>
+                            <Button className="m-2 button-proceed" onClick={goToPackingList}>Go to Packing List</Button>
+                            <Button variant='danger' className='button-remove' onClick={handleDeleteClick}>
                                 Delete Trip
                             </Button>
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <TripMap tripId={trip.trip_id} />
-                </Col>
-            </Row>
-            <Row>
+            <Row className='border-container'>
                 <Col>
                     <DisplayItineraries
                         onSelectItinerary={setSelectedItinerary}
@@ -165,6 +167,12 @@ const TripDetails = () => {
                     />
                 </Col>
             </Row>
+            <Row className=''>
+                <Col>
+                    <TripMap tripId={trip.trip_id} />
+                </Col>
+            </Row>
+          
         </Container>
     );
 };

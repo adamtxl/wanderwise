@@ -41,7 +41,7 @@ app.use('/api/trips', tripRouter);
 app.use('/api/packing-list', packingListRouter);
 app.use('/api/itinerary', itineraryRouter);
 app.use('/api/user-items', user_itemsRouter);
-app.use('/api/map-item', mapItemRouter);
+app.use('/api/map_item', mapItemRouter);
 app.use('/api/map-update', mapUpdateRouter);
 app.use('/api/upload-csv', uploadRouter);
 

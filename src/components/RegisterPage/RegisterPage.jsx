@@ -12,7 +12,7 @@ function RegisterPage() {
       <RegisterForm />
 
       <center>
-      <Button variant='primary' onClick={() => history.push(`/login`)}>
+      <Button variant='primary' className='button-proceed' onClick={() => history.push(`/login`)}>
 									 Switch to Login
 								</Button>
       </center>
