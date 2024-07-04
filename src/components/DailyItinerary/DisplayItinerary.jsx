@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Card, Button, Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItinerary, trip_id }) => {
 	const selectItineraries = (state) => state.itineraries;
@@ -29,8 +30,9 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 
 	return (
 		<Row>
-			{reduxItineraries.map((itinerary, index) => (
-				<Col xs={12} sm={6} md={4} lg={3} key={index}>
+        {reduxItineraries.length > 0 ? (
+            reduxItineraries.map((itinerary, index) => (
+				<Col xs={12} sm={6} md={4} lg={3} key={itinerary.itinerary_id}>
 					<Card className='mb-4 op'>
 						<Card.Body className='op'>
 							{selectedItinerary?.itinerary_id === itinerary.itinerary_id ? (
@@ -42,7 +44,7 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 											<Form.Control
 												type='date'
 												name='day'
-												value={new Date(selectedItinerary.day).toISOString().substring(0, 10)}
+												value={moment(selectedItinerary.day).format('YYYY-MM-DD')}
 												onChange={handleItineraryChange}
 											/>
 										</Form.Group>
@@ -83,7 +85,7 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 								</div>
 							) : (
 								<div>
-									<Card.Title>Day: {new Date(itinerary.day).toLocaleDateString()}</Card.Title>
+									<Card.Title>Day: {moment(itinerary.day).format('MM/DD/YYYY')}</Card.Title>
 									<Card.Text>
 										<strong>Location:</strong> {itinerary.location} <br />
 										<strong>Activity:</strong> {itinerary.activity} <br />
@@ -103,9 +105,28 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 						</Card.Body>
 					</Card>
 				</Col>
-			))}
+			))
+		
+		
+		
+		
+		
+		) : (
+			<Col>
+				<Card>
+					<Card.Body>
+						<Card.Title>No Itineraries</Card.Title>
+						<Card.Text>
+							There are no itineraries for this trip. Click the button below to create one.
+						</Card.Text>
+						<Button variant='primary' onClick={() => onSelectItinerary({ day: moment().format('YYYY-MM-DD') })}>
+							Create Itinerary
+						</Button>
+					</Card.Body>
+				</Card>
+			</Col>
+	)}
 		</Row>
 	);
-};
-
+}
 export default DisplayItineraries;

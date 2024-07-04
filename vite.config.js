@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
         },
         server: {
             proxy: {
-                "/api":'http://localhost:5001',
+                "/api":'http://localhost:8080',
             }
         },
         define: {

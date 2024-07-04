@@ -5,6 +5,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import TripMap from './TripMap'; // Adjust path as per your actual file structure
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import moment from 'moment';
 
 const TripDetails = () => {
     const location = useLocation();
@@ -27,6 +28,7 @@ const TripDetails = () => {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_TRIP_BY_ID', payload: trip_id });
+        dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
     }, [dispatch, trip_id]);
 
     const createItinerary = () => {
@@ -110,14 +112,14 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <strong>{new Date(trip.start_date).toLocaleDateString()}</strong>
+                                    <strong>{moment(trip.start_date).local().format('MM/DD/YYYY')}</strong>
                                 )}
                                 <br />
                                <strong> <strong>End Date: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control type='date' name='end_date' value={editedTrip.end_date} onChange={handleInputChange} />
                                 ) : (
-                                    <strong>{new Date(trip.end_date).toLocaleDateString()}</strong>
+                                    <strong>{moment(trip.end_date).local().format('MM/DD/YYYY')}</strong>
                                 )}
                                 <br />
                                <strong> <strong>Locations: </strong></strong>

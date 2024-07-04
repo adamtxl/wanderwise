@@ -1,22 +1,23 @@
 const express = require('express');
 const pool = require('../modules/pool');
+
 const router = express.Router();
 const {
     rejectUnauthenticated,
-  } = require('../modules/authentication-middleware');
+} = require('../modules/authentication-middleware');
 
 /**
  Get all trips for that user
  */
- router.get('/', rejectUnauthenticated, (req, res) => {
+router.get('/', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
     const query = `
     SELECT * FROM "trips"
     WHERE ("user_id" = $1 OR "collaborator" = $1)
-    AND "start_date" > CURRENT_DATE
+    AND "end_date" > CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
     ORDER BY "start_date" ASC;
 `;
-    
+
     pool.query(query, [userId])
         .then(result => {
             res.status(200).json({
@@ -40,10 +41,10 @@ router.get('/past', rejectUnauthenticated, (req, res) => {
     const query = `
         SELECT * FROM "trips"
         WHERE ("user_id" = $1 OR "collaborator" = $1)
-        AND "end_date" < CURRENT_DATE
+        AND "end_date" < CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
         ORDER BY "start_date" ASC;
     `;
-    
+
     pool.query(query, [userId])
         .then(result => {
             res.status(200).json({
@@ -65,12 +66,12 @@ router.get('/past', rejectUnauthenticated, (req, res) => {
 router.get('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
-    
+
     const query = `
         SELECT * FROM "trips"
         WHERE "trip_id" = $1 AND "user_id" = $2;
     `;
-    
+
     pool.query(query, [tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -95,7 +96,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
 });
 // Create a new trip
 router.post('/', rejectUnauthenticated, (req, res) => {
-    const userId = req.user.id; 
+    const userId = req.user.id;
     const { trip_name, start_date, end_date, locales, map_locations } = req.body;
 
     const query = `
@@ -126,14 +127,14 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
     const { trip_name, start_date, end_date, locales, map_locations } = req.body;
-    
+
     const query = `
         UPDATE "trips"
         SET "trip_name" = $1, "start_date" = $2, "end_date" = $3, "locales" = $4, "map_locations" = $5
         WHERE "trip_id" = $6 AND "user_id" = $7
         RETURNING *;
     `;
-    
+
     pool.query(query, [trip_name, start_date, end_date, locales, map_locations, tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -161,13 +162,13 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
-    
+
     const query = `
         DELETE FROM "trips"
         WHERE "trip_id" = $1 AND "user_id" = $2
         RETURNING *;
     `;
-    
+
     pool.query(query, [tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -203,7 +204,7 @@ router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
         WHERE i.trip_id = $1 AND t.user_id = $2
         ORDER BY i.day;
     `;
-    
+
     pool.query(query, [tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -260,8 +261,5 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
             });
         });
 });
-
-
-
 
 module.exports = router;

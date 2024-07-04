@@ -8,6 +8,10 @@ function* fetchItineraries(action) {
         yield put({ type: 'SET_ITINERARIES', payload: response.data });
     } catch (error) {
         console.error('Fetch itineraries failed', error);
+        if (error.response && error.response.status === 404) {
+            // Assuming you want to update the state with an empty array or a specific value when a 404 is encountered
+            yield put({ type: 'SET_ITINERARIES', payload: [] });
+        }
     }
 }
 

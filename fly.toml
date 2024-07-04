@@ -6,6 +6,10 @@
 app = 'wanderwise-at'
 primary_region = 'ord'
 
+[env]
+TZ = "America/Chicago"
+
+
 [build]
 
 [http_service]

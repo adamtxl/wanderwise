@@ -5,7 +5,8 @@ const {
     rejectUnauthenticated,
   } = require('../modules/authentication-middleware');
 
-  router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
+ // retrieving itineraries
+router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.trip_id;
     const userId = req.user.id;
 
@@ -14,7 +15,7 @@ const {
         FROM "itinerary" i
         JOIN "trips" t ON i.trip_id = t.trip_id
         WHERE i.trip_id = $1 AND t.user_id = $2 OR "collaborator" = $2
-        ORDER BY i.day;
+        ORDER BY i.day AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago';
     `;
     
     pool.query(query, [tripId, userId])
@@ -41,20 +42,19 @@ const {
         });
 });
 
-//creating itinerary
-
+// creating itinerary
 router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.trip_id;
-    const { day, activity, location, notes, longitude, latitude, created_at } = req.body; // Include notes
+    const { day, activity, location, notes, longitude, latitude, created_at } = req.body;
     const userId = req.user.id;
 
     const query = `
-        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location", "notes", "longitude", "latitude")
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO "itinerary" ("trip_id", "day", "activity", "location", "notes", "longitude", "latitude", "created_at")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;
     `;
 
-    const values = [tripId, day, activity, location, notes, longitude, latitude]; // Include notes in values
+    const values = [tripId, day, activity, location, notes, longitude, latitude, created_at];
 
     // Verify that the user owns the trip
     const verifyTripQuery = `
@@ -97,7 +97,7 @@ router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
         });
 });
 
-//deleting itinerary
+// deleting itinerary
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
     const itineraryId = req.params.id;
     const userId = req.user.id;
@@ -136,11 +136,10 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
         });
 });
 
-
 // updating itinerary
 router.put('/:id', rejectUnauthenticated, (req, res) => {
     const itineraryId = req.params.id;
-    const { day, activity, location, notes, itinerary_id } = req.body; 
+    const { day, activity, location, notes, itinerary_id } = req.body;
     const userId = req.user.id;
 
     const query = `
@@ -153,7 +152,7 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
         RETURNING *;
     `;
 
-    const values = [day, activity, location, notes, itineraryId, userId]; // Include notes in values
+    const values = [day, activity, location, notes, itineraryId, userId];
 
     pool.query(query, values)
         .then(result => {
@@ -179,6 +178,5 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
         });
 });
 
-
-
 module.exports = router;
+
