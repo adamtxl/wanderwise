@@ -32,7 +32,7 @@ const TripsComponent = () => {
         const now = moment();
         const end = moment(endDate);
         if (end.isBefore(now)) {
-            return 'Trip start date has passed.';
+            return 'Your adventure has begun!';
         }
         const duration = moment.duration(end.diff(now));
         return `${duration.months()} months, ${duration.days()} days, ${duration.hours()} hours, and ${duration.minutes()} minutes`;

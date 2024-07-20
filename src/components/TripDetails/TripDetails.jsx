@@ -28,9 +28,12 @@ const TripDetails = () => {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_TRIP_BY_ID', payload: trip_id });
-        dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
     }, [dispatch, trip_id]);
 
+    useEffect(() => {
+        dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
+    }, [dispatch, trip_id]);
+    
     const createItinerary = () => {
         history.push({
             pathname: '/create-daily-itinerary',

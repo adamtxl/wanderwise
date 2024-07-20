@@ -39,6 +39,8 @@ const CreateDailyItinerary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            // Dispatch ADD_ITINERARY action with itinerary details
+            dispatch({ type: 'ADD_ITINERARY', payload: { itinerary, tripId } });
             dispatch({ type: 'FETCH_MAP_ITEMS' });
             history.push(`/trip-details/${tripId}`);
         } catch (error) {
@@ -46,6 +48,7 @@ const CreateDailyItinerary = () => {
         }
     };
 
+    
     const handleMarkerClick = (item) => {
         setItinerary({
             ...itinerary,

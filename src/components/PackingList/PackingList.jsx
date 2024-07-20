@@ -13,6 +13,7 @@ const PackingList = () => {
     const packingList = useSelector((state) => state.packingList);
     const userItems = useSelector((state) => state.userItems);
     const [newItem, setNewItem] = useState({ item_name: '', category: '' });
+	const [addedItems, setAddedItems] = useState([]);
 
     useEffect(() => {
         if (tripId) {
@@ -49,6 +50,7 @@ const PackingList = () => {
 			packinglist_id: item.packinglist_id, // Ensure packinglist_id is included in the payload
 		};
 		dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem });
+		setAddedItems((prevItems) => [...prevItems, item.item_id]);
 	};
 
 	const handleUpdateItem = (item) => {
@@ -126,6 +128,7 @@ const PackingList = () => {
 							handleAddToPackingList={handleAddToPackingList}
 							handleDeleteUserItem={handleDeleteUserItem}
 							handleUpdateUserItem={handleUpdateUserItem}
+							addedItems={addedItems}
 						/>
 					</div>
 				</Col>

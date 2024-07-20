@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import './UserItems.css';
 
-const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, handleUpdateUserItem }) => {
+const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, handleUpdateUserItem, addedItems }) => {
 	const [editItemId, setEditItemId] = useState(null);
 	const [editItemData, setEditItemData] = useState({ item_name: '', category: '' });
 	const [selectedCategory, setSelectedCategory] = useState('All');
 	const [categories, setCategories] = useState([]);
+    const packingList = useSelector((state) => state.packingList);
+	const packingListItems = packingList.items
+	console.log('packing list items:', packingListItems);
+	console.log('packing list:', packingList);
+
 
 	useEffect(() => {
 		const uniqueCategories = [...new Set(userItems.map((item) => item.category))];
@@ -31,10 +37,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 		<div>
 			<h3>User Items</h3>
 			<Form.Group controlId='categorySelect'>
-				<Form.Label>
-					Select Category 
-				</Form.Label>{' '}
-				{/* Add a dropdown icon */}
+				<Form.Label>Select Category</Form.Label> 
 				<Form.Control
 					className='category-select'
 					as='select'
@@ -54,8 +57,9 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 				</Form.Control>
 			</Form.Group>
 			<Row xs={1} sm={2} md={3} lg={12} className='op'>
+				
 				{filteredItems.map((item) => (
-					<Card key={item.item_id} className='margin op'>
+					<Card key={item.item_id} className={packingListItems?.some(packingItem => packingItem.item_id === item.item_id) ? 'grayed-out' : ''}>
 						<Card.Body className='d-flex justify-content-between align-items-center op'>
 							{' '}
 							{editItemId === item.item_id ? (
