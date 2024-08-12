@@ -8,8 +8,9 @@ import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import moment from 'moment';
 import TripCollaborators from '../Collaborators/TripCollaborators';
 
-const TripDetails = () => {
+const TripDetails = ({  user }) => {
     const location = useLocation();
+    console.log('user', user);
     const trip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data) || {
         trip_id: '',
         trip_name: '',
@@ -18,6 +19,8 @@ const TripDetails = () => {
         locales: '',
         map_locations: '',
     };
+    const [trips, setTrip] = useState(null);
+    const [isOwner, setIsOwner] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedTrip, setEditedTrip] = useState(trip);
     const [selectedItinerary, setSelectedItinerary] = useState(null);
@@ -35,7 +38,8 @@ const TripDetails = () => {
     useEffect(() => {
         dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
     }, [dispatch, trip_id]);
-    
+
+
     const createItinerary = () => {
         history.push({
             pathname: '/create-daily-itinerary',

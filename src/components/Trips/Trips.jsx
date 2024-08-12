@@ -15,7 +15,6 @@ const TripsComponent = () => {
 		const fetchTrips = async () => {
 			try {
 				setLoading(true);
-				// Dispatch an action to fetch trips. Replace `fetchTripsAction` with your actual action
 				dispatch({ type: 'FETCH_TRIPS' });
 				setError(null);
 			} catch (error) {
@@ -24,7 +23,6 @@ const TripsComponent = () => {
 				setLoading(false);
 			}
 		};
-	
 		fetchTrips();
 	}, [dispatch]);
 

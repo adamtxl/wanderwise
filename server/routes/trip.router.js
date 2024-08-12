@@ -9,14 +9,16 @@ const {
 /**
  Get all trips for that user
  */
-router.get('/', rejectUnauthenticated, (req, res) => {
+ router.get('/', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
     const query = `
-    SELECT * FROM "trips"
-    WHERE ("user_id" = $1 OR "collaborator" = $1)
-    AND "end_date" > CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
-    ORDER BY "start_date" ASC;
-`;
+        SELECT DISTINCT t.*
+        FROM "trips" t
+        LEFT JOIN "collaborators" c ON t.trip_id = c.trip_id
+        WHERE t.user_id = $1 OR c.user_id = $1
+        AND t.end_date > CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
+        ORDER BY t.start_date ASC;
+    `;
 
     pool.query(query, [userId])
         .then(result => {
@@ -34,7 +36,6 @@ router.get('/', rejectUnauthenticated, (req, res) => {
             });
         });
 });
-
 
 router.get('/past', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
@@ -67,31 +68,51 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
 
-    const query = `
+    const ownerQuery = `
         SELECT * FROM "trips"
-        WHERE "trip_id" = $1 AND "user_id" = $2;
+        WHERE "trip_id" = $1 AND "user_id" = $2 AND "end_date" > NOW();
     `;
 
-    pool.query(query, [tripId, userId])
-        .then(result => {
-            if (result.rows.length === 0) {
-                return res.status(404).json({
+    const collaboratorQuery = `
+        SELECT * FROM "collaborators"
+        JOIN "trips" ON "collaborators"."trip_id" = "trips"."trip_id"
+        WHERE "collaborators"."trip_id" = $1 AND "collaborators"."user_id" = $2 AND "trips"."end_date" > NOW();
+    `;
+
+    pool.query(ownerQuery, [tripId, userId])
+        .then(ownerResult => {
+            if (ownerResult.rows.length > 0) {
+                res.status(200).json({
+                    success: true,
+                    data: ownerResult.rows[0],
+                    message: 'Trip retrieved successfully'
+                });
+            } else {
+                return pool.query(collaboratorQuery, [tripId, userId]);
+            }
+        })
+        .then(collaboratorResult => {
+            if (collaboratorResult && collaboratorResult.rows.length > 0) {
+                res.status(200).json({
+                    success: true,
+                    data: collaboratorResult.rows[0],
+                    message: 'Trip retrieved successfully'
+                });
+            } else if (!res.headersSent) {
+                res.status(404).json({
                     success: false,
                     message: 'Trip not found'
                 });
             }
-            res.status(200).json({
-                success: true,
-                data: result.rows[0],
-                message: 'Trip retrieved successfully'
-            });
         })
         .catch(err => {
             console.error('Error getting trip:', err);
-            res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-            });
+            if (!res.headersSent) {
+                res.status(500).json({
+                    success: false,
+                    message: 'Internal server error'
+                });
+            }
         });
 });
 // Create a new trip

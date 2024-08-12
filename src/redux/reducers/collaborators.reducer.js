@@ -1,11 +1,14 @@
-// Initial state
-const initialState = [];
+const initialState = {
+    collaborators: [],
+    nonCollaborators: []
+};
 
-// Reducer function
 const collaboratorsReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_COLLABORATORS':
-            return action.payload;
+            return { ...state, collaborators: action.payload };
+        case 'SET_NON_COLLABORATORS':
+            return { ...state, nonCollaborators: action.payload };
         default:
             return state;
     }
