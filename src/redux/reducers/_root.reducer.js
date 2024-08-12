@@ -8,6 +8,7 @@ import userItems from './userItems.reducer';
 import tripDetailReducer from './tripDetail.reducer';
 import mapItemReducer from './mapItemReducer.js';
 import locationReducer from './location.reducer.js';
+import collaboratorsReducer from './collaborators.reducer.js';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   tripDetailReducer, // will have an array of trip details
   mapItems: mapItemReducer,
   location: locationReducer,
+  collaboratorsReducer,
 });
 
 export default rootReducer;

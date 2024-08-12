@@ -6,6 +6,7 @@ import TripMap from './TripMap'; // Adjust path as per your actual file structur
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import moment from 'moment';
+import TripCollaborators from '../Collaborators/TripCollaborators';
 
 const TripDetails = () => {
     const location = useLocation();
@@ -25,6 +26,7 @@ const TripDetails = () => {
     const { trip_id: tripIdFromParams } = useParams();
     const trip_id = tripIdFromParams;
     const state = useSelector((state) => state);
+    console.log('trip_id', trip_id);
 
     useEffect(() => {
         dispatch({ type: 'FETCH_TRIP_BY_ID', payload: trip_id });
@@ -160,6 +162,7 @@ const TripDetails = () => {
                             </Button>
                         </Card.Body>
                     </Card>
+                    <TripCollaborators trip_id={trip_id} />
                 </Col>
             </Row>
             <Row className='border-container'>

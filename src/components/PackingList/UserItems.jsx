@@ -9,8 +9,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 	const [selectedCategory, setSelectedCategory] = useState('All');
 	const [categories, setCategories] = useState([]);
     const packingList = useSelector((state) => state.packingList);
-	const packingListItems = packingList.items
-	console.log('packing list items:', packingListItems);
+	
 	console.log('packing list:', packingList);
 
 
@@ -59,7 +58,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 			<Row xs={1} sm={2} md={3} lg={12} className='op'>
 				
 				{filteredItems.map((item) => (
-					<Card key={item.item_id} className={packingListItems?.some(packingItem => packingItem.item_id === item.item_id) ? 'grayed-out' : ''}>
+					<Card key={item.item_id} className={packingList?.some(packingItem => packingItem.item_name === item.item_name) ? 'grayed-out' : ''}>
 						<Card.Body className='d-flex justify-content-between align-items-center op'>
 							{' '}
 							{editItemId === item.item_id ? (
