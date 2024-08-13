@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, Form, Button } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 const PackingListItemCard = ({ item }) => {
 	const dispatch = useDispatch();
+	const { tripId } = useParams();
 	const [editMode, setEditMode] = useState(false);
 	const [editedItem, setEditedItem] = useState({ ...item });
+	console.log('Trip ID:', tripId);
 
 	const handleToggleEditMode = (event) => {
 		event.stopPropagation();
@@ -13,29 +16,29 @@ const PackingListItemCard = ({ item }) => {
 		setEditedItem({ ...item });
 	};
 
-	const handleInputChange = (event) => {
-		event.stopPropagation();
-		const { name, value } = event.target;
-		setEditedItem({
-			...editedItem,
-			[name]: name === 'packed' ? event.target.checked : value,
-		});
-	};
+    const handleInputChange = (event) => {
+        event.stopPropagation();
+        const { name, value } = event.target;
+        setEditedItem({
+            ...editedItem,
+            [name]: name === 'packed' ? event.target.checked : value,
+        });
+    };
 
 	const handleUpdateItem = (event) => {
 		event.stopPropagation();
-		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: editedItem });
+		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: editedItem, tripId });
 		setEditMode(false);
 	};
 
 	const handleDeleteItem = (event) => {
 		event.stopPropagation();
-		dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item });
+		dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item, tripId });
 	};
 
 	const handleTogglePacked = () => {
 		const updatedItem = { ...item, packed: !item.packed };
-		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: updatedItem });
+		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: updatedItem, tripId });
 	};
 
 	return (

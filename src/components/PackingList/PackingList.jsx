@@ -49,12 +49,12 @@ const PackingList = () => {
 			trip_id: tripId, // Ensure tripId is included in the payload
 			packinglist_id: item.packinglist_id, // Ensure packinglist_id is included in the payload
 		};
-		dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem });
+		dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem, tripId });
 		setAddedItems((prevItems) => [...prevItems, item.item_id]);
 	};
 
 	const handleUpdateItem = (item) => {
-		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: item });
+		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: item, tripId });
 	};
 
 	const handleDeleteItem = (packinglist_id) => {

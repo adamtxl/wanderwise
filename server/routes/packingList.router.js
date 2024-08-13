@@ -7,7 +7,7 @@ const {
   const { checkTripOwnerOrCollaborator } = require('../modules/collaborators.middleware'); // Import the middleware
 
 // GET route for master packing list for a specific day
-router.get('/itinerary/:itinerary_id', rejectUnauthenticated, checkTripOwnerOrCollaborator, async (req, res) => {
+router.get('/itinerary/:itinerary_id', rejectUnauthenticated, async (req, res) => {
     const { itinerary_id } = req.params;
     try {
         const packingList = await pool.query('SELECT * FROM PackingList WHERE itinerary_id = $1', [itinerary_id]);
@@ -72,7 +72,7 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
 
 
 // PUT route for packing list
-router.put('/:packinglist_id', rejectUnauthenticated, checkTripOwnerOrCollaborator, async (req, res) => {
+router.put('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
     const { packinglist_id } = req.params;
     const { item_name, quantity, packed } = req.body;
 
@@ -89,7 +89,7 @@ router.put('/:packinglist_id', rejectUnauthenticated, checkTripOwnerOrCollaborat
 });
 
 // DELETE route for packing list
-router.delete('/:packinglist_id', rejectUnauthenticated, checkTripOwnerOrCollaborator, async (req, res) => {
+router.delete('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
     const { packinglist_id } = req.params;
 
     try {
