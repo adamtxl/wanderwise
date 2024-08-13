@@ -27,6 +27,7 @@ import Map from '../Maps/Map';
 import MapPage from '../Maps/MapPage';
 import PastTrips from '../Trips/PastTrips';
 import AdminPage from '../AdminPage/AdminPage';
+// import TripCollaborators from '../Collaborators/TripCollaborators';
 
 function App() {
     const dispatch = useDispatch();
@@ -94,6 +95,7 @@ function App() {
                             <ProtectedRoute path='/map/'>
                                 <MapPage />
                             </ProtectedRoute>
+                            {/* <ProtectedRoute path='/trip-details/:trip_id/collab' component={TripCollaborators} /> */}
                             <AdminRoute path='/admin/'>
                                 <AdminPage />
                             </AdminRoute>

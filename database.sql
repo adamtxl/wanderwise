@@ -52,3 +52,12 @@ CREATE TABLE items (
     category character varying(50) DEFAULT 'summer'::character varying,
     user_id integer REFERENCES "user"(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE collaborators (
+  id SERIAL PRIMARY KEY,
+  trip_id INT NOT NULL,
+  user_id INT NOT NULL,
+  role VARCHAR(50) DEFAULT 'viewer',
+  FOREIGN KEY (trip_id) REFERENCES "trips"(trip_id),
+  FOREIGN KEY (user_id) REFERENCES "user"(id)
+);

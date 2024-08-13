@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom'; // Import useHistory
 import { Row, Col, Container, Button, FormControl } from 'react-bootstrap';
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
 import './PackingList.css';
 
 const PackingList = () => {
-	const { tripId } = useParams();
-	const dispatch = useDispatch();
-	const packingList = useSelector((state) => state.packingList);
-	const userItems = useSelector((state) => state.userItems);
-	const [newItem, setNewItem] = useState({ item_name: '', category: '' });
+    const { tripId } = useParams();
+    const history = useHistory(); // Use the useHistory hook
+    const dispatch = useDispatch();
+    const packingList = useSelector((state) => state.packingList);
+    const userItems = useSelector((state) => state.userItems);
+    const [newItem, setNewItem] = useState({ item_name: '', category: '' });
+	const [addedItems, setAddedItems] = useState([]);
 
-	useEffect(() => {
-		if (tripId) {
-			dispatch({ type: 'FETCH_PACKING_LIST', payload: { tripId } });
-		}
-		dispatch({ type: 'FETCH_USER_ITEMS' });
-	}, [dispatch, tripId]);
+    useEffect(() => {
+        if (tripId) {
+            dispatch({ type: 'FETCH_PACKING_LIST', payload: { tripId } });
+        }
+        dispatch({ type: 'FETCH_USER_ITEMS' });
+    }, [dispatch, tripId]);
 
 	const handleAddUserItem = () => {
 		// Function to capitalize the first letter and lowercase the rest
@@ -47,11 +49,12 @@ const PackingList = () => {
 			trip_id: tripId, // Ensure tripId is included in the payload
 			packinglist_id: item.packinglist_id, // Ensure packinglist_id is included in the payload
 		};
-		dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem });
+		dispatch({ type: 'ADD_PACKING_LIST_ITEM', payload: packingListItem, tripId });
+		setAddedItems((prevItems) => [...prevItems, item.item_id]);
 	};
 
 	const handleUpdateItem = (item) => {
-		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: item });
+		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: item, tripId });
 	};
 
 	const handleDeleteItem = (packinglist_id) => {
@@ -68,6 +71,13 @@ const PackingList = () => {
 
 	return (
 		<Container>
+			<Row className="mt-3">
+                <Col>
+                    <Button variant="secondary" onClick={() => history.push(`/trip-details/${tripId}`)}>
+                        Return to Trip
+                    </Button>
+                </Col>
+            </Row>
 			<Row>
 				<Col>
 					<div className='border-container center'>
@@ -118,10 +128,12 @@ const PackingList = () => {
 							handleAddToPackingList={handleAddToPackingList}
 							handleDeleteUserItem={handleDeleteUserItem}
 							handleUpdateUserItem={handleUpdateUserItem}
+							addedItems={addedItems}
 						/>
 					</div>
 				</Col>
 			</Row>
+			
 		</Container>
 	);
 };

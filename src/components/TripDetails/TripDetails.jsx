@@ -5,9 +5,12 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import TripMap from './TripMap'; // Adjust path as per your actual file structure
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import moment from 'moment';
+import TripCollaborators from '../Collaborators/TripCollaborators';
 
-const TripDetails = () => {
+const TripDetails = ({  user }) => {
     const location = useLocation();
+    console.log('user', user);
     const trip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data) || {
         trip_id: '',
         trip_name: '',
@@ -16,6 +19,8 @@ const TripDetails = () => {
         locales: '',
         map_locations: '',
     };
+    const [trips, setTrip] = useState(null);
+    const [isOwner, setIsOwner] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedTrip, setEditedTrip] = useState(trip);
     const [selectedItinerary, setSelectedItinerary] = useState(null);
@@ -23,11 +28,18 @@ const TripDetails = () => {
     const history = useHistory();
     const { trip_id: tripIdFromParams } = useParams();
     const trip_id = tripIdFromParams;
+    const tripId = trip_id;
     const state = useSelector((state) => state);
+    console.log('trip_id', trip_id);
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: trip_id });
+        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
+    }, [dispatch, tripId]);
+
+    useEffect(() => {
+        dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
     }, [dispatch, trip_id]);
+
 
     const createItinerary = () => {
         history.push({
@@ -110,14 +122,14 @@ const TripDetails = () => {
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <strong>{new Date(trip.start_date).toLocaleDateString()}</strong>
+                                    <strong>{moment(trip.start_date).local().format('MM/DD/YYYY')}</strong>
                                 )}
                                 <br />
                                <strong> <strong>End Date: </strong></strong>
                                 {isEditing ? (
                                     <Form.Control type='date' name='end_date' value={editedTrip.end_date} onChange={handleInputChange} />
                                 ) : (
-                                    <strong>{new Date(trip.end_date).toLocaleDateString()}</strong>
+                                    <strong>{moment(trip.end_date).local().format('MM/DD/YYYY')}</strong>
                                 )}
                                 <br />
                                <strong> <strong>Locations: </strong></strong>
@@ -155,6 +167,7 @@ const TripDetails = () => {
                             </Button>
                         </Card.Body>
                     </Card>
+                    <TripCollaborators trip_id={trip_id} />
                 </Col>
             </Row>
             <Row className='border-container'>

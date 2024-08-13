@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 import { useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
+
 
 
 
 function Nav() {
   const user = useSelector((store) => store.user);
-  const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 768px)' });
+  const isDesktopOrLaptop = 1120;
 
 
   return (

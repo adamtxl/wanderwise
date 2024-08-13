@@ -39,13 +39,16 @@ const CreateDailyItinerary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post(`/api/itinerary/${tripId}/itineraries`, itinerary);
+            // Dispatch ADD_ITINERARY action with itinerary details
+            dispatch({ type: 'ADD_ITINERARY', payload: { itinerary, tripId } });
+            dispatch({ type: 'FETCH_MAP_ITEMS' });
             history.push(`/trip-details/${tripId}`);
         } catch (error) {
             console.error('Error creating itinerary:', error);
         }
     };
 
+    
     const handleMarkerClick = (item) => {
         setItinerary({
             ...itinerary,

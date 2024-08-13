@@ -55,9 +55,9 @@ const TripsComponent = () => {
                             <Card.Body>
                                 <Card.Title>{trip.trip_name}</Card.Title>
                                 <Card.Text>
-                                    <strong>Start Date:</strong> {new Date(trip.start_date).toLocaleDateString()}
+                                    <strong>Start Date:</strong> {moment(trip.start_date).format('MM/DD/YYYY')}
                                     <br />
-                                    <strong>End Date:</strong> {new Date(trip.end_date).toLocaleDateString()}
+                                    <strong>End Date:</strong> {moment(trip.end_date).format('MM/DD/YYYY')}
                                     <br />
                                     <strong>Location:</strong> {trip.locales}
                                     <br />
@@ -71,7 +71,6 @@ const TripsComponent = () => {
                     </Col>
                 ))}
             </Row>
-         
         </Container>
     );
 };

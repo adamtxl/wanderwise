@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 8080;
 
 
 const cors = require('cors')
@@ -21,6 +21,7 @@ const user_itemsRouter = require('./routes/userItems.router');
 const mapItemRouter = require('./routes/map.router');
 const mapUpdateRouter = require('./routes/map.update.router');
 const uploadRouter = require('./routes/upload.router');
+const collaboratorsRouter = require('./routes/collaborators.router');
 
 
 // Express Middleware
@@ -44,6 +45,7 @@ app.use('/api/user-items', user_itemsRouter);
 app.use('/api/map_item', mapItemRouter);
 app.use('/api/map-update', mapUpdateRouter);
 app.use('/api/upload-csv', uploadRouter);
+app.use('/api/collaborators', collaboratorsRouter);
 
 
 // Listen Server & Port

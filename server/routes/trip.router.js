@@ -1,9 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
+
 const router = express.Router();
 const {
     rejectUnauthenticated,
-  } = require('../modules/authentication-middleware');
+} = require('../modules/authentication-middleware');
 
 /**
  Get all trips for that user
@@ -11,12 +12,14 @@ const {
  router.get('/', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
     const query = `
-    SELECT * FROM "trips"
-    WHERE ("user_id" = $1 OR "collaborator" = $1)
-    AND "start_date" > CURRENT_DATE
-    ORDER BY "start_date" ASC;
-`;
-    
+        SELECT DISTINCT t.*
+        FROM "trips" t
+        LEFT JOIN "collaborators" c ON t.trip_id = c.trip_id
+        WHERE (t.user_id = $1 OR c.user_id = $1)
+        AND t.end_date > CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
+        ORDER BY t.start_date ASC;
+    `;
+
     pool.query(query, [userId])
         .then(result => {
             res.status(200).json({
@@ -34,16 +37,15 @@ const {
         });
 });
 
-
 router.get('/past', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
     const query = `
         SELECT * FROM "trips"
         WHERE ("user_id" = $1 OR "collaborator" = $1)
-        AND "end_date" < CURRENT_DATE
+        AND "end_date" < CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
         ORDER BY "start_date" ASC;
     `;
-    
+
     pool.query(query, [userId])
         .then(result => {
             res.status(200).json({
@@ -62,40 +64,60 @@ router.get('/past', rejectUnauthenticated, (req, res) => {
 });
 
 // Get individual trip for the user
-router.get('/:id', rejectUnauthenticated, (req, res) => {
+router.get('/:id', rejectUnauthenticated, async (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
-    
-    const query = `
-        SELECT * FROM "trips"
-        WHERE "trip_id" = $1 AND "user_id" = $2;
-    `;
-    
-    pool.query(query, [tripId, userId])
-        .then(result => {
-            if (result.rows.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Trip not found'
-                });
-            }
+    console.log('Fetching trip with ID:', tripId); // Add this log to verify the trip ID
+
+    try {
+        // Check if the trip belongs to the user
+        const ownerResult = await pool.query(`
+            SELECT * FROM "trips"
+            WHERE "trip_id" = $1 AND "user_id" = $2;
+        `, [tripId, userId]);
+
+        let trip = ownerResult.rows[0];
+
+        // If the trip does not belong to the user, check if the user is a collaborator
+        if (!trip) {
+            const collaboratorResult = await pool.query(`
+                SELECT t.* FROM "trips" t
+                JOIN "collaborators" c ON t.trip_id = c.trip_id
+                WHERE t.trip_id = $1 AND c.user_id = $2;
+            `, [tripId, userId]);
+
+            trip = collaboratorResult.rows[0];
+        }
+
+        if (trip) {
+            // Fetch collaborators for the trip
+            const collaboratorsResult = await pool.query(`
+                SELECT "user".id, "user".username FROM "collaborators"
+                JOIN "user" ON "collaborators"."user_id" = "user".id
+                WHERE "collaborators"."trip_id" = $1;
+            `, [tripId]);
+
+            trip.collaborators = collaboratorsResult.rows;
             res.status(200).json({
                 success: true,
-                data: result.rows[0],
+                data: trip,
                 message: 'Trip retrieved successfully'
             });
-        })
-        .catch(err => {
-            console.error('Error getting trip:', err);
-            res.status(500).json({
+        } else {
+            res.status(404).json({
                 success: false,
-                message: 'Internal server error'
+                message: 'Trip not found or you do not have access'
             });
-        });
+        }
+    } catch (err) {
+        console.error('Error retrieving trip:', err);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
 });
+
 // Create a new trip
 router.post('/', rejectUnauthenticated, (req, res) => {
-    const userId = req.user.id; 
+    const userId = req.user.id;
     const { trip_name, start_date, end_date, locales, map_locations } = req.body;
 
     const query = `
@@ -126,14 +148,14 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
     const { trip_name, start_date, end_date, locales, map_locations } = req.body;
-    
+
     const query = `
         UPDATE "trips"
         SET "trip_name" = $1, "start_date" = $2, "end_date" = $3, "locales" = $4, "map_locations" = $5
         WHERE "trip_id" = $6 AND "user_id" = $7
         RETURNING *;
     `;
-    
+
     pool.query(query, [trip_name, start_date, end_date, locales, map_locations, tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -161,13 +183,13 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
-    
+
     const query = `
         DELETE FROM "trips"
         WHERE "trip_id" = $1 AND "user_id" = $2
         RETURNING *;
     `;
-    
+
     pool.query(query, [tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -203,7 +225,7 @@ router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
         WHERE i.trip_id = $1 AND t.user_id = $2
         ORDER BY i.day;
     `;
-    
+
     pool.query(query, [tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -260,8 +282,5 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
             });
         });
 });
-
-
-
 
 module.exports = router;

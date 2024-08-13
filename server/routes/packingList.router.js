@@ -4,6 +4,7 @@ const pool = require('../modules/pool');
 const {
     rejectUnauthenticated,
   } = require('../modules/authentication-middleware');
+  const { checkTripOwnerOrCollaborator } = require('../modules/collaborators.middleware'); // Import the middleware
 
 // GET route for master packing list for a specific day
 router.get('/itinerary/:itinerary_id', rejectUnauthenticated, async (req, res) => {
@@ -13,6 +14,7 @@ router.get('/itinerary/:itinerary_id', rejectUnauthenticated, async (req, res) =
         res.json(packingList.rows);
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
@@ -24,8 +26,10 @@ router.get('/itineraries/:trip_id', rejectUnauthenticated, async (req, res) => {
         res.json(packingList.rows);
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 
 
@@ -33,7 +37,6 @@ router.get('/itineraries/:trip_id', rejectUnauthenticated, async (req, res) => {
 router.post('/', rejectUnauthenticated, async (req, res) => {
     const { item_name, quantity, packed, trip_id } = req.body;
 
-    // SQL query to insert a new packing list item
     const insertText = `
         INSERT INTO PackingList (item_name, quantity, packed, trip_id) 
         VALUES ($1, $2, $3, $4) 
@@ -43,7 +46,6 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
     try {
         const client = await pool.connect();
         try {
-            // Starting a transaction
             await client.query('BEGIN');
 
             const result = await client.query(insertText, [
@@ -53,16 +55,13 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
                 trip_id
             ]);
 
-            // Committing the transaction
             await client.query('COMMIT');
             res.status(200).json(result.rows[0]);
         } catch (err) {
-            // Rolling back the transaction in case of error
             await client.query('ROLLBACK');
             console.error('Transaction error:', err.message);
             res.status(500).send('Server error');
         } finally {
-            // Releasing the client back to the pool
             client.release();
         }
     } catch (err) {
@@ -70,13 +69,12 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-module.exports = router;
 
 
 // PUT route for packing list
 router.put('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
     const { packinglist_id } = req.params;
-    const { item_name, quantity, packed } = req.body; // Correct the trip_id destructuring
+    const { item_name, quantity, packed } = req.body;
 
     try {
         const updateItem = await pool.query(
@@ -90,7 +88,6 @@ router.put('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-// DELETE route for packing list
 // DELETE route for packing list
 router.delete('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
     const { packinglist_id } = req.params;
@@ -109,4 +106,5 @@ router.delete('/:packinglist_id', rejectUnauthenticated, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
 module.exports = router;

@@ -30,11 +30,12 @@ function* addPackingListItem(action) {
 
 function* updatePackingListItem(action) {
     try {
-        const { packinglist_id, item_name, quantity, packed } = action.payload;
+        const { packinglist_id, item_name, quantity, packed, tripId } = action.payload;
         const response = yield call(axios.put, `/api/packing-list/${packinglist_id}`, {
             item_name,
             quantity,
             packed,
+            trip_id: tripId,
         });
         // Ensure you are sending the correct trip ID in the payload
         yield put({ type: 'FETCH_PACKING_LIST', payload: { tripId: response.data.trip_id } });
