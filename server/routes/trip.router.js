@@ -67,25 +67,40 @@ router.get('/past', rejectUnauthenticated, (req, res) => {
 router.get('/:id', rejectUnauthenticated, async (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
+    console.log('Fetching trip with ID:', tripId); // Add this log to verify the trip ID
 
     try {
+        // Check if the trip belongs to the user
         const ownerResult = await pool.query(`
             SELECT * FROM "trips"
-            WHERE "trip_id" = $1 AND "user_id" = $2 AND "end_date" > NOW();
+            WHERE "trip_id" = $1 AND "user_id" = $2;
         `, [tripId, userId]);
 
-        if (ownerResult.rows.length > 0) {
+        let trip = ownerResult.rows[0];
+
+        // If the trip does not belong to the user, check if the user is a collaborator
+        if (!trip) {
+            const collaboratorResult = await pool.query(`
+                SELECT t.* FROM "trips" t
+                JOIN "collaborators" c ON t.trip_id = c.trip_id
+                WHERE t.trip_id = $1 AND c.user_id = $2;
+            `, [tripId, userId]);
+
+            trip = collaboratorResult.rows[0];
+        }
+
+        if (trip) {
+            // Fetch collaborators for the trip
             const collaboratorsResult = await pool.query(`
-                SELECT "users".id, "users".username FROM "collaborators"
-                JOIN "users" ON "collaborators"."user_id" = "users".id
+                SELECT "user".id, "user".username FROM "collaborators"
+                JOIN "user" ON "collaborators"."user_id" = "user".id
                 WHERE "collaborators"."trip_id" = $1;
             `, [tripId]);
-                console.log('collaboratorsResult:', collaboratorsResult.rows);
-                console.log('ownerResult:', ownerResult.rows);
-            ownerResult.rows[0].collaborators = collaboratorsResult.rows;
+
+            trip.collaborators = collaboratorsResult.rows;
             res.status(200).json({
                 success: true,
-                data: ownerResult.rows[0],
+                data: trip,
                 message: 'Trip retrieved successfully'
             });
         } else {

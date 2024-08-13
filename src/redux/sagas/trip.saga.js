@@ -29,9 +29,15 @@ function* fetchPastTrips() {
 // Worker saga to fetch a single trip by ID
 function* fetchTripById(action) {
     try {
+        console.log('Fetching trip with ID:', action.payload); // Log the action payload
+
         const response = yield call(axios.get, `/api/trips/${action.payload}`);
+
+        console.log('Trip data received:', response.data); // Log the response data
+
         yield put({ type: 'SET_TRIP_BY_ID', payload: response.data });
     } catch (error) {
+        console.error('Error fetching trip details:', error.message); // Log the error message
         yield put({ type: 'FETCH_TRIP_BY_ID_ERROR', payload: error.message });
     }
 }

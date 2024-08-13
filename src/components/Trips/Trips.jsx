@@ -85,6 +85,9 @@ const TripsComponent = () => {
                                     <br />
                                     <strong>Countdown:</strong> {calculateCountdown(trip.start_date)}
                                 </Card.Text>
+                                <Button variant="primary" onClick={() => history.push(`/trip-details/${trip.trip_id}`)}>
+                                    View Details
+                                </Button>
                             </Card.Body>
                         </Card>
                     </Col>

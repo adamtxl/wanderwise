@@ -28,12 +28,13 @@ const TripDetails = ({  user }) => {
     const history = useHistory();
     const { trip_id: tripIdFromParams } = useParams();
     const trip_id = tripIdFromParams;
+    const tripId = trip_id;
     const state = useSelector((state) => state);
     console.log('trip_id', trip_id);
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: trip_id });
-    }, [dispatch, trip_id]);
+        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
+    }, [dispatch, tripId]);
 
     useEffect(() => {
         dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
