@@ -129,6 +129,11 @@ router.get('/non-collaborators/:tripId', rejectUnauthenticated, checkTripOwnerOr
             SELECT c.user_id
             FROM "collaborators" c
             WHERE c.trip_id = $1
+        )
+        AND u.id NOT IN (
+            SELECT t.user_id
+            FROM "trips" t
+            WHERE t.trip_id = $1
         );
     `;
 

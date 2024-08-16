@@ -34,20 +34,20 @@ function Nav() {
             <Link className="navLink" to="/info">
             {isDesktopOrLaptop ? (
           <>
-            <i class="bi bi-info-circle-fill"></i> Info Page
+            <i className="bi bi-info-circle-fill"></i> Info Page
           </>
         ) : (
-          <i class="bi bi-info-circle-fill"></i>
+          <i className="bi bi-info-circle-fill"></i>
         )}
             </Link>
 
             <Link className="navLink" to="/trips">
             {isDesktopOrLaptop ? (
           <>
-            <i class="bi bi-airplane-fill"></i> Trips
+            <i className="bi bi-airplane-fill"></i> Trips
           </>
         ) : (
-          <i class="bi bi-airplane-fill"></i>
+          <i className="bi bi-airplane-fill"></i>
         )}
             </Link>
 
@@ -58,10 +58,10 @@ function Nav() {
             <Link className="navLink" to="/map">
               {isDesktopOrLaptop ? (
                 <>
-            <i class="bi bi-geo-alt-fill"></i>  Add to map
+            <i className="bi bi-geo-alt-fill"></i>  Add to map
                 </>
               ) : (
-                <i class="bi bi-geo-alt-fill"></i>
+                <i className="bi bi-geo-alt-fill"></i>
               )}
             </Link>
 
@@ -72,10 +72,10 @@ function Nav() {
         <Link className="navLink" to="/about">
           {isDesktopOrLaptop ? (
             <>
-            <i class="bi bi-file-person-fill"></i>  About 
+            <i className="bi bi-file-person-fill"></i>  About 
             </>
             ) : (
-              <i class="bi bi-file-person-fill"></i>
+              <i className="bi bi-file-person-fill"></i>
             )}
         
         </Link>

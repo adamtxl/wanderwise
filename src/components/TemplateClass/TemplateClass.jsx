@@ -5,10 +5,8 @@ import { connect } from 'react-redux';
 // value setup. When making a new component be sure to replace
 // the component name TemplateClass with the name for the new
 // component.
-
 // YOU CANNOT USE HOOKS IN CLASS COMPONENTS -- usually Higher Order Components are used instead
 // Class Components have different syntax, including `this`
-
 class TemplateClass extends Component {
   state = {
     heading: 'Class Component',

@@ -40,6 +40,7 @@ function RegisterForm() {
             value={username}
             required
             onChange={(event) => setUsername(event.target.value)}
+            autoComplete='username'
           />
         </Col>
       </Form.Group>
@@ -54,6 +55,7 @@ function RegisterForm() {
             value={password}
             required
             onChange={(event) => setPassword(event.target.value)}
+            autoComplete='new-password'
           />
         </Col>
       </Form.Group>

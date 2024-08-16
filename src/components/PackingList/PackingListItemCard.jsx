@@ -89,15 +89,15 @@ const PackingListItemCard = ({ item }) => {
 					<div>
 						{editMode ? (
 							<Button className=' btn-primary btn-xs mr-2' onClick={handleUpdateItem}>
-								<i class="bi bi-floppy-fill"></i>
+								<i className="bi bi-floppy-fill"></i>
 							</Button>
 						) : (
 							<Button className=' btn-secondary btn-xs op mr-2' onClick={handleToggleEditMode}>
-								<i class="bi bi-pencil-square"></i>
+								<i className="bi bi-pencil-square"></i>
 							</Button>
 						)}
 						<Button className='button-remove btn-xs' onClick={handleDeleteItem}>
-                        <i class="bi bi-x-lg"></i>
+                        <i className="bi bi-x-lg"></i>
 						</Button>
 					</div>
 				</Card.Body>

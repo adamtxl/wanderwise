@@ -16,7 +16,7 @@ class MapPage extends Component {
                 <h1 className='summer'>WanderWise Mapping</h1>
                 <p className='summer'>This is the map that displays available points when adding itineraries.
                     You can add map pins to the map below.</p>
-                <Map />
+                    <div className="map-container"> <Map /> </div>
                 <MapInfo />
                 <MapForm />
             </>
