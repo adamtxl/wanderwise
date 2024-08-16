@@ -74,7 +74,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 										onChange={(e) => setEditItemData({ ...editItemData, category: e.target.value })}
 									/>
 									<Button variant='success' onClick={handleSaveClick}>
-										<i class='bi bi-floppy-fill'></i>
+										<i className='bi bi-floppy-fill'></i>
 									</Button>
 									<Button variant='danger' onClick={() => setEditItemId(null)}>
 										Cancel
@@ -91,17 +91,17 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 											className='button-proceed btn-xs'
 											onClick={() => handleAddToPackingList(item)}
 										>
-											<i class='bi bi-plus'></i>
+											<i className='bi bi-plus'></i>
 										</Button>
 										<Button className='btn btn-secondary btn-xs mr-2' onClick={() => handleEditClick(item)}>
-											<i class='bi bi-pencil-square'></i>
+											<i className='bi bi-pencil-square'></i>
 										</Button>
 										<Button
 											variant='danger'
 											className='button-remove btn-xs'
 											onClick={() => handleDeleteUserItem(item.item_id)}
 										>
-											<i class='bi bi-x-lg'></i>
+											<i className='bi bi-x-lg'></i>
 										</Button>
 									</div>
 								</>

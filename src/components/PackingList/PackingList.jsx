@@ -100,7 +100,7 @@ const PackingList = () => {
 								className='rounded-input' // Custom class for styling
 							/>
 							<Button className='btn button-proceed mr-2 btn-xs op' type='submit'>
-								<i class='bi bi-plus'></i>Item
+								<i className='bi bi-plus'></i>Item
 							</Button>
 						</form>
 					</div>

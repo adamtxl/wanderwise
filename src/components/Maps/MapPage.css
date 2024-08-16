@@ -25,3 +25,6 @@ p {
     padding: 10px; 
     text-align: center;
 }
+.map-container {
+    height: 75vh; /* or any other height you prefer */
+  }

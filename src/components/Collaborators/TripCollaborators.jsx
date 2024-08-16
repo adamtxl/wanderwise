@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Select from 'react-select';
 
 function TripCollaborators({ trip_id }) {
     const { collaborators, nonCollaborators } = useSelector((store) => store.collaboratorsReducer);
     const [loading, setLoading] = useState(true);
-    const [selectedUser, setSelectedUser] = useState('');
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [inputValue, setInputValue] = useState('');
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -14,7 +16,27 @@ function TripCollaborators({ trip_id }) {
     }, [trip_id]);
 
     const handleAddCollaborator = () => {
-        dispatch({ type: 'ADD_COLLABORATOR', payload: { tripId: trip_id, userId: selectedUser } });
+        if (selectedUser) {
+            dispatch({ type: 'ADD_COLLABORATOR', payload: { tripId: trip_id, userId: selectedUser.value } });
+        }
+    };
+
+    const options = nonCollaborators.map((user) => ({
+        value: user.id,
+        label: user.username
+    }));
+
+    const filteredOptions = inputValue.length >= 3 ? options : [];
+
+    const customStyles = {
+        option: (provided) => ({
+            ...provided,
+            color: 'black',
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: 'black',
+        }),
     };
 
     return (
@@ -26,12 +48,15 @@ function TripCollaborators({ trip_id }) {
                 ))}
             </ul>
             <h3>Add Collaborator</h3>
-            <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
-                <option value="" disabled>Select a user</option>
-                {nonCollaborators.map((user) => (
-                    <option key={user.id} value={user.id}>{user.username}</option>
-                ))}
-            </select>
+            <Select
+                options={filteredOptions}
+                onChange={setSelectedUser}
+                placeholder="Search for a user"
+                isClearable
+                styles={customStyles}
+                inputValue={inputValue}
+                onInputChange={(value) => setInputValue(value)}
+            />
             <button onClick={handleAddCollaborator}>Add</button>
         </div>
     );
