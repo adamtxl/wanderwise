@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
@@ -8,7 +8,7 @@ import './itinerary.css';
 import moment from 'moment';
 
 const CreateDailyItinerary = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
     const trip = location.state.trip;
@@ -42,7 +42,7 @@ const CreateDailyItinerary = () => {
             // Dispatch ADD_ITINERARY action with itinerary details
             dispatch({ type: 'ADD_ITINERARY', payload: { itinerary, tripId } });
             dispatch({ type: 'FETCH_MAP_ITEMS' });
-            history.push(`/trip-details/${tripId}`);
+           navigate(`/trip-details/${tripId}`);
         } catch (error) {
             console.error('Error creating itinerary:', error);
         }

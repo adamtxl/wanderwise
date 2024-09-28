@@ -10,10 +10,12 @@ function TripCollaborators({ trip_id }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_COLLABORATORS', payload: trip_id });
-        dispatch({ type: 'FETCH_NON_COLLABORATORS', payload: trip_id });
-        setLoading(true);
-    }, [trip_id]);
+        if (trip_id) {
+            dispatch({ type: 'FETCH_COLLABORATORS', payload: trip_id });
+            dispatch({ type: 'FETCH_NON_COLLABORATORS', payload: trip_id });
+            setLoading(true);
+        }
+    }, [trip_id, dispatch]);
 
     const handleAddCollaborator = () => {
         if (selectedUser) {

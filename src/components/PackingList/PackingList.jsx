@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom'; // Import useHistory
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { Row, Col, Container, Button, FormControl } from 'react-bootstrap';
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
@@ -8,7 +8,7 @@ import './PackingList.css';
 
 const PackingList = () => {
     const { tripId } = useParams();
-    const history = useHistory(); // Use the useHistory hook
+	const navigate = useNavigate(); 
     const dispatch = useDispatch();
     const packingList = useSelector((state) => state.packingList);
     const userItems = useSelector((state) => state.userItems);
@@ -73,7 +73,7 @@ const PackingList = () => {
 		<Container>
 			<Row className="mt-3">
                 <Col>
-                    <Button variant="secondary" onClick={() => history.push(`/trip-details/${tripId}`)}>
+                    <Button variant="secondary" onClick={() => navigate(`/trip-details/${tripId}`)}>
                         Return to Trip
                     </Button>
                 </Col>

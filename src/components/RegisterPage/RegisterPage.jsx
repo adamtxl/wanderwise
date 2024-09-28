@@ -1,18 +1,18 @@
 import React from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../RegisterForm/RegisterForm';
 import { Button } from 'react-bootstrap';
 
 function RegisterPage() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div>
       <RegisterForm />
 
       <center>
-      <Button variant='primary' className='button-proceed' onClick={() => history.push(`/login`)}>
+      <Button variant='primary' className='button-proceed' onClick={() => navigate('/login')}>
 									 Switch to Login
 								</Button>
       </center>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Container, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -8,7 +8,7 @@ import moment from 'moment';
 const EditCreateTrips = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const trip = location.state ? location.state.trip : null;
     const [editedTrip, setEditedTrip] = useState(trip || {
         trip_name: '',
@@ -28,7 +28,7 @@ const EditCreateTrips = () => {
     const handleSaveClick = async () => {
         try {
             dispatch({ type: 'CREATE_TRIP', payload: editedTrip });
-            history.push('/trips');
+            navigate('/trips');
         } catch (error) {
             console.error('Error updating trip:', error);
         }
