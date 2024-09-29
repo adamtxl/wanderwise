@@ -4,17 +4,14 @@ import axios from 'axios';
 // Worker Saga: will be fired on "FETCH_ITINERARIES" actions
 function* fetchItineraries(action) {
     try {
-        const response = yield call(axios.get, `/api/itinerary/${action.payload}/itineraries`);
+        console.log('fetchItineraries action.payload:', action.payload);
+        const response = yield axios.get(`/api/itinerary/${action.payload}/itineraries`);
         yield put({ type: 'SET_ITINERARIES', payload: response.data });
+        yield put({ type: 'FETCH_LOCATIONS', payload: action.payload }); // Fetch locations after itineraries
     } catch (error) {
-        console.error('Fetch itineraries failed', error);
-        if (error.response && error.response.status === 404) {
-            // Assuming you want to update the state with an empty array or a specific value when a 404 is encountered
-            yield put({ type: 'SET_ITINERARIES', payload: [] });
-        }
+        console.log('Error fetching itineraries', error);
     }
 }
-
 // Worker Saga: will be fired on "ADD_ITINERARY" actions
 function* addItinerary(action) {
     try {

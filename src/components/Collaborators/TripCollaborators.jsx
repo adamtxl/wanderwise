@@ -45,8 +45,8 @@ function TripCollaborators({ trip_id }) {
         <div>
             <h2>Collaborators</h2>
             <ul>
-                {collaborators.map((collaborator) => (
-                    <li key={collaborator.id}>{collaborator.username}</li>
+                {collaborators.map((collaborator, index) => (
+                    <li key={`${collaborator.id}-${index}`}>{collaborator.username}</li>
                 ))}
             </ul>
             <h3>Add Collaborator</h3>

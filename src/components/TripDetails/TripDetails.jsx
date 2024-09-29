@@ -35,6 +35,8 @@ const TripDetails = ({ user }) => {
     useEffect(() => {
         setEditedTrip(trip);
     }, [trip]);
+    
+    console.log("tripId from params:", tripId);
 
     const createItinerary = () => {
         navigate('/create-daily-itinerary', { state: { trip: trip } });

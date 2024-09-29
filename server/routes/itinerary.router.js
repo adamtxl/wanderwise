@@ -1,12 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const {
-    rejectUnauthenticated,
-  } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
- // retrieving itineraries
- router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
+// retrieving itineraries
+router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.trip_id;
     const userId = req.user.id;
 
@@ -18,7 +16,7 @@ const {
         WHERE i.trip_id = $1 AND (t.user_id = $2 OR c.user_id = $2)
         ORDER BY i.day AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago';
     `;
-    
+
     pool.query(query, [tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
@@ -47,14 +45,13 @@ const {
 router.post('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.trip_id;
     const { day, activity, location, notes, longitude, latitude, created_at } = req.body;
-    const userId = req.user.id;
 
     const query = `
         INSERT INTO "itinerary" ("trip_id", "day", "activity", "location", "notes", "longitude", "latitude", "created_at")
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;
     `;
-    
+
     pool.query(query, [tripId, day, activity, location, notes, longitude, latitude, created_at])
         .then(result => {
             res.status(201).json({
@@ -117,4 +114,3 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 });
 
 module.exports = router;
-

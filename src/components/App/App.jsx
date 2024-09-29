@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +31,15 @@ import AdminPage from '../AdminPage/AdminPage';
 import NonAdminLanding from '../AdminPage/NonAdminLanding';
 
 
+
 function App() {
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch({ type: 'FETCH_USER' });  // Fetch the user's session when the app loads
+  }, [dispatch]);
+
   return (
     <Router>
       <div>
@@ -52,8 +61,8 @@ function App() {
           <Route path="/edit-create-trips" element={<ProtectedRoute />}>
             <Route path="/edit-create-trips" element={<EditCreateTrips />} />
           </Route>
-          <Route path="/daily-itinerary" element={<ProtectedRoute />}>
-            <Route path="/daily-itinerary" element={<DailyItinerary />} />
+          <Route path="/create-daily-itinerary" element={<ProtectedRoute />}>
+            <Route path="/create-daily-itinerary" element={<DailyItinerary />} />
           </Route>
           <Route path="/packing-list" element={<ProtectedRoute />}>
             <Route path="/packing-list" element={<PackingList />} />

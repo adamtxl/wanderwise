@@ -159,4 +159,31 @@ router.get('/non-collaborators/:tripId', rejectUnauthenticated, checkTripOwnerOr
         });
     }
 });
+
+router.get('/:tripId', checkTripOwnerOrCollaborator, async (req, res) => {
+    const tripId = req.params.tripId;
+
+    const query = `
+        SELECT u.id, u.username
+        FROM "user" u
+        JOIN "collaborators" c ON u.id = c.user_id
+        WHERE c.trip_id = $1;
+    `;
+
+    try {
+        const result = await pool.query(query, [tripId]);
+        res.status(200).json({
+            success: true,
+            data: result.rows,
+            message: 'Collaborators retrieved successfully'
+        });
+    } catch (err) {
+        console.error('Error retrieving collaborators:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
+});
+
 module.exports = router;
