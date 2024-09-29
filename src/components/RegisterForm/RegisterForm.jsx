@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
@@ -8,6 +9,7 @@ function RegisterForm() {
   const [email, setEmail] = useState('');
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const registerUser = (event) => {
     event.preventDefault();
@@ -19,6 +21,7 @@ function RegisterForm() {
         email: email,
       },
     });
+    navigate('/trips');
   };
 
   return (

@@ -8,7 +8,7 @@ function LogOutButton(props) {
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    navigate('/home');  // Redirect to home page
+    navigate('/login'); 
   };
 
   return (

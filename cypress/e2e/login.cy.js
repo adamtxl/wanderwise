@@ -1,14 +1,13 @@
 describe('login landing', () => {
-  it('passes', () => {
-    cy.visit('http://localhost:5173/#/login')
+  it('should log in the user', () => {
+    cy.visit('/login'); // Visit the login page
     
-    cy.get('button[type="submit"]').should('be.visible')
+    // Fill out and submit the login form
+    cy.get('input[name="username"]').type('AdamT');
+    cy.get('input[name="password"]').type('1234');
+    cy.get('button[type="submit"]').click();
 
-    cy.get('input[name="username"]').type('AdamT')
-    cy.get('input[name="password"]').type('1234')
-    
-    cy.get('button[type="submit"]').click()
-
-    cy.url().should('include', '/trips')
-  })
-})
+    // Verify URL change to /trips
+    cy.url().should('include', '/trips');
+  });
+});

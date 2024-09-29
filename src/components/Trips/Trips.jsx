@@ -85,7 +85,7 @@ const TripsComponent = () => {
                                     <br />
                                     <strong>Countdown:</strong> {calculateCountdown(trip.start_date)}
                                 </Card.Text>
-                                <Button variant="primary" onClick={() => navigate(`/trip-details/${trip.trip_id}`)}>
+                                <Button variant="primary" data-cy="trip-details" onClick={() => navigate(`/trip-details/${trip.trip_id}`)}>
                                     View Details
                                 </Button>
                             </Card.Body>
