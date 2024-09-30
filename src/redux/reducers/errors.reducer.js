@@ -23,10 +23,12 @@ const registrationMessage = (state = '', action) => {
   switch (action.type) {
     case 'CLEAR_REGISTRATION_ERROR':
       return '';
-    case 'REGISTRATION_INPUT_ERROR':
-      return 'Choose a username and password!';
+    case 'REGISTRATION_SUCCESS':
+      return 'Registration successful!'; // Not really used, but you could add a message.
+    case 'REGISTRATION_FAILED_DUPLICATE':
+      return 'Username already exists. Please choose another one.';
     case 'REGISTRATION_FAILED':
-      return "Oops! That didn't work. The username might already be taken. Try again!";
+      return 'Oops! Something went wrong. Please try again.';
     default:
       return state;
   }

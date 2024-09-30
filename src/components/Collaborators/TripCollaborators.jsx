@@ -23,6 +23,10 @@ function TripCollaborators({ trip_id }) {
         }
     };
 
+    const handleRemoveCollaborator = (userId) => {
+        dispatch({ type: 'REMOVE_COLLABORATOR', payload: { tripId: trip_id, userId } });
+    };
+
     const options = nonCollaborators.map((user) => ({
         value: user.id,
         label: user.username
@@ -46,7 +50,10 @@ function TripCollaborators({ trip_id }) {
             <h2>Collaborators</h2>
             <ul>
                 {collaborators.map((collaborator, index) => (
-                    <li key={`${collaborator.id}-${index}`}>{collaborator.username}</li>
+                    <li key={`${collaborator.id}-${index}`}>
+                        {collaborator.username}
+                        <button onClick={() => handleRemoveCollaborator(collaborator.id)}>Remove</button>
+                    </li>
                 ))}
             </ul>
             <h3>Add Collaborator</h3>

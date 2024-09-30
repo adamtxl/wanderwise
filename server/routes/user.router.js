@@ -17,24 +17,30 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post('/register', (req, res, next) => {
+router.post('/register', async (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const email = req.body.email;
 
+  const checkUsernameQuery = `SELECT * FROM "user" WHERE username = $1`;
   const queryText = `INSERT INTO "user" (username, password, first_name, last_name, email)
     VALUES ($1, $2, $3, $4, $5) RETURNING id`;
-  pool
-    .query(queryText, [username, password, first_name, last_name, email])
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.log('User registration failed: ', err);
-      res.sendStatus(500);
-    });
-});
 
+  try {
+    const result = await pool.query(checkUsernameQuery, [username]);
+    if (result.rows.length > 0) {
+      return res.status(409).json({ message: 'Username already exists' });
+    }
+
+    await pool.query(queryText, [username, password, first_name, last_name, email]);
+    res.sendStatus(201);
+  } catch (err) {
+    console.log('User registration failed: ', err);
+    res.sendStatus(500);
+  }
+});
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route
 // this middleware will run our POST if successful
