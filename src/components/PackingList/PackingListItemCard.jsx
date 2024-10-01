@@ -47,6 +47,7 @@ const PackingListItemCard = ({ item }) => {
 				className={`packing-list-item-card ${item.packed ? 'bg-success text-white op' : 'lb-bg'}`}
 				style={{ cursor: 'pointer', marginBottom: '.5em', flex: 1 }}
 				onClick={handleTogglePacked}
+				data-cy="packing-item"
 			>
 				<Card.Body className='d-flex justify-content-between align-items-center'>
 					<div className='flex-grow-1 d-flex align-items-center'>

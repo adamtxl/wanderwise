@@ -12,6 +12,10 @@ const loginMessage = (state = '', action) => {
       return "Oops! The username and password didn't match an existing user. Register or try again!";
     case 'LOGIN_FAILED_NO_CODE':
       return 'Oops! Something went wrong! Is the server running?';
+    case 'LOGIN_FAILED_USERNAME_REQUIRED':
+      return 'Username is required.';
+    case 'LOGIN_FAILED_PASSWORD_REQUIRED':
+      return 'Password is required.';
     default:
       return state;
   }

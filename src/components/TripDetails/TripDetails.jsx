@@ -161,10 +161,10 @@ const TripDetails = ({ user }) => {
                                     Edit Trip
                                 </Button>
                             )}
-                            <Button className="m-2" onClick={createItinerary}>
+                            <Button className="m-2" data-cy="daily-itinerary-button" onClick={createItinerary}>
                                 Create Daily Itinerary
                             </Button>
-                            <Button className="m-2" onClick={goToPackingList}>
+                            <Button className="m-2" data-cy="packing-list-button" onClick={goToPackingList}>
                                 Go to Packing List
                             </Button>
                             <Button variant="danger" onClick={handleDeleteClick}>
