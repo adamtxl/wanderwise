@@ -113,4 +113,34 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
         });
 });
 
+
+router.delete('/:itineraryId', (req, res) => {
+    const itineraryId = req.params.itineraryId;
+
+    const queryText = 'DELETE FROM itinerary WHERE itinerary_id = $1 RETURNING *;';
+    pool.query(queryText, [itineraryId])
+        .then((result) => {
+            if (result.rowCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Itinerary not found'
+                });
+            }
+
+            res.status(200).json({
+                success: true,
+                message: 'Itinerary deleted successfully',
+                data: result.rows[0]
+            });
+        })
+        .catch((err) => {
+            console.error('Error deleting itinerary:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
+
+
 module.exports = router;

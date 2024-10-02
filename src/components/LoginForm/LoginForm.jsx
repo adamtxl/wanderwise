@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-function LoginForm() {
+function LoginForm({ from }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
@@ -16,15 +16,17 @@ function LoginForm() {
     } else if (!password) {
       dispatch({ type: 'LOGIN_FAILED_PASSWORD_REQUIRED' });
     } else {
+      // Dispatch the LOGIN action, passing the 'from' location as part of the payload
       dispatch({
         type: 'LOGIN',
         payload: {
           username: username,
           password: password,
+          from: from, // Include the 'from' location in the payload
         },
       });
     }
-  }; // end login
+  };
 
   return (
     <form className='formPanel op margin-top' onSubmit={login}>

@@ -8,10 +8,9 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 	const [editItemData, setEditItemData] = useState({ item_name: '', category: '' });
 	const [selectedCategory, setSelectedCategory] = useState('All');
 	const [categories, setCategories] = useState([]);
-    const packingList = useSelector((state) => state.packingList);
-	
-	console.log('packing list:', packingList);
+	const packingList = useSelector((state) => state.packingList);
 
+	console.log('packing list:', packingList);
 
 	useEffect(() => {
 		const uniqueCategories = [...new Set(userItems.map((item) => item.category))];
@@ -36,7 +35,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 		<div>
 			<h3>User Items</h3>
 			<Form.Group controlId='categorySelect'>
-				<Form.Label>Select Category</Form.Label> 
+				<Form.Label>Select Category</Form.Label>
 				<Form.Control
 					className='category-select'
 					as='select'
@@ -56,14 +55,17 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 				</Form.Control>
 			</Form.Group>
 			<Row xs={1} sm={2} md={3} lg={12} className='op'>
-				
 				{filteredItems.map((item) => (
-					<Card key={item.item_id} className={packingList?.some(packingItem => packingItem.item_name === item.item_name) ? 'grayed-out' : ''}>
+					<Card
+						data-cy='user-item'
+						key={item.item_id}
+						className={packingList?.some((packingItem) => packingItem.item_name === item.item_name) ? 'grayed-out' : ''}
+					>
 						<Card.Body className='d-flex justify-content-between align-items-center op'>
 							{' '}
 							{editItemId === item.item_id ? (
 								<>
-									<Form.Control
+									<Fordm.Control
 										type='text'
 										value={editItemData.item_name}
 										onChange={(e) => setEditItemData({ ...editItemData, item_name: e.target.value })}
@@ -82,7 +84,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 								</>
 							) : (
 								<>
-									<div className='flex-grow-1 d-flex align-items-center '>
+									<div className='flex-grow-1 d-flex align-items-center'>
 										<strong>{item.item_name}</strong>
 									</div>
 									<div>
@@ -90,6 +92,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 											variant='primary'
 											className='button-proceed btn-xs'
 											onClick={() => handleAddToPackingList(item)}
+											data-cy='add-to-packing-list-button'
 										>
 											<i className='bi bi-plus'></i>
 										</Button>
