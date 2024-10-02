@@ -1,6 +1,3 @@
-import 'cypress-wait-until';
-
-
 describe('End-to-End User Flow', () => {
 	it('should log in the user', () => {
 		cy.visit('/login');
@@ -78,7 +75,8 @@ describe('End-to-End User Flow', () => {
   
     // Target the specific item by name and click the "Add Item" button for that item
     cy.get('[data-cy="user-item"]')
-    .filter(':contains("Reef Safe Sun Block")') // Filter the items that contain this text
+    .filter(':contains("Reef Safe Sun Block")')
+    .first() // Filter the items that contain this text
     .find('[data-cy="add-to-packing-list-button"]') // Find the button in this filtered item
     .click();
   
@@ -86,6 +84,7 @@ describe('End-to-End User Flow', () => {
     // For example, if it gets grayed out after being added:
     cy.get('[data-cy="user-item"]')
     .contains('Reef Safe Sun Block')
+    .first()
     .closest('[data-cy="user-item"]') // Traverse to the closest parent with `data-cy="user-item"`, which is the Card
     .should('have.class', 'grayed-out'); // Assert that it has the `grayed-out` class
   });
