@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
-import { useLocation, useHistory, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import TripMap from './TripMap'; // Adjust path as per your actual file structure
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import moment from 'moment';
 import TripCollaborators from '../Collaborators/TripCollaborators';
 
-const TripDetails = ({  user }) => {
+const TripDetails = ({ user }) => {
     const location = useLocation();
-    console.log('user', user);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { tripId } = useParams();
+
     const trip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data) || {
         trip_id: '',
         trip_name: '',
@@ -19,37 +21,29 @@ const TripDetails = ({  user }) => {
         locales: '',
         map_locations: '',
     };
-    const [trips, setTrip] = useState(null);
-    const [isOwner, setIsOwner] = useState(false);
+
     const [isEditing, setIsEditing] = useState(false);
     const [editedTrip, setEditedTrip] = useState(trip);
     const [selectedItinerary, setSelectedItinerary] = useState(null);
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const { trip_id: tripIdFromParams } = useParams();
-    const trip_id = tripIdFromParams;
-    const tripId = trip_id;
-    const state = useSelector((state) => state);
-    console.log('trip_id', trip_id);
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
+        if (tripId) {
+            dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
+        }
     }, [dispatch, tripId]);
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_ITINERARIES', payload: trip_id }); // Fetch itineraries for the current trip
-    }, [dispatch, trip_id]);
-
+        setEditedTrip(trip);
+    }, [trip]);
+    
+    console.log("tripId from params:", tripId);
 
     const createItinerary = () => {
-        history.push({
-            pathname: '/create-daily-itinerary',
-            state: { trip: trip },
-        });
+        navigate('/create-daily-itinerary', { state: { trip: trip } });
     };
 
     const goToPackingList = () => {
-        history.push(`/packing-list/${trip.trip_id}`);
+        navigate(`/packing-list/${trip.trip_id}`);
     };
 
     const handleInputChange = (event) => {
@@ -71,23 +65,20 @@ const TripDetails = ({  user }) => {
 
     const handleSaveItinerary = async (itinerary) => {
         try {
-            console.log('itinerary', itinerary);
             dispatch({ type: 'UPDATE_ITINERARY', payload: itinerary });
             setSelectedItinerary(null);
-        
             dispatch({ type: 'FETCH_ITINERARIES', payload: itinerary.trip_id });
         } catch (error) {
             console.error('Error updating itinerary:', error);
         }
     };
-    
 
     const handleDeleteClick = async () => {
         const isConfirmed = window.confirm('Are you sure you want to delete this trip? This action cannot be undone.');
         if (isConfirmed) {
             try {
                 dispatch({ type: 'DELETE_TRIP', payload: trip.trip_id });
-                history.push('/trips');
+                navigate('/trips');
             } catch (error) {
                 console.error('Error deleting trip:', error);
             }
@@ -95,97 +86,110 @@ const TripDetails = ({  user }) => {
     };
 
     return (
-        <Container >
-            <Row >
-                <Col className='border-container'>
-                    <Card className="mb-4 op fullwidth">
-                        <Card.Body className='bg-travel'>
+        <Container>
+            <Row>
+                <Col className="border-container">
+                    <Card className="mb-4">
+                        <Card.Body className="bg-travel">
                             <Card.Title>
                                 {isEditing ? (
                                     <Form.Control
-                                        type='text'
-                                        name='trip_name'
+                                        type="text"
+                                        name="trip_name"
                                         value={editedTrip.trip_name}
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <strong><strong className='label'>{trip.trip_name}</strong></strong>
+                                    <strong className="label">{trip.trip_name}</strong>
                                 )}
                             </Card.Title>
                             <Card.Text>
-                                <strong> <strong>Start Date: </strong></strong>
+                                <strong>Start Date:</strong>{' '}
                                 {isEditing ? (
                                     <Form.Control
-                                        type='date'
-                                        name='start_date'
-                                        value={editedTrip.start_date}
+                                        type="date"
+                                        name="start_date"
+                                        value={moment(editedTrip.start_date).format('YYYY-MM-DD')}
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <strong>{moment(trip.start_date).local().format('MM/DD/YYYY')}</strong>
+                                    moment(trip.start_date).local().format('MM/DD/YYYY')
                                 )}
                                 <br />
-                               <strong> <strong>End Date: </strong></strong>
-                                {isEditing ? (
-                                    <Form.Control type='date' name='end_date' value={editedTrip.end_date} onChange={handleInputChange} />
-                                ) : (
-                                    <strong>{moment(trip.end_date).local().format('MM/DD/YYYY')}</strong>
-                                )}
-                                <br />
-                               <strong> <strong>Locations: </strong></strong>
-                                {isEditing ? (
-                                    <Form.Control type='text' name='locales' value={editedTrip.locales} onChange={handleInputChange} />
-                                ) : (
-                                   <strong> {trip.locales}</strong>
-                                )}
-                                <br />
-                                <strong><strong>Map Locations: </strong></strong>
+                                <strong>End Date:</strong>{' '}
                                 {isEditing ? (
                                     <Form.Control
-                                        type='text'
-                                        name='map_locations'
+                                        type="date"
+                                        name="end_date"
+                                        value={moment(editedTrip.end_date).format('YYYY-MM-DD')}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    moment(trip.end_date).local().format('MM/DD/YYYY')
+                                )}
+                                <br />
+                                <strong>Locations:</strong>{' '}
+                                {isEditing ? (
+                                    <Form.Control
+                                        type="text"
+                                        name="locales"
+                                        value={editedTrip.locales}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    trip.locales
+                                )}
+                                <br />
+                                <strong>Map Locations:</strong>{' '}
+                                {isEditing ? (
+                                    <Form.Control
+                                        type="text"
+                                        name="map_locations"
                                         value={editedTrip.map_locations}
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <strong>{trip.map_locations}</strong>
+                                    trip.map_locations
                                 )}
                             </Card.Text>
                             {isEditing ? (
-                                <Button variant='success' onClick={handleSaveClick}>
+                                <Button variant="success" onClick={handleSaveClick}>
                                     Save
                                 </Button>
                             ) : (
-                                <Button variant='primary' className='button-proceed' onClick={handleEditClick}>
+                                <Button variant="primary" onClick={handleEditClick}>
                                     Edit Trip
                                 </Button>
                             )}
-                            <Button className="m-2 button-proceed" onClick={createItinerary}>Create Daily Itinerary</Button>
-                            <Button className="m-2 button-proceed" onClick={goToPackingList}>Go to Packing List</Button>
-                            <Button variant='danger' className='button-remove' onClick={handleDeleteClick}>
+                            <Button className="m-2" data-cy="daily-itinerary-button" onClick={createItinerary}>
+                                Create Daily Itinerary
+                            </Button>
+                            <Button className="m-2" data-cy="packing-list-button" onClick={goToPackingList}>
+                                Go to Packing List
+                            </Button>
+                            <Button variant="danger" onClick={handleDeleteClick}>
                                 Delete Trip
                             </Button>
                         </Card.Body>
                     </Card>
-                    <TripCollaborators trip_id={trip_id} />
+                    <TripCollaborators trip_id={trip.trip_id} />
                 </Col>
             </Row>
-            <Row className='border-container'>
+            <Row className="border-container">
                 <Col>
                     <DisplayItineraries
                         onSelectItinerary={setSelectedItinerary}
                         selectedItinerary={selectedItinerary}
                         onSaveItinerary={handleSaveItinerary}
-                        trip_id={trip_id}
+                        trip_id={trip.trip_id}
                     />
                 </Col>
             </Row>
-            <Row className=''>
+            <Row>
                 <Col>
                     <TripMap tripId={trip.trip_id} />
                 </Col>
             </Row>
-          
         </Container>
     );
 };

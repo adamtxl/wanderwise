@@ -55,7 +55,7 @@ function Nav() {
               Past Trips
             </Link> */}
 
-            <Link className="navLink" to="/map">
+            <Link className="navLink" to="/map-page">
               {isDesktopOrLaptop ? (
                 <>
             <i className="bi bi-geo-alt-fill"></i>  Add to map

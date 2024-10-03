@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 
 // GET route for master item list for logged in user
@@ -15,24 +16,25 @@ router.get('/', async (req, res) => {
 });
 
 // POST route for user items
-router.post('/', async (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
     const { item_name, category } = req.body;
     const user_id = req.user.id;
 
-    // SQL query to insert a new user item
-    const insertText = `
-        INSERT INTO items (item_name, category, user_id)
+    const queryText = `
+        INSERT INTO items (user_id, item_name, category)
         VALUES ($1, $2, $3)
-        RETURNING *
+        RETURNING *;
     `;
+    const queryValues = [user_id, item_name, category];
 
-    try {
-        const newItem = await pool.query(insertText, [item_name, category, user_id]);
-        res.status(200).json(newItem.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-    }
+    pool.query(queryText, queryValues)
+        .then(result => {
+            res.status(201).json(result.rows[0]);
+        })
+        .catch(err => {
+            console.error('Error adding user item:', err);
+            res.status(500).json({ error: 'Internal server error' });
+        });
 });
 
 router.put('/:id', async (req, res) => {

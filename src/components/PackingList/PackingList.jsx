@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom'; // Import useHistory
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { Row, Col, Container, Button, FormControl } from 'react-bootstrap';
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
@@ -8,7 +8,7 @@ import './PackingList.css';
 
 const PackingList = () => {
     const { tripId } = useParams();
-    const history = useHistory(); // Use the useHistory hook
+	const navigate = useNavigate(); 
     const dispatch = useDispatch();
     const packingList = useSelector((state) => state.packingList);
     const userItems = useSelector((state) => state.userItems);
@@ -23,23 +23,24 @@ const PackingList = () => {
     }, [dispatch, tripId]);
 
 	const handleAddUserItem = () => {
-		// Function to capitalize the first letter and lowercase the rest
-		const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+		event.preventDefault();
+        // Function to capitalize the first letter and lowercase the rest
+        const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 
-		// Apply the transformation to the category field
-		const updatedItem = {
-			...newItem,
-			category: capitalizeFirstLetter(newItem.category),
-		};
+        // Apply the transformation to the category field
+        const updatedItem = {
+            ...newItem,
+            category: capitalizeFirstLetter(newItem.category),
+        };
 
-		dispatch({
-			type: 'ADD_USER_ITEM',
-			payload: updatedItem,
-		});
+        dispatch({
+            type: 'ADD_USER_ITEM',
+            payload: updatedItem,
+        });
 
-		// Reset newItem state
-		setNewItem({ item_name: '', category: '' });
-	};
+        // Reset newItem state
+        setNewItem({ item_name: '', category: '' });
+    };
 
 	const handleAddToPackingList = (item) => {
 		const packingListItem = {
@@ -73,7 +74,7 @@ const PackingList = () => {
 		<Container>
 			<Row className="mt-3">
                 <Col>
-                    <Button variant="secondary" onClick={() => history.push(`/trip-details/${tripId}`)}>
+                    <Button variant="secondary" onClick={() => navigate(`/trip-details/${tripId}`)}>
                         Return to Trip
                     </Button>
                 </Col>
@@ -90,6 +91,7 @@ const PackingList = () => {
 								placeholder='Item Name'
 								required
 								className='rounded-input' // Custom class for styling
+								name='item_name'
 							/>
 							<FormControl
 								type='text'
@@ -98,8 +100,9 @@ const PackingList = () => {
 								placeholder='Category'
 								required
 								className='rounded-input' // Custom class for styling
+								name='item_category'
 							/>
-							<Button className='btn button-proceed mr-2 btn-xs op' type='submit'>
+							<Button data-cy="add_item" className='btn button-proceed mr-2 btn-xs op' type='submit'>
 								<i className='bi bi-plus'></i>Item
 							</Button>
 						</form>

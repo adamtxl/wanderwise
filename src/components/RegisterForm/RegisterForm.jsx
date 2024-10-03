@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import './RegisterForm.css'; // Import the CSS file
+
+
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
@@ -8,75 +12,79 @@ function RegisterForm() {
   const [email, setEmail] = useState('');
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const registerUser = (event) => {
     event.preventDefault();
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        username: username,
-        password: password,
-        email: email,
-      },
-    });
+
+    if (username && password && email) {
+      dispatch({
+        type: 'REGISTER',
+        payload: { username, password, email },
+      });
+    } else {
+      dispatch({ type: 'REGISTRATION_INPUT_ERROR' });
+    }
   };
 
+useEffect(() => {
+  if (errors.registrationMessage === 'Registration successful!') {
+    navigate('/trips'); // Navigate to /trips on success
+  } else if (errors.registrationMessage === 'Username already exists. Please choose another one.') {
+    alert('Username already exists. Please choose another one.'); // Display alert message
+    setTimeout(() => {
+      navigate('/login'); // Navigate to /login after showing the alert
+    }, 2000); // 2-second delay before redirect
+  }
+}, [errors.registrationMessage, navigate]);
+
   return (
-    <Form className="formPanel op margin-top" onSubmit={registerUser}>
-      <h2 className='log-register'>Register User</h2>
+    <form className='formPanel op margin-top' onSubmit={registerUser}>
+      <h2 className='log-register'>Register</h2>
       {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
+        <h3 className='alert' role='alert'>
           {errors.registrationMessage}
         </h3>
       )}
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm={3} htmlFor="username">
-          Username:
-        </Form.Label>
-        <Col sm={9}>
-          <Form.Control
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-            autoComplete='username'
-          />
-        </Col>
-      </Form.Group>
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm={3} htmlFor="password">
-          Password:
-        </Form.Label>
-        <Col sm={9}>
-          <Form.Control
-            type="password"
-            name="password"
-            value={password}
-            required
-            onChange={(event) => setPassword(event.target.value)}
-            autoComplete='new-password'
-          />
-        </Col>
-      </Form.Group>
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm={3} htmlFor="email">
-          Email:
-        </Form.Label>
-        <Col sm={9}>
-          <Form.Control
-            type="email"
-            name="email"
-            value={email}
-            required
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </Col>
-      </Form.Group>
-      <Button variant='primary' className='button-proceed' type='submit'>
-        Register
-      </Button>
-    </Form>
+      <div className='form-group'>
+        <label htmlFor='username'>Username:</label>
+        <input
+          type='text'
+          name='username'
+          required
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          autoComplete='username'
+        />
+      </div>
+      <div className='form-group'>
+        <label htmlFor='password'>Password:</label>
+        <input
+          type='password'
+          name='password'
+          required
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          autoComplete='new-password'
+        />
+      </div>
+      <div className='form-group'>
+        <label htmlFor='email'>Email:</label>
+        <input
+          type='email'
+          name='email'
+          required
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          autoComplete='email'
+        />
+      </div>
+      <div>
+        <Button variant='primary' className='button-proceed' type='Submit'>
+          Register
+        </Button>
+      </div>
+    </form>
   );
 }
 

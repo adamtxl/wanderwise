@@ -7,6 +7,13 @@ const checkTripOwnerOrCollaborator = async (req, res, next) => {
     const tripId = req.body.tripId || req.params.tripId || req.body.trip_id || req.params.trip_id;
     const userId = req.user.id;
 
+    if (!tripId) {
+        return res.status(400).json({
+            success: false,
+            message: 'Trip ID is required'
+        });
+    }
+
     console.log('Checking trip ownership or collaboration for tripId:', tripId, 'and userId:', userId);
 
     const ownerQuery = `SELECT * FROM "trips" WHERE "trip_id" = $1 AND "user_id" = $2`;

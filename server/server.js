@@ -5,7 +5,10 @@ const PORT = process.env.PORT || 8080;
 
 
 const cors = require('cors')
-app.use(cors()) // Use this after the variable declaration
+app.use(cors({
+  origin: 'http://localhost:5173', // your frontend address
+  credentials: true // allow cookies to be sent across domains
+}));
 
 
 // Middleware Includes

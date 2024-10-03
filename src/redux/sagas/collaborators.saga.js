@@ -35,11 +35,24 @@ function* addCollaborator(action) {
     }
 }
 
+// Worker Saga: will be fired on "REMOVE_COLLABORATOR" actions
+function* removeCollaborator(action) {
+    const { tripId, userId } = action.payload;
+    try {
+        yield call(axios.delete, `/api/collaborators/remove`, { data: { tripId, userId } });
+        yield put({ type: 'FETCH_COLLABORATORS', payload: tripId });
+        yield put({ type: 'FETCH_NON_COLLABORATORS', payload: tripId });
+    } catch (error) {
+        console.error('Error removing collaborator:', error);
+    }
+}
+
 // Root Saga
 function* collaboratorsSaga() {
     yield takeEvery('FETCH_COLLABORATORS', fetchCollaborators);
     yield takeLatest('FETCH_NON_COLLABORATORS', fetchNonCollaborators);
     yield takeLatest('ADD_COLLABORATOR', addCollaborator);
+    yield takeLatest('REMOVE_COLLABORATOR', removeCollaborator);
 
 }
 

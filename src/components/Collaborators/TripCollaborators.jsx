@@ -10,15 +10,21 @@ function TripCollaborators({ trip_id }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_COLLABORATORS', payload: trip_id });
-        dispatch({ type: 'FETCH_NON_COLLABORATORS', payload: trip_id });
-        setLoading(true);
-    }, [trip_id]);
+        if (trip_id) {
+            dispatch({ type: 'FETCH_COLLABORATORS', payload: trip_id });
+            dispatch({ type: 'FETCH_NON_COLLABORATORS', payload: trip_id });
+            setLoading(true);
+        }
+    }, [trip_id, dispatch]);
 
     const handleAddCollaborator = () => {
         if (selectedUser) {
             dispatch({ type: 'ADD_COLLABORATOR', payload: { tripId: trip_id, userId: selectedUser.value } });
         }
+    };
+
+    const handleRemoveCollaborator = (userId) => {
+        dispatch({ type: 'REMOVE_COLLABORATOR', payload: { tripId: trip_id, userId } });
     };
 
     const options = nonCollaborators.map((user) => ({
@@ -43,8 +49,11 @@ function TripCollaborators({ trip_id }) {
         <div>
             <h2>Collaborators</h2>
             <ul>
-                {collaborators.map((collaborator) => (
-                    <li key={collaborator.id}>{collaborator.username}</li>
+                {collaborators.map((collaborator, index) => (
+                    <li key={`${collaborator.id}-${index}`}>
+                        {collaborator.username}
+                        <button onClick={() => handleRemoveCollaborator(collaborator.id)}>Remove</button>
+                    </li>
                 ))}
             </ul>
             <h3>Add Collaborator</h3>

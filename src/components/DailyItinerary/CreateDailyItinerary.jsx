@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
-import axios from 'axios';
 import Map from '../Maps/Map';
 import './itinerary.css';
 import moment from 'moment';
 
 const CreateDailyItinerary = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
     const trip = location.state.trip;
@@ -25,6 +24,7 @@ const CreateDailyItinerary = () => {
     });
 
     useEffect(() => {
+        console.log('Fetching map items');
         dispatch({ type: 'FETCH_MAP_ITEMS' });
     }, [dispatch]);
 
@@ -42,20 +42,20 @@ const CreateDailyItinerary = () => {
             // Dispatch ADD_ITINERARY action with itinerary details
             dispatch({ type: 'ADD_ITINERARY', payload: { itinerary, tripId } });
             dispatch({ type: 'FETCH_MAP_ITEMS' });
-            history.push(`/trip-details/${tripId}`);
+            navigate(`/trip-details/${tripId}`);
         } catch (error) {
             console.error('Error creating itinerary:', error);
         }
     };
 
-    
     const handleMarkerClick = (item) => {
+        // Update itinerary state with the clicked marker data
         setItinerary({
             ...itinerary,
             location: item.title,
-            description: item.description,
             latitude: item.latitude,
-            longitude: item.longitude
+            longitude: item.longitude,
+            description: item.description
         });
     };
 
@@ -120,7 +120,6 @@ const CreateDailyItinerary = () => {
                 <Row>
                     <Col xs={12} md={6}>
                         <Form.Group controlId="Latitude">
-                            
                             <Form.Control
                                 type="hidden"
                                 name="Latitude"
@@ -155,7 +154,8 @@ const CreateDailyItinerary = () => {
                 </Button>
             </Form>
 
-            <Map items={mapItems} onItemClick={handleMarkerClick} />
+            {/* Pass the `mapItems` and `handleMarkerClick` function to the Map component */}
+            <Map markers={mapItems} onItemClick={handleMarkerClick} />
         </Container>
     );
 };

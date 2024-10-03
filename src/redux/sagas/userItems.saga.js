@@ -14,10 +14,14 @@ function* fetchUserItems() {
 // Add User Item
 function* addUserItem(action) {
     try {
-        yield call(axios.post, '/api/user-items', action.payload);
+        const response = yield call(axios.post, '/api/user-items', action.payload);
         yield put({ type: 'FETCH_USER_ITEMS' }); // Refresh user items
     } catch (error) {
         console.error('Error adding user item:', error);
+        // Handle unauthorized error
+        if (error.response && error.response.status === 401) {
+            yield put({ type: 'LOGOUT' });
+        }
     }
 }
 

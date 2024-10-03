@@ -7,11 +7,16 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 	const selectItineraries = (state) => state.itineraries;
 
 	const reduxItineraries = useSelector(selectItineraries) || [];
+	const uniqueItineraries = reduxItineraries.reduce((acc, itinerary) => {
+		const found = acc.find((item) => item.itinerary_id === itinerary.itinerary_id);
+		if (!found) acc.push(itinerary);
+		return acc;
+	}, []);
 	const dispatch = useDispatch();
 
 	if (!Array.isArray(reduxItineraries)) {
 		console.error('reduxItineraries is not an array', reduxItineraries);
-		return null; // or some fallback UI
+		return null; 
 	}
 
 	useEffect(() => {
@@ -37,10 +42,10 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 
 	return (
 		<Row>
-			{reduxItineraries.length > 0 ? (
-				reduxItineraries.map((itinerary, index) => (
+			{uniqueItineraries.length > 0 ? (
+				uniqueItineraries.map((itinerary, index) => (
 					<Col xs={12} sm={6} md={4} lg={3} key={itinerary.itinerary_id}>
-						<Card className='mb-4 op'>
+						<Card className='mb-4 op' data-cy="itinerary-item">
 							<Card.Body className='op'>
 								{selectedItinerary?.itinerary_id === itinerary.itinerary_id ? (
 									<div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import './trips.css';
 
@@ -11,7 +11,7 @@ const TripsComponent = () => {
     const user = useSelector((state) => state.user);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTrips = async () => {
@@ -58,12 +58,12 @@ const TripsComponent = () => {
         <Container>
             <Row>
                 <Col>
-                    <Button className='button-proceed' onClick={() => history.push('/past-trips')}>
+                    <Button className='button-proceed' onClick={() => navigate('/past-trips')}>
                         View Past Trips
                     </Button>
                 </Col>
                 <Col className='mb-4 d-flex justify-content-center'>
-                    <Button className='button-proceed' onClick={() => history.push('/edit-create-trip')}>
+                    <Button className='button-proceed' onClick={() => navigate('/edit-create-trip')}>
                         Create New Trip
                     </Button>
                 </Col>
@@ -85,7 +85,7 @@ const TripsComponent = () => {
                                     <br />
                                     <strong>Countdown:</strong> {calculateCountdown(trip.start_date)}
                                 </Card.Text>
-                                <Button variant="primary" onClick={() => history.push(`/trip-details/${trip.trip_id}`)}>
+                                <Button variant="primary" data-cy="trip-details" onClick={() => navigate(`/trip-details/${trip.trip_id}`)}>
                                     View Details
                                 </Button>
                             </Card.Body>

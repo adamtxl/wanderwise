@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,88 +28,63 @@ import Map from '../Maps/Map';
 import MapPage from '../Maps/MapPage';
 import PastTrips from '../Trips/PastTrips';
 import AdminPage from '../AdminPage/AdminPage';
-// import TripCollaborators from '../Collaborators/TripCollaborators';
+import NonAdminLanding from '../AdminPage/NonAdminLanding';
 
 function App() {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const user = useSelector((store) => store.user);
+	useEffect(() => {
+		dispatch({ type: 'FETCH_USER' }); // Fetch the user's session when the app loads
+	}, [dispatch]);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_USER' });
-    }, [dispatch]);
-
-    return (
-        <Router>
-            <div id="root">
-                <div className="App">
-                    <Nav />
-                    <div className="content">
-                        <Switch>
-                            <Redirect exact from='/' to='/home' />
-                            <Route exact path='/about'>
-                                <AboutPage />
-                            </Route>
-                            <ProtectedRoute exact path='/user'>
-                                <UserPage />
-                            </ProtectedRoute>
-                            <ProtectedRoute exact path='/info'>
-                                <InfoPage />
-                            </ProtectedRoute>
-                            <Route exact path='/login'>
-                                {user.id ? (
-                                    <Redirect to='/trips' />
-                                ) : (
-                                    <LoginPage />
-                                )}
-                            </Route>
-                            <Route exact path='/registration'>
-                                {user.id ? (
-                                    <Redirect to='/info' />
-                                ) : (
-                                    <RegisterPage />
-                                )}
-                            </Route>
-                            <Route exact path='/home'>
-                                {user.id ? (
-                                    <Redirect to='/trips' />
-                                ) : (
-                                    <LandingPage />
-                                )}
-                            </Route>
-                            <ProtectedRoute exact path='/trips'>
-                                <Trips />
-                            </ProtectedRoute>
-                            <ProtectedRoute exact path='/past-trips'>
-                                <PastTrips />
-                            </ProtectedRoute>
-                            <ProtectedRoute path='/trip-details/:trip_id' component={TripDetails} />
-                            <ProtectedRoute exact path='/edit-create-trip'>
-                                <EditCreateTrips />
-                            </ProtectedRoute>
-                            <ProtectedRoute exact path='/create-daily-itinerary'>
-                                <DailyItinerary />
-                            </ProtectedRoute>
-                            <ProtectedRoute path='/packing-list/:tripId/'>
-                                <PackingList />
-                            </ProtectedRoute>
-                            <ProtectedRoute path='/map/'>
-                                <MapPage />
-                            </ProtectedRoute>
-                            {/* <ProtectedRoute path='/trip-details/:trip_id/collab' component={TripCollaborators} /> */}
-                            <AdminRoute path='/admin/'>
-                                <AdminPage />
-                            </AdminRoute>
-                            <Route>
-                                <h1>404</h1>
-                            </Route>
-                        </Switch>
-                    </div>
-                    <Footer />
-                </div>
-            </div>
-        </Router>
-    );
+	return (
+		<Router>
+			<div>
+				<Nav />
+				<Routes>
+					<Route path='/' element={<LandingPage />} />
+					<Route path='/about' element={<AboutPage />} />
+					<Route path='/user' element={<ProtectedRoute />}>
+						<Route path='/user' element={<UserPage />} />
+					</Route>
+					<Route path='/info' element={<ProtectedRoute />}>
+						<Route path='/info' element={<InfoPage />} />
+					</Route>
+					<Route path='/login' element={<LoginPage />} />
+					<Route path='/register' element={<RegisterPage />} />
+					<Route path='/trips' element={<ProtectedRoute />}>
+						<Route path='/trips' element={<Trips />} />
+					</Route>
+					<Route path='/edit-create-trips' element={<ProtectedRoute />}>
+						<Route path='/edit-create-trips' element={<EditCreateTrips />} />
+					</Route>
+					<Route path='/create-daily-itinerary' element={<ProtectedRoute />}>
+						<Route path='/create-daily-itinerary' element={<DailyItinerary />} />
+					</Route>
+					<Route path='/packing-list/:tripId' element={<ProtectedRoute />}>
+						<Route path='/packing-list/:tripId' element={<PackingList />} />
+					</Route>
+					<Route path='/map' element={<ProtectedRoute />}>
+						<Route path='/map' element={<Map />} />
+					</Route>
+					<Route path='/map-page' element={<ProtectedRoute />}>
+						<Route path='/map-page' element={<MapPage />} />
+					</Route>
+					<Route path='/past-trips' element={<ProtectedRoute />}>
+						<Route path='/past-trips' element={<PastTrips />} />
+					</Route>
+					<Route path='/admin' element={<AdminRoute />}>
+						<Route path='/admin' element={<AdminPage />} />
+					</Route>
+					<Route path='/non-admin-landing' element={<NonAdminLanding />} />
+					<Route path='/trip-details/:tripId' element={<ProtectedRoute />}>
+						<Route path='/trip-details/:tripId' element={<TripDetails />} />
+					</Route>
+				</Routes>
+				<Footer />
+			</div>
+		</Router>
+	);
 }
 
 export default App;
