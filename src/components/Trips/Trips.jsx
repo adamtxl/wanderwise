@@ -63,7 +63,7 @@ const TripsComponent = () => {
                     </Button>
                 </Col>
                 <Col className='mb-4 d-flex justify-content-center'>
-                    <Button className='button-proceed' onClick={() => navigate('/edit-create-trip')}>
+                    <Button className='button-proceed' onClick={() => navigate('/edit-create-trips')}>
                         Create New Trip
                     </Button>
                 </Col>
