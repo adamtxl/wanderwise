@@ -56,8 +56,10 @@ const TripDetails = ({ user }) => {
 
     const handleSaveClick = async () => {
         try {
-            dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
+            await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
             setIsEditing(false);
+            // Fetch the updated trip details
+            dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id });
         } catch (error) {
             console.error('Error updating trip:', error);
         }

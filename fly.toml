@@ -20,5 +20,10 @@ TZ = "America/Chicago"
   min_machines_running = 0
   processes = ['app']
 
+  [[services.static]]
+  routes = [
+    {src = "/.*", dest = "/index.html"}
+  ]
+
 [[vm]]
   size = 'shared-cpu-1x'
