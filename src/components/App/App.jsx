@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
@@ -21,7 +19,6 @@ import Trips from '../Trips/Trips';
 import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
 import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
 import PackingList from '../PackingList/PackingList';
-import Map from '../Maps/Map';
 import MapPage from '../Maps/MapPage';
 import PastTrips from '../Trips/PastTrips';
 import AdminPage from '../AdminPage/AdminPage';
@@ -30,6 +27,7 @@ import NonAdminLanding from '../AdminPage/NonAdminLanding';
 function App() {
     const dispatch = useDispatch();
     const trips = useSelector((state) => state.trip.trips || []);  // Fetch trips from the store
+    const currentTrip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data); // Fetch the currently viewed trip
     const [backgroundImage, setBackgroundImage] = useState('');
 
     useEffect(() => {
@@ -37,44 +35,33 @@ function App() {
         dispatch({ type: 'FETCH_TRIPS' }); // Fetch trips when the app loads
     }, [dispatch]);
 
-    // Function to map category_id to a background image
-	const getCategoryBackground = (category_id) => {
-		switch (category_id) {
-			case 1: // Beach
-				return '/images/beach.jpeg'; // Use the generated beach image
-			case 2: // Mountains
-				return '/images/Alaska-Desktop-Summer.jpeg';
-			case 3: // Cityscape
-				return '/images/cityscape.jpeg'; // Use the generated cityscape image
-			case 4: // Road Trip/Highway
-				return '/images/highway.jpeg';
-			case 5: // Desert
-				return '/images/desert.jpeg';  // Add desert image path here
-			case 6: // Forest
-				return '/images/forest.jpeg';  // Add forest image path here
-			case 7: // Countryside/Farmland
-				return '/images/countryside.jpeg'; // Add countryside/farmland image path here
-			case 8: // Tropical Island
-				return '/images/island.jpeg'; // Use or generate a distinct tropical island image
-			case 9: // Winter Wonderland
-				return '/images/winter.jpeg';  // Add winter image path here
-			case 10: // Historical/Landmarks
-				return '/images/landmarks.jpeg';  // Add historical landmarks image path here
-			case 11: // Theme Parks
-				return '/images/themepark.jpeg';  // Add theme park image path here
-			default:
-				return '/images/generic.jpeg'; // Fallback image
-		}
-	};
+    const getCategoryBackground = (category_id) => {
+        switch (category_id) {
+            case 1: return '/images/beach.jpeg'; // Beach
+            case 2: return '/images/Alaska-Desktop-Summer.jpeg'; // Mountains
+            case 3: return '/images/cityscape.jpeg'; // Cityscape
+            case 4: return '/images/highway.jpeg'; // Road Trip/Highway
+            case 5: return '/images/desert.jpeg'; // Desert
+            case 6: return '/images/forest.jpeg'; // Forest
+            case 7: return '/images/countryside.jpeg'; // Countryside/Farmland
+            case 8: return '/images/island.jpeg'; // Tropical Island
+            case 9: return '/images/winter.jpeg'; // Winter Wonderland
+            case 10: return '/images/landmarks.jpeg'; // Historical/Landmarks
+            case 11: return '/images/themepark.jpeg'; // Theme Parks
+            default: return '/images/generic.jpeg'; // Fallback
+        }
+    };
 
-    // Get the upcoming trip and its category
     useEffect(() => {
-        if (trips.length > 0) {
+        if (currentTrip && currentTrip.category_id) {
+            const categoryImage = getCategoryBackground(currentTrip.category_id);
+            setBackgroundImage(categoryImage);
+        } else if (trips.length > 0) {
             const nextTrip = trips[0];  // Assuming trips are sorted by date, the next trip is at index 0
             const categoryImage = getCategoryBackground(nextTrip.category_id);
             setBackgroundImage(categoryImage);  // Set the background image based on the category
         }
-    }, [trips]);
+    }, [trips, currentTrip]);
 
     return (
         <Router>
@@ -102,9 +89,6 @@ function App() {
                     </Route>
                     <Route path='/packing-list/:tripId' element={<ProtectedRoute />}>
                         <Route path='/packing-list/:tripId' element={<PackingList />} />
-                    </Route>
-                    <Route path='/map' element={<ProtectedRoute />}>
-                        <Route path='/map' element={<Map />} />
                     </Route>
                     <Route path='/map-page' element={<ProtectedRoute />}>
                         <Route path='/map-page' element={<MapPage />} />
