@@ -44,8 +44,8 @@ function* fetchTripById(action) {
 
 function* createTrip(action) {
     try {
-        console.log('Saga: Creating a new trip...');
-        const response = yield call(axios.post, '/api/trips', action.payload);
+        console.log('Saga: Creating a new trip with category...');
+        const response = yield call(axios.post, '/api/trips', action.payload); // payload should include category_id
         console.log('Saga: New trip created:', response.data);
         yield put({ type: 'FETCH_TRIPS' }); // Fetch trips again after creating a new one
     } catch (error) {
@@ -55,7 +55,7 @@ function* createTrip(action) {
 
 function* updateTrip(action) {
     try {
-        yield call(axios.put, `/api/trips/${action.payload.trip_id}`, action.payload);
+        yield call(axios.put, `/api/trips/${action.payload.trip_id}`, action.payload); // Ensure payload includes category_id
         yield put({ type: 'FETCH_TRIPS' });
     } catch (error) {
         console.log('Error with updating trip:', error);

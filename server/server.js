@@ -25,6 +25,7 @@ const mapItemRouter = require('./routes/map.router');
 const mapUpdateRouter = require('./routes/map.update.router');
 const uploadRouter = require('./routes/upload.router');
 const collaboratorsRouter = require('./routes/collaborators.router');
+const tripCategoryRouter = require('./routes/tripCategory.router');
 
 
 // Express Middleware
@@ -49,6 +50,7 @@ app.use('/api/map_item', mapItemRouter);
 app.use('/api/map-update', mapUpdateRouter);
 app.use('/api/upload-csv', uploadRouter);
 app.use('/api/collaborators', collaboratorsRouter);
+app.use('/api/trip-categories', tripCategoryRouter);
 
 
 // Listen Server & Port
