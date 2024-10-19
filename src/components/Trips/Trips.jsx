@@ -9,6 +9,7 @@ const TripsComponent = () => {
     const dispatch = useDispatch();
     const trips = useSelector((state) => state.trip.trips || []);
     const user = useSelector((state) => state.user);
+    const categories = useSelector((state) => state.categoryReducer.categories || []); // Fetch categories from Redux store
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const TripsComponent = () => {
             try {
                 setLoading(true);
                 dispatch({ type: 'FETCH_TRIPS' });
+                dispatch({ type: 'FETCH_CATEGORIES' }); // Fetch categories if not already fetched
                 setError(null);
             } catch (error) {
                 setError('Failed to fetch trips');
@@ -46,6 +48,12 @@ const TripsComponent = () => {
         return collaborators.includes(user.id) && trip.user_id !== user.id;
     };
 
+    // Helper function to get the category name by category_id
+    const getCategoryName = (categoryId) => {
+        const category = categories.find(cat => cat.category_id === categoryId);
+        return category ? category.category_name : 'Unknown';  // Return 'Unknown' if category is not found
+    };
+
     if (loading) {
         return <Spinner animation='border' />;
     }
@@ -63,7 +71,7 @@ const TripsComponent = () => {
                     </Button>
                 </Col>
                 <Col className='mb-4 d-flex justify-content-center'>
-                    <Button className='button-proceed' onClick={() => navigate('/edit-create-trip')}>
+                    <Button className='button-proceed' onClick={() => navigate('/edit-create-trips')}>
                         Create New Trip
                     </Button>
                 </Col>
@@ -82,6 +90,8 @@ const TripsComponent = () => {
                                     <strong>Location:</strong> {trip.locales}
                                     <br />
                                     <strong>Destinations:</strong> {trip.map_locations}
+                                    <br />
+                                    <strong>Category:</strong> {getCategoryName(trip.category_id)}
                                     <br />
                                     <strong>Countdown:</strong> {calculateCountdown(trip.start_date)}
                                 </Card.Text>

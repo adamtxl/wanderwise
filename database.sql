@@ -61,3 +61,24 @@ CREATE TABLE collaborators (
   FOREIGN KEY (trip_id) REFERENCES "trips"(trip_id),
   FOREIGN KEY (user_id) REFERENCES "user"(id)
 );
+
+
+CREATE TABLE trip_categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE trips ADD COLUMN category_id INTEGER REFERENCES trip_categories(category_id);
+
+INSERT INTO trip_categories (category_name)
+VALUES
+    ('Beach'),
+    ('Mountains'),
+    ('Cityscape'),
+    ('Road Trip/Highway'),
+    ('Desert'),
+    ('Forest'),
+    ('Countryside/Farmland'),
+    ('Tropical Island'),
+    ('Winter Wonderland'),
+    ('Historical/Landmarks');

@@ -37,7 +37,6 @@ const TripMap = ({ tripId }) => {
         const latitude = parseFloat(location.latitude);
         const longitude = parseFloat(location.longitude);
 
-        console.log(`Rendering marker ${index}: Latitude: ${latitude}, Longitude: ${longitude}`);
 
         return (
           latitude && longitude ? (

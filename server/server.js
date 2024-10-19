@@ -25,6 +25,7 @@ const mapItemRouter = require('./routes/map.router');
 const mapUpdateRouter = require('./routes/map.update.router');
 const uploadRouter = require('./routes/upload.router');
 const collaboratorsRouter = require('./routes/collaborators.router');
+const tripCategoryRouter = require('./routes/tripCategory.router');
 
 
 // Express Middleware
@@ -49,9 +50,21 @@ app.use('/api/map_item', mapItemRouter);
 app.use('/api/map-update', mapUpdateRouter);
 app.use('/api/upload-csv', uploadRouter);
 app.use('/api/collaborators', collaboratorsRouter);
+app.use('/api/trip-categories', tripCategoryRouter);
 
 
 // Listen Server & Port
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
+});
+
+
+const path = require('path');
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../build')));
+
+// The "catchall" handler: for any request that doesn't match one above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
 });

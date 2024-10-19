@@ -118,15 +118,15 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 // Create a new trip
 router.post('/', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
-    const { trip_name, start_date, end_date, locales, map_locations } = req.body;
+    const { trip_name, start_date, end_date, locales, map_locations, category_id } = req.body;
 
     const query = `
-        INSERT INTO "trips" ("user_id", "trip_name", "start_date", "end_date", "locales", "map_locations")
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO "trips" ("user_id", "trip_name", "start_date", "end_date", "locales", "map_locations", "category_id")
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `;
 
-    pool.query(query, [userId, trip_name, start_date, end_date, locales, map_locations])
+    pool.query(query, [userId, trip_name, start_date, end_date, locales, map_locations, category_id])
         .then(result => {
             res.status(201).json({
                 success: true,
@@ -147,16 +147,16 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 router.put('/:id', rejectUnauthenticated, (req, res) => {
     const tripId = req.params.id;
     const userId = req.user.id;
-    const { trip_name, start_date, end_date, locales, map_locations } = req.body;
+    const { trip_name, start_date, end_date, locales, map_locations, category_id } = req.body;
 
     const query = `
         UPDATE "trips"
-        SET "trip_name" = $1, "start_date" = $2, "end_date" = $3, "locales" = $4, "map_locations" = $5
-        WHERE "trip_id" = $6 AND "user_id" = $7
+        SET "trip_name" = $1, "start_date" = $2, "end_date" = $3, "locales" = $4, "map_locations" = $5, "category_id" = $6
+        WHERE "trip_id" = $7 AND "user_id" = $8
         RETURNING *;
     `;
 
-    pool.query(query, [trip_name, start_date, end_date, locales, map_locations, tripId, userId])
+    pool.query(query, [trip_name, start_date, end_date, locales, map_locations, category_id, tripId, userId])
         .then(result => {
             if (result.rows.length === 0) {
                 return res.status(404).json({

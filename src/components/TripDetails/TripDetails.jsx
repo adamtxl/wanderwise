@@ -20,6 +20,28 @@ const TripDetails = ({ user }) => {
         end_date: '',
         locales: '',
         map_locations: '',
+        category_id: '', // Include category_id
+    };
+
+    // Fetch categories from Redux store
+    const categories = useSelector((state) => state.categoryReducer.categories);
+    const [backgroundImage, setBackgroundImage] = useState('');  // State for dynamic background
+
+    const getCategoryBackground = (category_id) => {
+        switch (category_id) {
+            case 1: return '/images/beach.jpeg'; // Beach
+            case 2: return '/images/Alaska-Desktop-Summer.jpeg'; // Mountains
+            case 3: return '/images/cityscape.jpeg'; // Cityscape
+            case 4: return '/images/highway.jpeg'; // Road Trip/Highway
+            case 5: return '/images/desert.jpeg'; // Desert
+            case 6: return '/images/forest.jpeg'; // Forest
+            case 7: return '/images/countryside.jpeg'; // Countryside/Farmland
+            case 8: return '/images/island.jpeg'; // Tropical Island
+            case 9: return '/images/winter.jpeg'; // Winter Wonderland
+            case 10: return '/images/landmarks.jpeg'; // Historical/Landmarks
+            case 11: return '/images/themepark.jpeg'; // Theme Parks
+            default: return '/images/generic.jpeg'; // Fallback
+        }
     };
 
     const [isEditing, setIsEditing] = useState(false);
@@ -29,25 +51,30 @@ const TripDetails = ({ user }) => {
     useEffect(() => {
         if (tripId) {
             dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
+            dispatch({ type: 'FETCH_CATEGORIES' }); // Fetch categories when component mounts
         }
     }, [dispatch, tripId]);
 
+    // Update the editedTrip state whenever trip details are updated
     useEffect(() => {
         setEditedTrip(trip);
     }, [trip]);
-    
-    console.log("tripId from params:", tripId);
 
-    const createItinerary = () => {
-        navigate('/create-daily-itinerary', { state: { trip: trip } });
-    };
-
-    const goToPackingList = () => {
-        navigate(`/packing-list/${trip.trip_id}`);
-    };
+    // Set the background image when the category_id changes
+    useEffect(() => {
+        if (trip.category_id) {
+            const categoryImage = getCategoryBackground(trip.category_id);
+            setBackgroundImage(categoryImage);
+        }
+    }, [trip.category_id]); // Now it will trigger on category_id change
 
     const handleInputChange = (event) => {
         setEditedTrip({ ...editedTrip, [event.target.name]: event.target.value });
+    };
+
+    // Handle category change
+    const handleCategoryChange = (event) => {
+        setEditedTrip({ ...editedTrip, category_id: event.target.value });
     };
 
     const handleEditClick = () => {
@@ -56,20 +83,12 @@ const TripDetails = ({ user }) => {
 
     const handleSaveClick = async () => {
         try {
-            dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
+            await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
             setIsEditing(false);
+            // Fetch the updated trip details
+            dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id });
         } catch (error) {
             console.error('Error updating trip:', error);
-        }
-    };
-
-    const handleSaveItinerary = async (itinerary) => {
-        try {
-            dispatch({ type: 'UPDATE_ITINERARY', payload: itinerary });
-            setSelectedItinerary(null);
-            dispatch({ type: 'FETCH_ITINERARIES', payload: itinerary.trip_id });
-        } catch (error) {
-            console.error('Error updating itinerary:', error);
         }
     };
 
@@ -86,7 +105,7 @@ const TripDetails = ({ user }) => {
     };
 
     return (
-        <Container>
+        <Container style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh' }}>
             <Row>
                 <Col className="border-container">
                     <Card className="mb-4">
@@ -140,6 +159,24 @@ const TripDetails = ({ user }) => {
                                     trip.locales
                                 )}
                                 <br />
+                                <strong>Category:</strong>{' '}
+                                {isEditing ? (
+                                    <Form.Control
+                                        as="select"
+                                        value={editedTrip.category_id}
+                                        onChange={handleCategoryChange}
+                                    >
+                                        <option value="">Select a category</option>
+                                        {categories.map((category) => (
+                                            <option key={category.category_id} value={category.category_id}>
+                                                {category.category_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                ) : (
+                                    categories.find((cat) => cat.category_id === trip.category_id)?.category_name || 'Unknown'
+                                )}
+                                <br />
                                 <strong>Map Locations:</strong>{' '}
                                 {isEditing ? (
                                     <Form.Control
@@ -161,10 +198,10 @@ const TripDetails = ({ user }) => {
                                     Edit Trip
                                 </Button>
                             )}
-                            <Button className="m-2" data-cy="daily-itinerary-button" onClick={createItinerary}>
+                            <Button className="m-2" onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}>
                                 Create Daily Itinerary
                             </Button>
-                            <Button className="m-2" data-cy="packing-list-button" onClick={goToPackingList}>
+                            <Button className="m-2" onClick={() => navigate(`/packing-list/${trip.trip_id}`)}>
                                 Go to Packing List
                             </Button>
                             <Button variant="danger" onClick={handleDeleteClick}>
@@ -177,12 +214,7 @@ const TripDetails = ({ user }) => {
             </Row>
             <Row className="border-container">
                 <Col>
-                    <DisplayItineraries
-                        onSelectItinerary={setSelectedItinerary}
-                        selectedItinerary={selectedItinerary}
-                        onSaveItinerary={handleSaveItinerary}
-                        trip_id={trip.trip_id}
-                    />
+                    <DisplayItineraries trip_id={trip.trip_id} />
                 </Col>
             </Row>
             <Row>
