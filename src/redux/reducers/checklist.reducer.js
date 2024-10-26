@@ -10,7 +10,7 @@ const checklistReducer = (state = initialState, action) => {
         
         case 'UPDATE_CHECKLIST_ITEM':
             return state.map((item) =>
-                item.checklist_id === action.payload.itemId
+                item.checklist_id === action.payload.checklistId  // Fix: use checklistId from payload
                     ? { ...item, ...action.payload.updatedItem }
                     : item
             );
