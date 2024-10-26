@@ -51,7 +51,7 @@ app.use('/api/map-update', mapUpdateRouter);
 app.use('/api/upload-csv', uploadRouter);
 app.use('/api/collaborators', collaboratorsRouter);
 app.use('/api/trip-categories', tripCategoryRouter);
-app.use('/api/todo', todoRouter);
+app.use('/api/checklist', todoRouter);
 
 
 // Listen Server & Port
