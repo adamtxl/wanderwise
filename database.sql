@@ -82,3 +82,12 @@ VALUES
     ('Tropical Island'),
     ('Winter Wonderland'),
     ('Historical/Landmarks');
+
+
+    CREATE TABLE checklist (
+    checklist_id SERIAL PRIMARY KEY,
+    trip_id INTEGER REFERENCES trips(trip_id) ON DELETE CASCADE,
+    item_name VARCHAR(255) NOT NULL,
+    completed BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
