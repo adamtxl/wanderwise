@@ -10,6 +10,7 @@ import mapItemReducer from './mapItemReducer.js';
 import locationReducer from './location.reducer.js';
 import collaboratorsReducer from './collaborators.reducer.js';
 import categoryReducer from './category.reducer.js';
+import checklistReducer from './checklist.reducer.js';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   location: locationReducer,
   collaboratorsReducer,
   categoryReducer,
+  checklistReducer,
 });
 
 export default rootReducer;

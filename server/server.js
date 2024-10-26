@@ -26,7 +26,7 @@ const mapUpdateRouter = require('./routes/map.update.router');
 const uploadRouter = require('./routes/upload.router');
 const collaboratorsRouter = require('./routes/collaborators.router');
 const tripCategoryRouter = require('./routes/tripCategory.router');
-
+const todoRouter = require('./routes/todo.router');
 
 // Express Middleware
 app.use(express.json());
@@ -51,6 +51,7 @@ app.use('/api/map-update', mapUpdateRouter);
 app.use('/api/upload-csv', uploadRouter);
 app.use('/api/collaborators', collaboratorsRouter);
 app.use('/api/trip-categories', tripCategoryRouter);
+app.use('/api/todo', todoRouter);
 
 
 // Listen Server & Port
