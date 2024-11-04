@@ -95,9 +95,11 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 											data-cy='add-to-packing-list-button'
 										>
 											<i className='bi bi-plus'></i>
+											Add
 										</Button>
 										<Button className='btn btn-secondary btn-xs mr-2' onClick={() => handleEditClick(item)}>
 											<i className='bi bi-pencil-square'></i>
+											Edit
 										</Button>
 										<Button
 											variant='danger'
@@ -105,6 +107,7 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
 											onClick={() => handleDeleteUserItem(item.item_id)}
 										>
 											<i className='bi bi-x-lg'></i>
+											Remove
 										</Button>
 									</div>
 								</>

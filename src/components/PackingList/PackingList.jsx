@@ -103,7 +103,7 @@ const PackingList = () => {
 								name='item_category'
 							/>
 							<Button data-cy="add_item" className='btn button-proceed mr-2 btn-xs op' type='submit'>
-								<i className='bi bi-plus'></i>Item
+								<i className='bi bi-plus'></i>+ Item
 							</Button>
 						</form>
 					</div>
