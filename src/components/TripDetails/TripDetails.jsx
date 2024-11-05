@@ -23,68 +23,67 @@ const TripDetails = ({ user }) => {
 		category_id: '', // Include category_id
 	};
 
-	// Fetch categories from Redux store
 	const categories = useSelector((state) => state.categoryReducer.categories);
-	const [backgroundImage, setBackgroundImage] = useState(''); // State for dynamic background
-
-	const getCategoryBackground = (category_id) => {
-		switch (category_id) {
-			case 1:
-				return '/images/beach.jpeg'; // Beach
-			case 2:
-				return '/images/Alaska-Desktop-Summer.jpeg'; // Mountains
-			case 3:
-				return '/images/cityscape.jpeg'; // Cityscape
-			case 4:
-				return '/images/highway.jpeg'; // Road Trip/Highway
-			case 5:
-				return '/images/desert.jpeg'; // Desert
-			case 6:
-				return '/images/forest.jpeg'; // Forest
-			case 7:
-				return '/images/countryside.jpeg'; // Countryside/Farmland
-			case 8:
-				return '/images/island.jpeg'; // Tropical Island
-			case 9:
-				return '/images/winter.jpeg'; // Winter Wonderland
-			case 10:
-				return '/images/landmarks.jpeg'; // Historical/Landmarks
-			case 11:
-				return '/images/themepark.jpeg'; // Theme Parks
-			default:
-				return '/images/generic.jpeg'; // Fallback
-		}
-	};
-
+	const reduxItineraries = useSelector((state) => state.itinerary) || [];
+	const [backgroundImage, setBackgroundImage] = useState('');
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedTrip, setEditedTrip] = useState(trip);
 	const [selectedItinerary, setSelectedItinerary] = useState(null);
 
+	const getCategoryBackground = (category_id) => {
+		switch (category_id) {
+			case 1: return '/images/beach.jpeg';
+			case 2: return '/images/Alaska-Desktop-Summer.jpeg';
+			case 3: return '/images/cityscape.jpeg';
+			case 4: return '/images/highway.jpeg';
+			case 5: return '/images/desert.jpeg';
+			case 6: return '/images/forest.jpeg';
+			case 7: return '/images/countryside.jpeg';
+			case 8: return '/images/island.jpeg';
+			case 9: return '/images/winter.jpeg';
+			case 10: return '/images/landmarks.jpeg';
+			case 11: return '/images/themepark.jpeg';
+			default: return '/images/generic.jpeg';
+		}
+	};
+
+	const handleSelectItinerary = (itinerary) => {
+		setSelectedItinerary(itinerary);
+	};
+
+	const handleMarkerClick = (location) => {
+		const matchingItinerary = reduxItineraries.find(itinerary => itinerary.location === location.title);
+		if (matchingItinerary) {
+			handleSelectItinerary(matchingItinerary);
+		}
+	};
+
 	useEffect(() => {
 		if (tripId) {
 			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
-			dispatch({ type: 'FETCH_CATEGORIES' }); // Fetch categories when component mounts
+			dispatch({ type: 'FETCH_CATEGORIES' });
 		}
 	}, [dispatch, tripId]);
 
-	// Update the editedTrip state whenever trip details are updated
 	useEffect(() => {
-		setEditedTrip(trip);
-	}, [trip]);
+		if (JSON.stringify(trip) !== JSON.stringify(editedTrip)) {
+			setEditedTrip(trip);
+		}
+	}, [trip, editedTrip]);
 
-	// Set the background image when the category_id changes
 	useEffect(() => {
 		if (trip.category_id) {
 			const categoryImage = getCategoryBackground(trip.category_id);
-			setBackgroundImage(categoryImage);
+			if (categoryImage !== backgroundImage) {
+				setBackgroundImage(categoryImage);
+			}
 		}
-	}, [trip.category_id]); // Now it will trigger on category_id change
+	}, [trip.category_id, backgroundImage]);
 
 	const handleInputChange = (event) => {
 		setEditedTrip({ ...editedTrip, [event.target.name]: event.target.value });
 	};
 
-	// Handle category change
 	const handleCategoryChange = (event) => {
 		setEditedTrip({ ...editedTrip, category_id: event.target.value });
 	};
@@ -97,7 +96,6 @@ const TripDetails = ({ user }) => {
 		try {
 			await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
 			setIsEditing(false);
-			// Fetch the updated trip details
 			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id });
 		} catch (error) {
 			console.error('Error updating trip:', error);
@@ -227,12 +225,16 @@ const TripDetails = ({ user }) => {
 			</Row>
 			<Row className='border-container'>
 				<Col>
-					<DisplayItineraries trip_id={trip.trip_id} />
+					<DisplayItineraries 
+                        trip_id={trip.trip_id} 
+                        onSelectItinerary={handleSelectItinerary}
+                        selectedItinerary={selectedItinerary}
+                    />
 				</Col>
 			</Row>
 			<Row>
 				<Col>
-					<TripMap tripId={trip.trip_id} />
+					<TripMap tripId={trip.trip_id} onMarkerClick={handleMarkerClick} />
 				</Col>
 			</Row>
 		</Container>

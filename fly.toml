@@ -1,18 +1,12 @@
-# fly.toml app configuration file generated for wanderwise-at on 2024-07-01T13:20:16-05:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
 app = 'wanderwise-at'
 primary_region = 'ord'
 
 [env]
 TZ = "America/Chicago"
 
-
 [build]
 
-[http_service]
+[[services]]
   internal_port = 8080
   force_https = true
   auto_stop_machines = true
@@ -21,6 +15,9 @@ TZ = "America/Chicago"
   processes = ['app']
 
   [[services.static]]
+    guest_path = "/images"      # Path to the images in your app’s root
+    url_prefix = "/images"      # URL prefix for accessing the images directory
+
   routes = [
     {src = "/.*", dest = "/index.html"}
   ]

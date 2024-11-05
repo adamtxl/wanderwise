@@ -283,4 +283,35 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
         });
 });
 
+// Fetch itineraries and associated map items for a specific trip
+router.get('/:trip_id/itineraries-with-map-items', rejectUnauthenticated, async (req, res) => {
+    const tripId = req.params.trip_id;
+    const userId = req.user.id;
+
+    const query = `
+        SELECT i.*, m.id AS map_item_id, m.title, m.description, m.latitude, m.longitude
+        FROM "itinerary" i
+        JOIN "trips" t ON i.trip_id = t.trip_id
+        LEFT JOIN "itinerary_map_items" imi ON i.itinerary_id = imi.itinerary_id
+        LEFT JOIN "map_items" m ON imi.map_item_id = m.id
+        WHERE i.trip_id = $1 AND (t.user_id = $2 OR t.collaborator = $2)
+        ORDER BY i.day;
+    `;
+
+    try {
+        const result = await pool.query(query, [tripId, userId]);
+        res.status(200).json({
+            success: true,
+            data: result.rows,
+            message: 'Itineraries and map items retrieved successfully'
+        });
+    } catch (err) {
+        console.error('Error retrieving itineraries and map items:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
+});
+
 module.exports = router;
