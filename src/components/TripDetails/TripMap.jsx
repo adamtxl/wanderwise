@@ -1,113 +1,120 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactMapGL, { Marker, FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { Card } from 'react-bootstrap';
 
-const TripMap = ({ tripId, onMarkerClick }) => {
-  const dispatch = useDispatch();
-  const itinerariesWithMapItems = useSelector(state => state.itineraries.itinerariesWithMapItems);
-  const locations = useSelector(state => state.location.locations); // Get locations from Redux
-  const loading = useSelector(state => state.location.loading); // Get loading status from Redux
-  console.log("Locations:", locations);
+const TripMap = ({ tripId }) => {
+    const dispatch = useDispatch();
 
-  const [viewport, setViewport] = useState({
-    latitude: 46.8772,
-    longitude: -96.7898,
-    zoom: 10,
-    width: '100%',
-    height: '400px',
-  });
+    const locations = useSelector((state) => state.location.locations) || []; 
+    const itineraries = useSelector((state) => state.itineraries.itineraries) || [];
 
-  useEffect(() => {
-    dispatch({ type: 'FETCH_LOCATIONS', payload: tripId });
-  }, [tripId, dispatch]);
+    const [viewport, setViewport] = useState({
+        latitude: 46.8772,
+        longitude: -96.7898,
+        zoom: 10,
+        width: '100%',
+        height: '400px',
+    });
+    const [selectedItinerary, setSelectedItinerary] = useState(null);
 
-  useEffect(() => {
-    if (tripId) dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId });
-}, [tripId, dispatch]);
+    useEffect(() => {
+        dispatch({ type: 'FETCH_LOCATIONS', payload: tripId });
+    }, [tripId, dispatch]);
 
-  useEffect(() => {
-    if (locations && locations.length > 0 && viewport.width && viewport.height) {
-      const validLocations = locations.filter(location =>
-        !isNaN(parseFloat(location.latitude)) && !isNaN(parseFloat(location.longitude))
-      );
-
-      if (validLocations.length === 0) return;
-
-      const latitudes = validLocations.map(location => parseFloat(location.latitude));
-      const longitudes = validLocations.map(location => parseFloat(location.longitude));
-
-      const minLatitude = Math.min(...latitudes);
-      const maxLatitude = Math.max(...latitudes);
-      const minLongitude = Math.min(...longitudes);
-      const maxLongitude = Math.max(...longitudes);
-
-      const bounds = [
-        [minLongitude, minLatitude],
-        [maxLongitude, maxLatitude]
-      ];
-
-      try {
-        const { width, height } = viewport;
-        const { longitude, latitude, zoom } = new WebMercatorViewport({ width, height })
-          .fitBounds(bounds, { padding: 50 });
-
-        setViewport(prevViewport => ({
-          ...prevViewport,
-          latitude,
-          longitude,
-          zoom: zoom > 0 ? zoom : 1,
-          transitionDuration: 1000,
-          transitionInterpolator: new FlyToInterpolator(),
-        }));
-      } catch (error) {
-        console.error("Error fitting map bounds:", error);
+    const handleMarkerClick = (location) => {
+      console.log("Clicked location:", location);
+      console.log("Location itinerary_id (type and value):", typeof location.itinerary_id, location.itinerary_id);
+  
+      if (itineraries && itineraries.length > 0) {
+          // Logging each itinerary's ID and type to diagnose mismatch
+          itineraries.forEach(itinerary => {
+              console.log("Available itinerary_id (type and value):", typeof itinerary.itinerary_id, itinerary.itinerary_id);
+          });
+  
+          const matchedItinerary = itineraries.find(
+              (itinerary) => String(itinerary.itinerary_id) === String(location.itinerary_id)
+          );
+  
+          console.log("Matched itinerary:", matchedItinerary);
+  
+          if (matchedItinerary) {
+              setSelectedItinerary({
+                  ...matchedItinerary,
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+              });
+          } else {
+              console.warn("No matching itinerary found for location:", location);
+              setSelectedItinerary({
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                  location: 'No details available',
+                  activity: 'Activity not found',
+                  notes: 'No additional notes',
+              });
+          }
+      } else {
+          console.warn("Itineraries not loaded or empty:", itineraries);
       }
-    }
-  }, [locations, viewport.width, viewport.height]);
+  };
 
-  if (loading || locations.length === 0) {
-    return <div>Loading map...</div>;
-  }
+    const handleCloseCard = () => {
+        setSelectedItinerary(null);
+    };
 
-  return (
-    <ReactMapGL
-    {...viewport}
-    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-    onViewportChange={nextViewport => setViewport(nextViewport)}
-    mapStyle="mapbox://styles/mapbox/streets-v11"
->
-    {locations.map((location, index) => {
-        const latitude = parseFloat(location.latitude);
-        const longitude = parseFloat(location.longitude);
+    return (
+        <ReactMapGL
+            {...viewport}
+            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+            onViewportChange={(nextViewport) => setViewport(nextViewport)}
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+        >
+            {Array.isArray(locations) && locations.map((location, index) => {
+                const { latitude, longitude } = location;
+                return (
+                    <Marker
+                        key={index}
+                        latitude={parseFloat(latitude)}
+                        longitude={parseFloat(longitude)}
+                    >
+                        <div
+                            style={{
+                                backgroundColor: 'red',
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => handleMarkerClick(location)}
+                        />
+                    </Marker>
+                );
+            })}
 
-        if (!isNaN(latitude) && !isNaN(longitude)) {
-            return (
-                <Marker
-                    key={index}
-                    latitude={latitude}
-                    longitude={longitude}
+            {selectedItinerary && (
+                <Popup
+                    longitude={parseFloat(selectedItinerary.longitude)}
+                    latitude={parseFloat(selectedItinerary.latitude)}
+                    closeButton={true}
+                    closeOnClick={false}
+                    onClose={handleCloseCard}
+                    anchor="top"
                 >
-                    {/* Marker with onClick that passes location to onMarkerClick */}
-                    <div
-                        style={{
-                            backgroundColor: 'red',
-                            width: '10px',
-                            height: '10px',
-                            borderRadius: '50%',
-                            cursor: 'pointer'
-                        }}
-                        onClick={() => onMarkerClick(location)}
-                    />
-                </Marker>
-            );
-        } else {
-            console.warn(`Invalid coordinates for location ${index}:`, location);
-            return null;
-        }
-    })}
-</ReactMapGL>
-  );
+                    <Card style={{ width: '200px', padding: '10px' }}>
+                        <Card.Title>{selectedItinerary.location || 'Location Details'}</Card.Title>
+                        <Card.Text>
+                            <strong>Activity:</strong> {selectedItinerary.activity || 'No activity available'}
+                        </Card.Text>
+                        <Card.Text>
+                            <strong>Notes:</strong> {selectedItinerary.notes || 'No notes available'}
+                        </Card.Text>
+                    </Card>
+                </Popup>
+            )}
+        </ReactMapGL>
+    );
 };
 
 export default TripMap;

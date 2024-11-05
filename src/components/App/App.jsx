@@ -104,9 +104,9 @@ function App() {
 					<Route path='/edit-create-trips' element={<ProtectedRoute />}>
 						<Route path='/edit-create-trips' element={<EditCreateTrips />} />
 					</Route>
-					<Route path='/create-daily-itinerary' element={<ProtectedRoute />}>
-						<Route path='/create-daily-itinerary' element={<DailyItinerary />} />
-					</Route>
+					<Route path='/create-daily-itinerary/:tripId' element={<ProtectedRoute />}>
+    <Route path='/create-daily-itinerary/:tripId' element={<DailyItinerary />} />
+</Route>
 					<Route path='/packing-list/:tripId' element={<ProtectedRoute />}>
 						<Route path='/packing-list/:tripId' element={<PackingList />} />
 					</Route>

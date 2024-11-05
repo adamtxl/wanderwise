@@ -60,14 +60,14 @@ function* deleteItinerary(action) {
 
 function* fetchLocations(action) {
     try {
-        const response = yield call(axios.get, `/api/locations/${action.payload}`); // Ensure endpoint is correct
-        yield put({ type: 'SET_LOCATIONS', payload: response.data });
+        const response = yield call(axios.get, `/api/trips/${action.payload}/itineraries/locations`);
+        console.log('Locations fetched:', response.data.data); // Log to verify the response
+        yield put({ type: 'SET_LOCATIONS', payload: response.data.data });
     } catch (error) {
         console.error('Error fetching locations:', error);
         yield put({ type: 'LOCATIONS_ERROR', payload: error.message });
     }
 }
-
 
 
 // Root saga

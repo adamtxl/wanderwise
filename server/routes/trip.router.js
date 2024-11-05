@@ -254,6 +254,8 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
     const tripId = req.params.trip_id;
     const userId = req.user.id;
 
+    console.log('Fetching locations for trip:', tripId, 'and user:', userId);
+
     const query = `
         SELECT longitude, latitude 
         FROM "itinerary" 
@@ -268,6 +270,7 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
 
     pool.query(query, [tripId, userId])
         .then(result => {
+            console.log('Locations retrieved:', result.rows); // Log the result
             res.status(200).json({
                 success: true,
                 data: result.rows,
@@ -282,7 +285,6 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
             });
         });
 });
-
 // Fetch itineraries and associated map items for a specific trip
 router.get('/:trip_id/itineraries-with-map-items', rejectUnauthenticated, async (req, res) => {
     const tripId = req.params.trip_id;

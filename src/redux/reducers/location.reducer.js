@@ -11,12 +11,12 @@ const initialState = {
           ...state,
           loading: true,
         };
-      case 'SET_LOCATIONS':
-        return {
-          ...state,
-          locations: action.payload,
-          loading: false,
-        };
+        case 'SET_LOCATIONS':
+          return {
+              ...state,
+              locations: action.payload,
+              loading: false,
+          };
       case 'LOCATIONS_ERROR':
         return {
           ...state,
