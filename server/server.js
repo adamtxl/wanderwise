@@ -27,6 +27,8 @@ const uploadRouter = require('./routes/upload.router');
 const collaboratorsRouter = require('./routes/collaborators.router');
 const tripCategoryRouter = require('./routes/tripCategory.router');
 const todoRouter = require('./routes/todo.router');
+const itineraryMapItemsRouter = require('./routes/itineraryMapItemsRouter');
+
 
 // Express Middleware
 app.use(express.json());
@@ -52,6 +54,7 @@ app.use('/api/upload-csv', uploadRouter);
 app.use('/api/collaborators', collaboratorsRouter);
 app.use('/api/trip-categories', tripCategoryRouter);
 app.use('/api/checklist', todoRouter);
+app.use('/api/itinerary_map_items', itineraryMapItemsRouter);
 
 
 // Listen Server & Port
