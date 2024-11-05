@@ -5,10 +5,11 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const TripMap = ({ tripId, onMarkerClick }) => {
   const dispatch = useDispatch();
-  
+  const itinerariesWithMapItems = useSelector(state => state.itineraries.itinerariesWithMapItems);
   const locations = useSelector(state => state.location.locations); // Get locations from Redux
   const loading = useSelector(state => state.location.loading); // Get loading status from Redux
-  
+  console.log("Locations:", locations);
+
   const [viewport, setViewport] = useState({
     latitude: 46.8772,
     longitude: -96.7898,
@@ -20,6 +21,10 @@ const TripMap = ({ tripId, onMarkerClick }) => {
   useEffect(() => {
     dispatch({ type: 'FETCH_LOCATIONS', payload: tripId });
   }, [tripId, dispatch]);
+
+  useEffect(() => {
+    if (tripId) dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId });
+}, [tripId, dispatch]);
 
   useEffect(() => {
     if (locations && locations.length > 0 && viewport.width && viewport.height) {
@@ -67,32 +72,41 @@ const TripMap = ({ tripId, onMarkerClick }) => {
 
   return (
     <ReactMapGL
-      {...viewport}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-      onViewportChange={nextViewport => setViewport(nextViewport)}
-      mapStyle="mapbox://styles/mapbox/streets-v11"
-    >
-      {locations.map((location, index) => {
+    {...viewport}
+    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+    onViewportChange={nextViewport => setViewport(nextViewport)}
+    mapStyle="mapbox://styles/mapbox/streets-v11"
+>
+    {locations.map((location, index) => {
         const latitude = parseFloat(location.latitude);
         const longitude = parseFloat(location.longitude);
 
         if (!isNaN(latitude) && !isNaN(longitude)) {
-          return (
-            <Marker
-              key={index}
-              latitude={latitude}
-              longitude={longitude}
-              onClick={() => onMarkerClick(location)}
-            >
-              <div style={{ backgroundColor: 'red', width: '10px', height: '10px', borderRadius: '50%', cursor: 'pointer' }} />
-            </Marker>
-          );
+            return (
+                <Marker
+                    key={index}
+                    latitude={latitude}
+                    longitude={longitude}
+                >
+                    {/* Marker with onClick that passes location to onMarkerClick */}
+                    <div
+                        style={{
+                            backgroundColor: 'red',
+                            width: '10px',
+                            height: '10px',
+                            borderRadius: '50%',
+                            cursor: 'pointer'
+                        }}
+                        onClick={() => onMarkerClick(location)}
+                    />
+                </Marker>
+            );
         } else {
-          console.warn(`Invalid coordinates for location ${index}:`, location);
-          return null;
+            console.warn(`Invalid coordinates for location ${index}:`, location);
+            return null;
         }
-      })}
-    </ReactMapGL>
+    })}
+</ReactMapGL>
   );
 };
 

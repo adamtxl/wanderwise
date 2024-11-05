@@ -6,13 +6,17 @@ import moment from 'moment';
 const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItinerary, trip_id }) => {
 	const selectItineraries = (state) => state.itineraries;
 
-	const reduxItineraries = useSelector(selectItineraries) || [];
-	const uniqueItineraries = reduxItineraries.reduce((acc, itinerary) => {
+	const reduxItineraries = useSelector(state => state.itineraries.itineraries);
+	const itinerariesArray = Array.isArray(reduxItineraries) ? reduxItineraries : [];
+	
+	const uniqueItineraries = itinerariesArray.reduce((acc, itinerary) => {
 		const found = acc.find((item) => item.itinerary_id === itinerary.itinerary_id);
 		if (!found) acc.push(itinerary);
 		return acc;
 	}, []);
 	const dispatch = useDispatch();
+
+	console.log('Redux itineraries state:', useSelector(state => state.itineraries));
 
 	if (!Array.isArray(reduxItineraries)) {
 		console.error('reduxItineraries is not an array', reduxItineraries);

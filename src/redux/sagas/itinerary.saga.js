@@ -35,7 +35,14 @@ function* updateItinerary(action) {
     }
 }
 
-
+function* fetchItinerariesWithMapItems(action) {
+    try {
+        const response = yield axios.get(`/api/trips/${action.payload}/itineraries-with-map-items`);
+        yield put({ type: 'SET_ITINERARIES_WITH_MAP_ITEMS', payload: response.data });
+    } catch (error) {
+        console.log('Error fetching itineraries with map items', error);
+    }
+}
 
 
 
@@ -51,12 +58,26 @@ function* deleteItinerary(action) {
     }
 }
 
+function* fetchLocations(action) {
+    try {
+        const response = yield call(axios.get, `/api/locations/${action.payload}`); // Ensure endpoint is correct
+        yield put({ type: 'SET_LOCATIONS', payload: response.data });
+    } catch (error) {
+        console.error('Error fetching locations:', error);
+        yield put({ type: 'LOCATIONS_ERROR', payload: error.message });
+    }
+}
+
+
+
 // Root saga
 function* itinerarySaga() {
     yield takeEvery('FETCH_ITINERARIES', fetchItineraries);
     yield takeEvery('ADD_ITINERARY', addItinerary);
     yield takeEvery('UPDATE_ITINERARY', updateItinerary);
     yield takeEvery('DELETE_ITINERARY', deleteItinerary);
+    yield takeEvery('FETCH_ITINERARIES_WITH_MAP_ITEMS', fetchItinerariesWithMapItems);
+    yield takeEvery('FETCH_LOCATIONS', fetchLocations);
 }
 
 export default itinerarySaga;
