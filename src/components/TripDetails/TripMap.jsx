@@ -11,6 +11,7 @@ const TripMap = ({ tripId }) => {
 
     const locations = useSelector((state) => state.location.locations) || [];
     const itineraries = useSelector((state) => state.itineraries.itineraries) || [];
+    // console.log("Itineraries in TripMap:", itineraries);
 
     const [viewport, setViewport] = useState({
         latitude: 46.8772,  // Initial location as a fallback
@@ -41,31 +42,49 @@ const TripMap = ({ tripId }) => {
     }, [locations]);
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_LOCATIONS', payload: tripId });
-        dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId }); // Fetch itineraries with map items
-    }, [tripId, dispatch]);
+      dispatch({ type: 'FETCH_LOCATIONS', payload: tripId });
+      dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId });
+  
+      // Log locations after fetching
+      console.log("Fetched locations:", locations);
+  }, [tripId, dispatch]);
 
-    const handleMarkerClick = (location) => {
-        const matchedItinerary = itineraries.find(
-            (itinerary) => String(itinerary.itinerary_id) === String(location.itinerary_id)
+  const handleMarkerClick = (location) => {
+    console.log("Clicked location:", location);
+
+    // Try matching directly by itinerary_id first
+    let matchedItinerary = itineraries.find(
+        (itinerary) => String(itinerary.itinerary_id) === String(location.itinerary_id)
+    );
+
+    // Fallback to matching by coordinates if itinerary_id is not available or no match found
+    if (!matchedItinerary) {
+        matchedItinerary = itineraries.find(
+            (itinerary) =>
+                parseFloat(itinerary.latitude) === parseFloat(location.latitude) &&
+                parseFloat(itinerary.longitude) === parseFloat(location.longitude)
         );
+    }
 
-        if (matchedItinerary) {
-            setSelectedItinerary({
-                ...matchedItinerary,
-                latitude: location.latitude,
-                longitude: location.longitude,
-            });
-        } else {
-            setSelectedItinerary({
-                latitude: location.latitude,
-                longitude: location.longitude,
-                location: 'No details available',
-                activity: 'Activity not found',
-                notes: 'No additional notes',
-            });
-        }
-    };
+    console.log("Matched itinerary:", matchedItinerary);
+
+    if (matchedItinerary) {
+        setSelectedItinerary({
+            ...matchedItinerary,
+            latitude: location.latitude,
+            longitude: location.longitude,
+        });
+    } else {
+        console.warn("No matching itinerary found for location:", location);
+        setSelectedItinerary({
+            latitude: location.latitude,
+            longitude: location.longitude,
+            location: 'No details available',
+            activity: 'Activity not found',
+            notes: 'No additional notes',
+        });
+    }
+};
 
     const handleCloseCard = () => {
         setSelectedItinerary(null);
