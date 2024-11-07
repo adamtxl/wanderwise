@@ -2,7 +2,9 @@ import { put, takeEvery, select } from 'redux-saga/effects';
 
 function* fetchLocations(action) {
   try {
-    const itineraries = yield select(state => state.itineraries);
+    const itineraries = yield select(state => state.itineraries); // Ensure this key is correct
+
+    console.log('Selected itineraries:', itineraries); // Log to verify if itineraries are populated
 
     if (itineraries && itineraries.length > 0) {
       const locations = itineraries.map(itinerary => ({
@@ -10,8 +12,9 @@ function* fetchLocations(action) {
         longitude: itinerary.longitude
       }));
 
-      // Make sure we're not passing any null or undefined coordinates
       const validLocations = locations.filter(loc => loc.latitude && loc.longitude);
+
+      console.log('Valid locations:', validLocations); // Log valid locations before dispatching
 
       yield put({ type: 'SET_LOCATIONS', payload: validLocations });
     } else {

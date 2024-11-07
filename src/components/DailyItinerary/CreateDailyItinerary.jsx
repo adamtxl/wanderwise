@@ -71,6 +71,7 @@ const CreateDailyItinerary = () => {
             location: item.title,
             latitude: item.latitude,
             longitude: item.longitude,
+            description: item.description || itinerary.description, // Fallback to existing description if undefined
             map_item_id: item.id // Capture the map item ID
         });
     };

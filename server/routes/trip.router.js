@@ -260,11 +260,9 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
         SELECT longitude, latitude 
         FROM "itinerary" 
         WHERE "trip_id" = $1
-        AND EXISTS (
-            SELECT 1
-            FROM "trips"
-            WHERE "trip_id" = $1
-            AND "user_id" = $2
+        AND (
+            EXISTS (SELECT 1 FROM "trips" WHERE "trip_id" = $1 AND "user_id" = $2)
+            OR EXISTS (SELECT 1 FROM "collaborators" WHERE "trip_id" = $1 AND "user_id" = $2)
         );
     `;
 
