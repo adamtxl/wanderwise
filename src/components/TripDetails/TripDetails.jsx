@@ -62,7 +62,7 @@ const TripDetails = ({ user }) => {
 		if (tripId) {
 			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
 			dispatch({ type: 'FETCH_CATEGORIES' });
-			dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId });
+			dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId }); // Fetch itineraries and map items
 		}
 	}, [dispatch, tripId]);
 

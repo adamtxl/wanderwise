@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactMapGL, { Marker, Popup } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Card } from 'react-bootstrap';
+import bbox from '@turf/bbox';
+import { featureCollection, point } from '@turf/helpers';
 
 const TripMap = ({ tripId }) => {
     const dispatch = useDispatch();
 
-    const locations = useSelector((state) => state.location.locations) || []; 
+    const locations = useSelector((state) => state.location.locations) || [];
     const itineraries = useSelector((state) => state.itineraries.itineraries) || [];
 
     const [viewport, setViewport] = useState({
-        latitude: 46.8772,
+        latitude: 46.8772,  // Initial location as a fallback
         longitude: -96.7898,
         zoom: 10,
         width: '100%',
@@ -19,46 +21,51 @@ const TripMap = ({ tripId }) => {
     });
     const [selectedItinerary, setSelectedItinerary] = useState(null);
 
+    // Adjust viewport to fit all markers on load
+    useEffect(() => {
+        if (locations.length > 0) {
+            const points = featureCollection(locations.map(location => 
+                point([parseFloat(location.longitude), parseFloat(location.latitude)])
+            ));
+            const [minLng, minLat, maxLng, maxLat] = bbox(points);
+
+            setViewport(prevViewport => ({
+                ...prevViewport,
+                latitude: (minLat + maxLat) / 2,
+                longitude: (minLng + maxLng) / 2,
+                zoom: 10,
+                transitionDuration: 1000,
+                transitionInterpolator: new FlyToInterpolator()
+            }));
+        }
+    }, [locations]);
+
     useEffect(() => {
         dispatch({ type: 'FETCH_LOCATIONS', payload: tripId });
+        dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId }); // Fetch itineraries with map items
     }, [tripId, dispatch]);
 
     const handleMarkerClick = (location) => {
-      console.log("Clicked location:", location);
-      console.log("Location itinerary_id (type and value):", typeof location.itinerary_id, location.itinerary_id);
-  
-      if (itineraries && itineraries.length > 0) {
-          // Logging each itinerary's ID and type to diagnose mismatch
-          itineraries.forEach(itinerary => {
-              console.log("Available itinerary_id (type and value):", typeof itinerary.itinerary_id, itinerary.itinerary_id);
-          });
-  
-          const matchedItinerary = itineraries.find(
-              (itinerary) => String(itinerary.itinerary_id) === String(location.itinerary_id)
-          );
-  
-          console.log("Matched itinerary:", matchedItinerary);
-  
-          if (matchedItinerary) {
-              setSelectedItinerary({
-                  ...matchedItinerary,
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-              });
-          } else {
-              console.warn("No matching itinerary found for location:", location);
-              setSelectedItinerary({
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                  location: 'No details available',
-                  activity: 'Activity not found',
-                  notes: 'No additional notes',
-              });
-          }
-      } else {
-          console.warn("Itineraries not loaded or empty:", itineraries);
-      }
-  };
+        const matchedItinerary = itineraries.find(
+            (itinerary) => String(itinerary.itinerary_id) === String(location.itinerary_id)
+        );
+
+        if (matchedItinerary) {
+            setSelectedItinerary({
+                ...matchedItinerary,
+                latitude: location.latitude,
+                longitude: location.longitude,
+            });
+        } else {
+            setSelectedItinerary({
+                latitude: location.latitude,
+                longitude: location.longitude,
+                location: 'No details available',
+                activity: 'Activity not found',
+                notes: 'No additional notes',
+            });
+        }
+    };
 
     const handleCloseCard = () => {
         setSelectedItinerary(null);

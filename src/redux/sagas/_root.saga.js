@@ -11,6 +11,7 @@ import locationSaga from './location.saga';
 import collaboratorsSaga from './collaborators.saga';
 import categorySaga from './category.saga';
 import checklistSaga from './checklist.saga';
+import itineraryMapItemsSaga from './itineraryMapItems.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -32,5 +33,6 @@ export default function* rootSaga() {
         collaboratorsSaga(),
         categorySaga(),
         checklistSaga(),
+        itineraryMapItemsSaga(),
     ]);
 }

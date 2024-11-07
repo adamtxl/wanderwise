@@ -39,20 +39,39 @@ const CreateDailyItinerary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            dispatch({ type: 'ADD_ITINERARY', payload: { itinerary, tripId } });
+            // Step 1: Dispatch action to add itinerary
+            const addItineraryResponse = await dispatch({ 
+                type: 'ADD_ITINERARY', 
+                payload: { itinerary, tripId } 
+            });
+    
+            // Step 2: Get new itinerary ID from response if possible
+            const newItineraryId = addItineraryResponse?.data?.id; // Adjust if addItinerary saga returns data
+    
+            // Step 3: Dispatch action to link map item with itinerary if map item is set
+            if (newItineraryId && itinerary.map_item_id) {
+                dispatch({
+                    type: 'ADD_ITINERARY_MAP_ITEM',
+                    payload: {
+                        itinerary_id: newItineraryId,
+                        map_item_id: itinerary.map_item_id
+                    }
+                });
+            }
+    
+            // Navigate back to Trip Details after creation
             navigate(`/trip-details/${tripId}`);
         } catch (error) {
             console.error('Error creating itinerary:', error);
         }
     };
-
     const handleMarkerClick = (item) => {
         setItinerary({
             ...itinerary,
             location: item.title,
             latitude: item.latitude,
             longitude: item.longitude,
-            description: item.description
+            map_item_id: item.id // Capture the map item ID
         });
     };
 

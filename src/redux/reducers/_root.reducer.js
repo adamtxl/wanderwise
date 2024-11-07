@@ -11,6 +11,7 @@ import locationReducer from './location.reducer.js';
 import collaboratorsReducer from './collaborators.reducer.js';
 import categoryReducer from './category.reducer.js';
 import checklistReducer from './checklist.reducer.js';
+import itineraryMapItems from './itineraryMapItems.reducer.js';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   collaboratorsReducer,
   categoryReducer,
   checklistReducer,
+  itineraryMapItems,
 });
 
 export default rootReducer;
