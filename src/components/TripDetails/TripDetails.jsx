@@ -2,10 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import TripMap from './TripMap'; // Adjust path as per your actual file structure
+import TripMap from './TripMap';
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import moment from 'moment';
 import TripCollaborators from '../Collaborators/TripCollaborators';
+
+// Import background images
+import beachImage from '/images/beach.jpeg';
+import alaskaImage from '/images/Alaska-Desktop-Summer.jpeg';
+import cityscapeImage from '/images/cityscape.jpeg';
+import highwayImage from '/images/highway.jpeg';
+import desertImage from '/images/desert.jpeg';
+import forestImage from '/images/forest.jpeg';
+import countrysideImage from '/images/countryside.jpeg';
+import islandImage from '/images/island.jpeg';
+import winterImage from '/images/winter.jpeg';
+import landmarksImage from '/images/landmarks.jpeg';
+import themeparkImage from '/images/themepark.jpeg';
+import genericImage from '/images/generic.jpeg';
 
 const TripDetails = ({ user }) => {
 	const location = useLocation();
@@ -20,7 +34,7 @@ const TripDetails = ({ user }) => {
 		end_date: '',
 		locales: '',
 		map_locations: '',
-		category_id: '', // Include category_id
+		category_id: '',
 	};
 
 	const categories = useSelector((state) => state.categoryReducer.categories);
@@ -30,20 +44,21 @@ const TripDetails = ({ user }) => {
 	const [editedTrip, setEditedTrip] = useState(trip);
 	const [selectedItinerary, setSelectedItinerary] = useState(null);
 
+	// Updated function with imports
 	const getCategoryBackground = (category_id) => {
 		switch (category_id) {
-			case 1: return '/images/beach.jpeg';
-			case 2: return '/images/Alaska-Desktop-Summer.jpeg';
-			case 3: return '/images/cityscape.jpeg';
-			case 4: return '/images/highway.jpeg';
-			case 5: return '/images/desert.jpeg';
-			case 6: return '/images/forest.jpeg';
-			case 7: return '/images/countryside.jpeg';
-			case 8: return '/images/island.jpeg';
-			case 9: return '/images/winter.jpeg';
-			case 10: return '/images/landmarks.jpeg';
-			case 11: return '/images/themepark.jpeg';
-			default: return '/images/generic.jpeg';
+			case 1: return beachImage;
+			case 2: return alaskaImage;
+			case 3: return cityscapeImage;
+			case 4: return highwayImage;
+			case 5: return desertImage;
+			case 6: return forestImage;
+			case 7: return countrysideImage;
+			case 8: return islandImage;
+			case 9: return winterImage;
+			case 10: return landmarksImage;
+			case 11: return themeparkImage;
+			default: return genericImage;
 		}
 	};
 
@@ -58,11 +73,19 @@ const TripDetails = ({ user }) => {
 		}
 	};
 
+	const handleSaveItinerary = (updatedItinerary) => {
+		// Dispatch the update action
+		dispatch({ type: 'UPDATE_ITINERARY', payload: updatedItinerary });
+	
+		// Clear the selected itinerary to close the edit view
+		setSelectedItinerary(null);
+	};
+
 	useEffect(() => {
 		if (tripId) {
 			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
 			dispatch({ type: 'FETCH_CATEGORIES' });
-			dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId }); // Fetch itineraries and map items
+			dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId });
 		}
 	}, [dispatch, tripId]);
 
@@ -230,6 +253,7 @@ const TripDetails = ({ user }) => {
                         trip_id={trip.trip_id} 
                         onSelectItinerary={handleSelectItinerary}
                         selectedItinerary={selectedItinerary}
+                        onSaveItinerary={handleSaveItinerary} // Pass this prop for saving itinerary updates
                     />
 				</Col>
 			</Row>
