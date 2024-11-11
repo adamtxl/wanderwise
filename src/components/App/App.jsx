@@ -27,56 +27,39 @@ import ChecklistComponent from '../Checklist/Checklist';
 
 function App() {
 	const dispatch = useDispatch();
-	const trips = useSelector((state) => state.trip.trips || []); // Fetch trips from the store
-	const currentTrip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data); // Fetch the currently viewed trip
+	const trips = useSelector((state) => state.trip.trips || []);
+	const currentTrip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data);
 	const [backgroundImage, setBackgroundImage] = useState('');
 
 	useEffect(() => {
-		dispatch({ type: 'FETCH_USER' }); // Fetch the user's session when the app loads
-		dispatch({ type: 'FETCH_TRIPS' }); // Fetch trips when the app loads
+		dispatch({ type: 'FETCH_USER' });
+		dispatch({ type: 'FETCH_TRIPS' });
 	}, [dispatch]);
 
 	const getCategoryBackground = (category_id) => {
-		switch (category_id) {
-			case 1:
-				return '/images/beach.jpeg'; // Beach
-			case 2:
-				return '/images/Alaska-Desktop-Summer.jpeg'; // Mountains
-			case 3:
-				return '/images/cityscape.jpeg'; // Cityscape
-			case 4:
-				return '/images/highway.jpeg'; // Road Trip/Highway
-			case 5:
-				return '/images/desert.jpeg'; // Desert
-			case 6:
-				return '/images/forest.jpeg'; // Forest
-			case 7:
-				return '/images/countryside.jpeg'; // Countryside/Farmland
-			case 8:
-				return '/images/island.jpeg'; // Tropical Island
-			case 9:
-				return '/images/winter.jpeg'; // Winter Wonderland
-			case 10:
-				return '/images/landmarks.jpeg'; // Historical/Landmarks
-			case 11:
-				return '/images/themepark.jpeg'; // Theme Parks
-			default:
-				return '/images/generic.jpeg'; // Fallback
-		}
+		const images = {
+			1: '/images/beach.jpeg',
+			2: '/images/Alaska-Desktop-Summer.jpeg',
+			3: '/images/cityscape.jpeg',
+			4: '/images/highway.jpeg',
+			5: '/images/desert.jpeg',
+			6: '/images/forest.jpeg',
+			7: '/images/countryside.jpeg',
+			8: '/images/island.jpeg',
+			9: '/images/winter.jpeg',
+			10: '/images/landmarks.jpeg',
+			11: '/images/themepark.jpeg',
+		};
+		return images[category_id] || '/images/generic.jpeg';
 	};
 
 	useEffect(() => {
-		console.log("Background Image URL:", backgroundImage);
-
-		if (currentTrip && currentTrip.category_id) {
-			const categoryImage = getCategoryBackground(currentTrip.category_id);
-			setBackgroundImage(categoryImage);
+		if (currentTrip?.category_id) {
+			setBackgroundImage(getCategoryBackground(currentTrip.category_id));
 		} else if (trips.length > 0) {
-			const nextTrip = trips[0]; // Assuming trips are sorted by date
-			const categoryImage = getCategoryBackground(nextTrip.category_id);
-			setBackgroundImage(categoryImage);
+			setBackgroundImage(getCategoryBackground(trips[0].category_id));
 		} else {
-			setBackgroundImage('/images/globe.jpeg'); // Default fallback
+			setBackgroundImage('/images/globe.jpeg');
 		}
 	}, [trips, currentTrip]);
 
@@ -86,9 +69,6 @@ function App() {
 				className='app-background'
 				style={{
 					backgroundImage: `url(${backgroundImage}?v=${new Date().getTime()})`,
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					minHeight: '100vh',
 				}}
 			>
 				<Nav />

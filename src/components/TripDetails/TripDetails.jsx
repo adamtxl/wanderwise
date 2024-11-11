@@ -6,6 +6,7 @@ import TripMap from './TripMap';
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import moment from 'moment';
 import TripCollaborators from '../Collaborators/TripCollaborators';
+import './TripDetails.css';
 
 // Import background images
 import beachImage from '/images/beach.jpeg';
@@ -138,12 +139,6 @@ const TripDetails = ({ user }) => {
 
 	return (
 		<Container
-			style={{
-				backgroundImage: `url(${backgroundImage})`,
-				backgroundSize: 'cover',
-				backgroundPosition: 'center',
-				minHeight: '100vh',
-			}}
 		>
 			<Row>
 				<Col className='border-container'>

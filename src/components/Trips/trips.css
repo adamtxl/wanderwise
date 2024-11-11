@@ -1,3 +1,50 @@
+/* Trips.css */
+
+.trip-card {
+    background-color: #f8f9fa; /* Light background, similar to bg-light */
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.trip-card:hover {
+    transform: translateY(-3px);
+}
+
+.next-trip {
+    background-color: #7dd216;
+    color: white !important;
+    text-shadow: 1px 1px 2px black;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Target specific text elements inside .next-trip */
+.next-trip .card-title,
+.next-trip .card-text {
+    color: white !important; /* Override color for title and text */
+}
+
 .collaborator-trip {
-    border: 2px solid blue;
+    background-color: #e8f1ff; /* Light blue background */
+    border: 2px solid #007bff; /* Blue border */
+    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.2); /* Soft blue shadow */
+}
+
+.collaborator-trip .card-title,
+.collaborator-trip .card-text {
+    color: #007bff; /* Blue text for collaborator trips */
+}
+
+/* Button styles */
+.button-proceed {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.button-proceed:hover {
+    background-color: #0056b3;
 }

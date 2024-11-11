@@ -9,7 +9,7 @@ const {
 /**
  Get all trips for that user
  */
- router.get('/', rejectUnauthenticated, (req, res) => {
+ router.get('/', rejectUnauthenticated, async (req, res) => {
     const userId = req.user.id;
     const query = `
         SELECT DISTINCT t.*
@@ -20,21 +20,38 @@ const {
         ORDER BY t.start_date ASC;
     `;
 
-    pool.query(query, [userId])
-        .then(result => {
-            res.status(200).json({
-                success: true,
-                data: result.rows,
-                message: 'Trips retrieved successfully'
-            });
-        })
-        .catch(err => {
-            console.error('Error getting trips:', err);
-            res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-            });
+    try {
+        // Get all trips for the user
+        const tripResults = await pool.query(query, [userId]);
+        const trips = tripResults.rows;
+
+        // Fetch collaborators for each trip
+        const tripsWithCollaborators = await Promise.all(trips.map(async (trip) => {
+            const collaboratorsQuery = `
+                SELECT "user".id, "user".username 
+                FROM "collaborators"
+                JOIN "user" ON "collaborators"."user_id" = "user".id
+                WHERE "collaborators"."trip_id" = $1;
+            `;
+
+            const collaboratorsResult = await pool.query(collaboratorsQuery, [trip.trip_id]);
+            // Add collaborators as an array to each trip object
+            trip.collaborators = collaboratorsResult.rows.map(c => c.id); // store collaborator IDs
+            return trip;
+        }));
+
+        res.status(200).json({
+            success: true,
+            data: tripsWithCollaborators,
+            message: 'Trips with collaborators retrieved successfully'
         });
+    } catch (err) {
+        console.error('Error getting trips:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
 });
 
 router.get('/past', rejectUnauthenticated, (req, res) => {
