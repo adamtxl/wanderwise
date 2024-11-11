@@ -152,7 +152,12 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
     const query = `
         UPDATE "trips"
         SET "trip_name" = $1, "start_date" = $2, "end_date" = $3, "locales" = $4, "map_locations" = $5, "category_id" = $6
-        WHERE "trip_id" = $7 AND "user_id" = $8
+        WHERE "trip_id" = $7 
+        AND (
+            "user_id" = $8 OR EXISTS (
+                SELECT 1 FROM "collaborators" WHERE "trip_id" = $7 AND "user_id" = $8
+            )
+        )
         RETURNING *;
     `;
 

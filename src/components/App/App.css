@@ -40,7 +40,7 @@ footer {
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	margin: 0px;
-	background-image: url('/images/Alaska-Desktop-Summer.jpeg');
+	/* background-image: url('/images/Alaska-Desktop-Summer.jpeg'); */
 	background-attachment: fixed; 
     background-size: cover; 
     background-position: center; 
@@ -234,7 +234,7 @@ input {
 	}
 }
 .bg-travel2 {
-	background-image: url('/images/Designer\ \(4\).jpeg');
+	/* background-image: url('/images/Designer\ \(4\).jpeg'); */
 	background-size: cover; /* Cover the entire card */
 	background-position: center; /* Center the background image */
 	color: black;
@@ -265,3 +265,8 @@ input {
   background-color: white;
   font-weight: bold;
 }
+
+/* App.css */
+.app-background {
+	background-color: #f5f5f5; /* Light fallback color */
+ }

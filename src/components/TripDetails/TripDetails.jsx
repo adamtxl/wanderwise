@@ -89,11 +89,9 @@ const TripDetails = ({ user }) => {
 		}
 	}, [dispatch, tripId]);
 
-	useEffect(() => {
-		if (JSON.stringify(trip) !== JSON.stringify(editedTrip)) {
-			setEditedTrip(trip);
-		}
-	}, [trip, editedTrip]);
+    useEffect(() => {
+        setEditedTrip({ ...trip });
+    }, [trip]);
 
 	useEffect(() => {
 		if (trip.category_id) {
@@ -118,9 +116,9 @@ const TripDetails = ({ user }) => {
 
 	const handleSaveClick = async () => {
 		try {
-			await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
+			await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip }); // `editedTrip` should include the updated `category_id`
 			setIsEditing(false);
-			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id });
+			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id }); // Refresh with the latest data
 		} catch (error) {
 			console.error('Error updating trip:', error);
 		}

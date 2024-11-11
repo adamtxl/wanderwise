@@ -66,21 +66,26 @@ function App() {
 	};
 
 	useEffect(() => {
+		console.log("Background Image URL:", backgroundImage);
+
 		if (currentTrip && currentTrip.category_id) {
 			const categoryImage = getCategoryBackground(currentTrip.category_id);
 			setBackgroundImage(categoryImage);
 		} else if (trips.length > 0) {
-			const nextTrip = trips[0]; // Assuming trips are sorted by date, the next trip is at index 0
+			const nextTrip = trips[0]; // Assuming trips are sorted by date
 			const categoryImage = getCategoryBackground(nextTrip.category_id);
-			setBackgroundImage(categoryImage); // Set the background image based on the category
+			setBackgroundImage(categoryImage);
+		} else {
+			setBackgroundImage('/images/globe.jpeg'); // Default fallback
 		}
 	}, [trips, currentTrip]);
 
 	return (
 		<Router>
 			<div
+				className='app-background'
 				style={{
-					backgroundImage: `url(${backgroundImage})`,
+					backgroundImage: `url(${backgroundImage}?v=${new Date().getTime()})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
 					minHeight: '100vh',
@@ -105,8 +110,8 @@ function App() {
 						<Route path='/edit-create-trips' element={<EditCreateTrips />} />
 					</Route>
 					<Route path='/create-daily-itinerary/:tripId' element={<ProtectedRoute />}>
-    <Route path='/create-daily-itinerary/:tripId' element={<DailyItinerary />} />
-</Route>
+						<Route path='/create-daily-itinerary/:tripId' element={<DailyItinerary />} />
+					</Route>
 					<Route path='/packing-list/:tripId' element={<ProtectedRoute />}>
 						<Route path='/packing-list/:tripId' element={<PackingList />} />
 					</Route>
