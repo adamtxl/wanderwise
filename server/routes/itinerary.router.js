@@ -142,5 +142,64 @@ router.delete('/:itineraryId', (req, res) => {
         });
 });
 
+// Link a map item to an itinerary
+router.post('/:itinerary_id/map-items', rejectUnauthenticated, (req, res) => {
+    const itineraryId = req.params.itinerary_id;
+    const { map_item_id } = req.body;
+
+    const query = `
+        INSERT INTO itinerary_map_items (itinerary_id, map_item_id)
+        VALUES ($1, $2)
+        RETURNING *;
+    `;
+
+    pool.query(query, [itineraryId, map_item_id])
+        .then(result => res.status(201).json({
+            success: true,
+            data: result.rows[0],
+            message: 'Map item linked to itinerary successfully'
+        }))
+        .catch(err => {
+            console.error('Error linking map item:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
+
+// Unlink a map item from an itinerary
+router.delete('/:itinerary_id/map-items/:map_item_id', rejectUnauthenticated, (req, res) => {
+    const itineraryId = req.params.itinerary_id;
+    const mapItemId = req.params.map_item_id;
+
+    const query = `
+        DELETE FROM itinerary_map_items
+        WHERE itinerary_id = $1 AND map_item_id = $2
+        RETURNING *;
+    `;
+
+    pool.query(query, [itineraryId, mapItemId])
+        .then(result => {
+            if (result.rowCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Link not found'
+                });
+            }
+            res.status(200).json({
+                success: true,
+                message: 'Map item unlinked from itinerary successfully',
+                data: result.rows[0]
+            });
+        })
+        .catch(err => {
+            console.error('Error unlinking map item:', err);
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        });
+});
 
 module.exports = router;

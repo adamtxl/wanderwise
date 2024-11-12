@@ -1,29 +1,33 @@
-# fly.toml app configuration file generated for wanderwise-at on 2024-07-01T13:20:16-05:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = 'wanderwise-at'
-primary_region = 'ord'
-
-[env]
-TZ = "America/Chicago"
-
+app = "wanderwise-at"
+primary_region = "ord"
 
 [build]
+  # Additional build options if needed
+
+[env]
+  TZ = "America/Chicago"
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
-  processes = ['app']
+  processes = ["app"]
 
-  [[services.static]]
-  routes = [
-    {src = "/.*", dest = "/index.html"}
-  ]
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
 
-[[vm]]
-  size = 'shared-cpu-1x'
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+

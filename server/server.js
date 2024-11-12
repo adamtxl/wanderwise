@@ -1,23 +1,35 @@
+// Import dependencies
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const path = require('path');
+const cors = require('cors');
 const PORT = process.env.PORT || 8080;
 
-
-const cors = require('cors')
+// Enable CORS for development (adjust origin if needed)
 app.use(cors({
-  origin: 'http://localhost:5173', // your frontend address
-  credentials: true // allow cookies to be sent across domains
+  origin: 'http://localhost:5173', // Change to your frontend's origin if different
+  credentials: true
 }));
 
+// Middleware for JSON and URL encoding
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Middleware Includes
+// Serve static files from the 'build' directory
+app.use(express.static(path.join(__dirname, '../build'))); // Ensure path to 'build' is correct
+
+// Passport session configuration
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./strategies/user.strategy');
 
-// Route Includes
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// API Routes - Place all API routes here to ensure they are matched first
 const userRouter = require('./routes/user.router');
-const tripRouter = require('./routes/trip.router')
+const tripRouter = require('./routes/trip.router');
 const packingListRouter = require('./routes/packingList.router');
 const itineraryRouter = require('./routes/itinerary.router');
 const user_itemsRouter = require('./routes/userItems.router');
@@ -27,20 +39,8 @@ const uploadRouter = require('./routes/upload.router');
 const collaboratorsRouter = require('./routes/collaborators.router');
 const tripCategoryRouter = require('./routes/tripCategory.router');
 const todoRouter = require('./routes/todo.router');
+const itineraryMapItemsRouter = require('./routes/itineraryMapItemsRouter');
 
-// Express Middleware
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static('build'));
-
-// Passport Session Configuration
-app.use(sessionMiddleware);
-
-// Start Passport Sessions
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Routes
 app.use('/api/user', userRouter);
 app.use('/api/trips', tripRouter);
 app.use('/api/packing-list', packingListRouter);
@@ -52,20 +52,15 @@ app.use('/api/upload-csv', uploadRouter);
 app.use('/api/collaborators', collaboratorsRouter);
 app.use('/api/trip-categories', tripCategoryRouter);
 app.use('/api/checklist', todoRouter);
+app.use('/api/itinerary_map_items', itineraryMapItemsRouter);
 
-
-// Listen Server & Port
-app.listen(PORT, () => {
-  console.log(`Listening on port: ${PORT}`);
+// Catch-all handler to serve `index.html` for all other routes
+// Ensure this is the last route handler after all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html')); // Double-check path
 });
 
-
-const path = require('path');
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../build')));
-
-// The "catchall" handler: for any request that doesn't match one above, send back index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server listening on port: ${PORT}`);
 });

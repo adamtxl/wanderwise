@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
+import markerIcon from '../../../public/images/Globe_4.png';
 
 const SimpleMap = ({ markers = [], onItemClick }) => {
   const [viewport, setViewport] = useState({
@@ -28,21 +29,24 @@ const SimpleMap = ({ markers = [], onItemClick }) => {
         mapboxApiAccessToken={mapboxToken}
         onViewportChange={(nextViewport) => setViewport(nextViewport)}
       >
-        {markers.length > 0 &&
-          markers.map((marker, index) => (
-            <Marker
-              key={index}
-              latitude={parseFloat(marker.latitude)}
-              longitude={parseFloat(marker.longitude)}
-            >
-              <div
-                onClick={() => onItemClick(marker)} // Call onItemClick when a marker is clicked
-                style={{ cursor: 'pointer' }}
-              >
-                {marker.title}
-              </div>
-            </Marker>
-          ))}
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            latitude={parseFloat(marker.latitude)}
+            longitude={parseFloat(marker.longitude)}
+          >
+            <img
+              src={markerIcon} // Place selection icon
+              alt="Selection marker"
+              style={{
+                width: '25px',
+                height: '25px',
+                cursor: 'pointer',
+              }}
+              onClick={() => onItemClick(marker)}
+            />
+          </Marker>
+        ))}
       </MapGL>
     </div>
   );

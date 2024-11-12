@@ -27,63 +27,48 @@ import ChecklistComponent from '../Checklist/Checklist';
 
 function App() {
 	const dispatch = useDispatch();
-	const trips = useSelector((state) => state.trip.trips || []); // Fetch trips from the store
-	const currentTrip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data); // Fetch the currently viewed trip
+	const trips = useSelector((state) => state.trip.trips || []);
+	const currentTrip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data);
 	const [backgroundImage, setBackgroundImage] = useState('');
 
 	useEffect(() => {
-		dispatch({ type: 'FETCH_USER' }); // Fetch the user's session when the app loads
-		dispatch({ type: 'FETCH_TRIPS' }); // Fetch trips when the app loads
+		dispatch({ type: 'FETCH_USER' });
+		dispatch({ type: 'FETCH_TRIPS' });
 	}, [dispatch]);
 
 	const getCategoryBackground = (category_id) => {
-		switch (category_id) {
-			case 1:
-				return '/images/beach.jpeg'; // Beach
-			case 2:
-				return '/images/Alaska-Desktop-Summer.jpeg'; // Mountains
-			case 3:
-				return '/images/cityscape.jpeg'; // Cityscape
-			case 4:
-				return '/images/highway.jpeg'; // Road Trip/Highway
-			case 5:
-				return '/images/desert.jpeg'; // Desert
-			case 6:
-				return '/images/forest.jpeg'; // Forest
-			case 7:
-				return '/images/countryside.jpeg'; // Countryside/Farmland
-			case 8:
-				return '/images/island.jpeg'; // Tropical Island
-			case 9:
-				return '/images/winter.jpeg'; // Winter Wonderland
-			case 10:
-				return '/images/landmarks.jpeg'; // Historical/Landmarks
-			case 11:
-				return '/images/themepark.jpeg'; // Theme Parks
-			default:
-				return '/images/generic.jpeg'; // Fallback
-		}
+		const images = {
+			1: '/images/beach.jpeg',
+			2: '/images/Alaska-Desktop-Summer.jpeg',
+			3: '/images/cityscape.jpeg',
+			4: '/images/highway.jpeg',
+			5: '/images/desert.jpeg',
+			6: '/images/forest.jpeg',
+			7: '/images/countryside.jpeg',
+			8: '/images/island.jpeg',
+			9: '/images/winter.jpeg',
+			10: '/images/landmarks.jpeg',
+			11: '/images/themepark.jpeg',
+		};
+		return images[category_id] || '/images/generic.jpeg';
 	};
 
 	useEffect(() => {
-		if (currentTrip && currentTrip.category_id) {
-			const categoryImage = getCategoryBackground(currentTrip.category_id);
-			setBackgroundImage(categoryImage);
+		if (currentTrip?.category_id) {
+			setBackgroundImage(getCategoryBackground(currentTrip.category_id));
 		} else if (trips.length > 0) {
-			const nextTrip = trips[0]; // Assuming trips are sorted by date, the next trip is at index 0
-			const categoryImage = getCategoryBackground(nextTrip.category_id);
-			setBackgroundImage(categoryImage); // Set the background image based on the category
+			setBackgroundImage(getCategoryBackground(trips[0].category_id));
+		} else {
+			setBackgroundImage('/images/globe.jpeg');
 		}
 	}, [trips, currentTrip]);
 
 	return (
 		<Router>
 			<div
+				className='app-background'
 				style={{
-					backgroundImage: `url(${backgroundImage})`,
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					minHeight: '100vh',
+					backgroundImage: `url(${backgroundImage}?v=${new Date().getTime()})`,
 				}}
 			>
 				<Nav />
@@ -104,8 +89,8 @@ function App() {
 					<Route path='/edit-create-trips' element={<ProtectedRoute />}>
 						<Route path='/edit-create-trips' element={<EditCreateTrips />} />
 					</Route>
-					<Route path='/create-daily-itinerary' element={<ProtectedRoute />}>
-						<Route path='/create-daily-itinerary' element={<DailyItinerary />} />
+					<Route path='/create-daily-itinerary/:tripId' element={<ProtectedRoute />}>
+						<Route path='/create-daily-itinerary/:tripId' element={<DailyItinerary />} />
 					</Route>
 					<Route path='/packing-list/:tripId' element={<ProtectedRoute />}>
 						<Route path='/packing-list/:tripId' element={<PackingList />} />

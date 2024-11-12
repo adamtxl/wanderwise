@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import Map from '../Maps/Map';
@@ -7,12 +7,11 @@ import './itinerary.css';
 import moment from 'moment';
 
 const CreateDailyItinerary = () => {
+    const { tripId } = useParams(); // Get tripId from URL parameters
     const navigate = useNavigate();
-    const location = useLocation();
     const dispatch = useDispatch();
-    const trip = location.state.trip;
-    const tripId = trip.trip_id;
-    const mapItems = useSelector(state => state.mapItems.items);
+    const trip = useSelector((state) => state.tripDetailReducer.currentTrip?.data); // Fetch trip details from Redux
+    const mapItems = useSelector((state) => state.mapItems.items);
 
     const [itinerary, setItinerary] = useState({
         day: '',
@@ -26,7 +25,8 @@ const CreateDailyItinerary = () => {
     useEffect(() => {
         console.log('Fetching map items');
         dispatch({ type: 'FETCH_MAP_ITEMS' });
-    }, [dispatch]);
+        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId }); // Ensure trip details are fetched
+    }, [dispatch, tripId]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -39,30 +39,47 @@ const CreateDailyItinerary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            // Dispatch ADD_ITINERARY action with itinerary details
-            dispatch({ type: 'ADD_ITINERARY', payload: { itinerary, tripId } });
-            dispatch({ type: 'FETCH_MAP_ITEMS' });
+            // Step 1: Dispatch action to add itinerary
+            const addItineraryResponse = await dispatch({ 
+                type: 'ADD_ITINERARY', 
+                payload: { itinerary, tripId } 
+            });
+    
+            // Step 2: Get new itinerary ID from response if possible
+            const newItineraryId = addItineraryResponse?.data?.id; // Adjust if addItinerary saga returns data
+    
+            // Step 3: Dispatch action to link map item with itinerary if map item is set
+            if (newItineraryId && itinerary.map_item_id) {
+                dispatch({
+                    type: 'ADD_ITINERARY_MAP_ITEM',
+                    payload: {
+                        itinerary_id: newItineraryId,
+                        map_item_id: itinerary.map_item_id
+                    }
+                });
+            }
+    
+            // Navigate back to Trip Details after creation
             navigate(`/trip-details/${tripId}`);
         } catch (error) {
             console.error('Error creating itinerary:', error);
         }
     };
-
     const handleMarkerClick = (item) => {
-        // Update itinerary state with the clicked marker data
         setItinerary({
             ...itinerary,
             location: item.title,
             latitude: item.latitude,
             longitude: item.longitude,
-            description: item.description
+            description: item.description || itinerary.description, // Fallback to existing description if undefined
+            map_item_id: item.id // Capture the map item ID
         });
     };
 
     const formatDate = (date) => moment(date).format('YYYY-MM-DD');
 
-    const tripStartDate = formatDate(trip.start_date);
-    const tripEndDate = formatDate(trip.end_date);
+    const tripStartDate = trip ? formatDate(trip.start_date) : '';
+    const tripEndDate = trip ? formatDate(trip.end_date) : '';
 
     return (
         <Container fluid>
@@ -117,28 +134,6 @@ const CreateDailyItinerary = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row>
-                    <Col xs={12} md={6}>
-                        <Form.Group controlId="Latitude">
-                            <Form.Control
-                                type="hidden"
-                                name="Latitude"
-                                value={itinerary.latitude}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col xs={12} md={6}>
-                        <Form.Group controlId="Longitude">
-                            <Form.Control
-                                type="hidden"
-                                name="Longitude"
-                                value={itinerary.longitude}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
                 <Form.Group controlId="notes">
                     <Form.Label className="form-label">Notes</Form.Label>
                     <Form.Control
@@ -154,7 +149,6 @@ const CreateDailyItinerary = () => {
                 </Button>
             </Form>
 
-            {/* Pass the `mapItems` and `handleMarkerClick` function to the Map component */}
             <Map markers={mapItems} onItemClick={handleMarkerClick} />
         </Container>
     );

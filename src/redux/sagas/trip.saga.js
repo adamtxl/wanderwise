@@ -53,12 +53,22 @@ function* createTrip(action) {
     }
 }
 
+// In your saga file
 function* updateTrip(action) {
     try {
-        yield call(axios.put, `/api/trips/${action.payload.trip_id}`, action.payload); // Ensure payload includes category_id
-        yield put({ type: 'FETCH_TRIPS' });
+        const { trip_id, ...updatedFields } = action.payload;
+        const response = yield call(axios.put, `/api/trips/${trip_id}`, updatedFields);
+        console.log("Updating trip at:", `/api/trips/${trip_id}`);
+        if (response.data.success) {
+            yield put({ type: 'UPDATE_TRIP_SUCCESS', payload: response.data.data });
+            // Optionally, fetch the updated trip to refresh data
+            yield put({ type: 'FETCH_TRIP_BY_ID', payload: trip_id });
+        } else {
+            yield put({ type: 'UPDATE_TRIP_FAILURE', payload: response.data.message });
+        }
     } catch (error) {
-        console.log('Error with updating trip:', error);
+        console.error('Error in updateTrip saga:', error);
+        yield put({ type: 'UPDATE_TRIP_FAILURE', payload: error.message });
     }
 }
 

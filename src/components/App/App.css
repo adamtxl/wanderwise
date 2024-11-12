@@ -1,15 +1,11 @@
+/* Base Reset and Layout */
 html,
 body,
 #react-root {
 	height: 100%;
-}
-
-/* App.css */
-html,
-body {
-	height: 100%;
 	margin: 0;
 	padding: 0;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #root {
@@ -18,16 +14,84 @@ body {
 	min-height: 100vh;
 }
 
-.App {
+.app-background {
+	background-size: cover;
+	background-position: center;
+	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	flex: 1;
 }
 
-.content {
-	flex: 1;
+/* TripDetails Card Styling */
+.bg-travel {
+	background-size: cover;
+	background-position: center;
+	color: black;
+	padding: 1.5em;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	position: relative;
+	text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
+	font-weight: bold;
 }
 
+.bg-travel::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image: inherit;
+	background-size: cover;
+	background-position: center;
+	opacity: 0.3; /* Overlay opacity for readability */
+	z-index: -1;
+	border-radius: 10px;
+}
+
+/* Specific Elements Inside TripDetails Card */
+.label {
+	font-size: 1.3em;
+	font-weight: bold;
+	color: white;
+}
+
+.border-container {
+	padding: 20px;
+	margin-top: 10px;
+	border: 2px solid #ccc;
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque white for contrast */
+}
+
+/* Button Styling */
+button.m-2 {
+	margin: 0.5em;
+}
+
+.button-proceed,
+.button-remove,
+.button-edit {
+	color: white;
+	padding: 0.75em 1.25em;
+	border-radius: 5px;
+	opacity: 0.9;
+}
+
+.button-proceed {
+	background-color: #6b16d2;
+}
+
+.button-remove {
+	background-color: #d2161f;
+}
+
+.button-edit {
+	background-color: #16D2C9;
+}
+
+/* Layout Adjustments */
 footer {
 	background-color: #f1f1f1;
 	text-align: center;
@@ -37,86 +101,24 @@ footer {
 	bottom: 0;
 }
 
-body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	margin: 0px;
-	background-image: url('/images/Alaska-Desktop-Summer.jpeg');
-	background-attachment: fixed; 
-    background-size: cover; 
-    background-position: center; 
-}
-
-img {
-	display: inline-block;
-	max-width: 100%;
-}
-
-/* --------------------------------------------------------------------------------
-Container
--------------------------------------------------------------------------------- */
-
 .container {
 	padding: 20px;
 }
 
-/* --------------------------------------------------------------------------------
-Button
--------------------------------------------------------------------------------- */
-
-/* .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-color: #014041;
-  border-width: 1px 1px 3px;
-  border-radius: 4px;
-  background-color: #00acb0;
-  color: #f8f8f8;
-  font-size: 1.1rem;
-  outline: 0;
-  cursor: pointer;
+/* App-Level Background */
+body {
+	background-attachment: fixed; 
+	background-size: cover; 
+	background-position: center;
 }
 
-.btn_sizeMin {
-  min-height: 50px;
-  min-width: 100px;
+.map-container {
+	position: relative;
+	width: 100%;
+	height: 400px;
 }
 
-.btn_sizeSm {
-  padding: 10px 15px;
-  font-size: 0.8rem;
-}
-
-.btn_sizeFull {
-  display: block;
-  width: 100%;
-}
-
-.btn:hover {
-  background-color: #008183;
-  text-decoration: none;
-} */
-
-/* This line makes the "Register" and "Login" buttons look like links */
-.btn_asLink {
-	padding: 0;
-	border-width: 0;
-	border-bottom: 1px solid #444;
-	border-radius: 0;
-	background: none;
-	font: inherit;
-	color: #444;
-}
-
-.btn_asLink:hover {
-	background-color: transparent;
-	border-color: #008183;
-	color: #008183;
-}
-
-/* --------------------------------------------------------------------------------
-Alert
--------------------------------------------------------------------------------- */
-
+/* Alert Styling */
 .alert {
 	box-sizing: border-box;
 	padding: 15px 10px;
@@ -128,10 +130,7 @@ Alert
 	font-size: 0.8rem;
 }
 
-/* --------------------------------------------------------------------------------
-Form Treatment
--------------------------------------------------------------------------------- */
-
+/* Form Panel */
 .formPanel {
 	box-sizing: border-box;
 	width: 400px;
@@ -148,68 +147,7 @@ input {
 	margin-bottom: 10px;
 }
 
-.map-container {
-	position: relative;
-	width: 100%;
-	height: 400px;
-}
-
-.map-marker {
-	cursor: pointer;
-}
-
-.log-register {
-	background-color: #7dd216;
-	color: white;
-	text-shadow: black 1px 1px 4px;
-}
-
-.summer {
-	background-color: rgba(0, 0, 0, 0.5);
-	color: white;
-	font-weight: bold;
-	font-size: 1.5em;
-	text-shadow: black 1px 1px 4px;
-	padding: 1em;
-	opacity: 1;
-	border: solid 1px #7dd216;
-}
-
-.button-proceed {
-	background-color: #6b16d2;
-	color: white;
-	padding: 1em;
-	opacity: 0.8;
-}
-
-.button-remove {
-	background-color: #d2161f;
-	color: white;
-	padding: 1em;
-	opacity: 0.8;
-}
-
-.button-edit {
-	/* background-color: #16D2C9; */
-	color: white;
-	padding: 1em;
-	opacity: 0.8;
-}
-
-.fullwidth {
-	width: 100%;
-}
-
-.no-shadow {
-	text-shadow: none;
-}
-
-.next-trip {
-	background-color: #7dd216;
-	color: white;
-	padding: 1em;
-	text-shadow: black 1px 1px 4px;
-}
+/* Responsive Layout */
 @media (min-width: 100px) {
 	.bg-travel {
 		position: relative;
@@ -220,48 +158,109 @@ input {
 	}
 
 	.bg-travel::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-image: url('/images/planetravel.jpeg');
-		background-size: cover;
-		background-position: center;
-		opacity: 0.4; /* Adjust the opacity as needed */
-		z-index: -1;
+		opacity: 0.4;
 	}
 }
-.bg-travel2 {
-	background-image: url('/images/Designer\ \(4\).jpeg');
-	background-size: cover; /* Cover the entire card */
-	background-position: center; /* Center the background image */
+
+/* Fine-tune Image Display */
+img {
+	display: inline-block;
+	max-width: 100%;
+}
+
+/* TripDetails Card Styling */
+.bg-travel {
+	background-image: url('/images/planetravel.jpeg'); /* Explicit background image */
+	background-size: cover;
+	background-position: center;
 	color: black;
-	text-shadow: white 1px 1px 8px;
+	padding: 1.5em;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	position: relative;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
 }
 
-.about {
-	background-color: white;
-	color: black;
-	padding: 1em;
-	text-shadow: white 1px 1px 4px;
+/* Overlay to enhance readability */
+.bg-travel::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay for readability */
+	border-radius: 10px;
+	z-index: -1;
 }
 
-.margin-top {
-	margin-top: 20px;
-}
-
+/* Text Styling within bg-travel */
 .label {
 	font-size: 1.3em;
+	font-weight: bold;
+	color: white; /* Standout color for contrast */
+	text-shadow: #000 1px 1px 4px; /* Slight shadow for depth */
 }
 
-.shadow {
-	text-shadow: black 0px 0px 1px;
-  font-weight: bold;
+.border-container {
+	padding: 20px;
+	margin-top: 10px;
+	border: 2px solid #ccc;
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque white */
 }
 
-.visible {
-  background-color: white;
-  font-weight: bold;
+/* Trip Details Card Background */
+.bg-travel {
+    position: relative;
+    color: black;
+    text-shadow: white 4px 4px 12px;
+    font-size: 1.5em;
+    z-index: 1;
+    background-color: rgb(0, 0, 0); /* Adds a semi-transparent white background */
+    padding: 1em; /* Adjusts padding inside the box */
+    border-radius: 8px; /* Optional: to round the corners */
+}
+
+.bg-travel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/planetravel.jpeg'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3; /* Set background image opacity to 0.3 */
+    z-index: -1; /* Places background below content */
+    border-radius: 8px; /* Optional: matches the border radius of the box */
+}
+
+.card-title, .card-text {
+    font-weight: bold;
+    color: black;
+}
+
+/* Button Styles */
+button {
+    font-size: 1rem;
+    margin: 0.2em;
+    padding: 0.6em 1.2em;
+    border-radius: 4px;
+}
+
+button:focus, button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Collaborators Section */
+.collaborators {
+    margin-top: 1em;
+    font-size: 1.1rem;
+    text-align: left;
+    color: #444;
 }

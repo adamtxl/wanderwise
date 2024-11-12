@@ -12,6 +12,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@turf/turf": "^7.1.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
@@ -43,7 +44,8 @@
     "react-select": "^5.8.0",
     "redux": "^4.1.2",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^1.1.3"
+    "redux-saga": "^1.1.3",
+    "turf": "^3.0.14"
   },
   "scripts": {
     "start": "node server/server.js",

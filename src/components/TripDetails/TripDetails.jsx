@@ -2,10 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import TripMap from './TripMap'; // Adjust path as per your actual file structure
+import TripMap from './TripMap';
 import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import moment from 'moment';
 import TripCollaborators from '../Collaborators/TripCollaborators';
+import './TripDetails.css';
+
+// Import background images
+import beachImage from '/images/beach.jpeg';
+import alaskaImage from '/images/Alaska-Desktop-Summer.jpeg';
+import cityscapeImage from '/images/cityscape.jpeg';
+import highwayImage from '/images/highway.jpeg';
+import desertImage from '/images/desert.jpeg';
+import forestImage from '/images/forest.jpeg';
+import countrysideImage from '/images/countryside.jpeg';
+import islandImage from '/images/island.jpeg';
+import winterImage from '/images/winter.jpeg';
+import landmarksImage from '/images/landmarks.jpeg';
+import themeparkImage from '/images/themepark.jpeg';
+import genericImage from '/images/generic.jpeg';
 
 const TripDetails = ({ user }) => {
 	const location = useLocation();
@@ -20,71 +35,78 @@ const TripDetails = ({ user }) => {
 		end_date: '',
 		locales: '',
 		map_locations: '',
-		category_id: '', // Include category_id
+		category_id: '',
 	};
 
-	// Fetch categories from Redux store
 	const categories = useSelector((state) => state.categoryReducer.categories);
-	const [backgroundImage, setBackgroundImage] = useState(''); // State for dynamic background
-
-	const getCategoryBackground = (category_id) => {
-		switch (category_id) {
-			case 1:
-				return '/images/beach.jpeg'; // Beach
-			case 2:
-				return '/images/Alaska-Desktop-Summer.jpeg'; // Mountains
-			case 3:
-				return '/images/cityscape.jpeg'; // Cityscape
-			case 4:
-				return '/images/highway.jpeg'; // Road Trip/Highway
-			case 5:
-				return '/images/desert.jpeg'; // Desert
-			case 6:
-				return '/images/forest.jpeg'; // Forest
-			case 7:
-				return '/images/countryside.jpeg'; // Countryside/Farmland
-			case 8:
-				return '/images/island.jpeg'; // Tropical Island
-			case 9:
-				return '/images/winter.jpeg'; // Winter Wonderland
-			case 10:
-				return '/images/landmarks.jpeg'; // Historical/Landmarks
-			case 11:
-				return '/images/themepark.jpeg'; // Theme Parks
-			default:
-				return '/images/generic.jpeg'; // Fallback
-		}
-	};
-
+	const reduxItineraries = useSelector((state) => state.itinerary) || [];
+	const [backgroundImage, setBackgroundImage] = useState('');
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedTrip, setEditedTrip] = useState(trip);
 	const [selectedItinerary, setSelectedItinerary] = useState(null);
 
+	// Updated function with imports
+	const getCategoryBackground = (category_id) => {
+		switch (category_id) {
+			case 1: return beachImage;
+			case 2: return alaskaImage;
+			case 3: return cityscapeImage;
+			case 4: return highwayImage;
+			case 5: return desertImage;
+			case 6: return forestImage;
+			case 7: return countrysideImage;
+			case 8: return islandImage;
+			case 9: return winterImage;
+			case 10: return landmarksImage;
+			case 11: return themeparkImage;
+			default: return genericImage;
+		}
+	};
+
+	const handleSelectItinerary = (itinerary) => {
+		setSelectedItinerary(itinerary);
+	};
+
+	const handleMarkerClick = (location) => {
+		const matchingItinerary = reduxItineraries.find(itinerary => itinerary.location === location.title);
+		if (matchingItinerary) {
+			handleSelectItinerary(matchingItinerary);
+		}
+	};
+
+	const handleSaveItinerary = (updatedItinerary) => {
+		// Dispatch the update action
+		dispatch({ type: 'UPDATE_ITINERARY', payload: updatedItinerary });
+	
+		// Clear the selected itinerary to close the edit view
+		setSelectedItinerary(null);
+	};
+
 	useEffect(() => {
 		if (tripId) {
 			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
-			dispatch({ type: 'FETCH_CATEGORIES' }); // Fetch categories when component mounts
+			dispatch({ type: 'FETCH_CATEGORIES' });
+			dispatch({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: tripId });
 		}
 	}, [dispatch, tripId]);
 
-	// Update the editedTrip state whenever trip details are updated
-	useEffect(() => {
-		setEditedTrip(trip);
-	}, [trip]);
+    useEffect(() => {
+        setEditedTrip({ ...trip });
+    }, [trip]);
 
-	// Set the background image when the category_id changes
 	useEffect(() => {
 		if (trip.category_id) {
 			const categoryImage = getCategoryBackground(trip.category_id);
-			setBackgroundImage(categoryImage);
+			if (categoryImage !== backgroundImage) {
+				setBackgroundImage(categoryImage);
+			}
 		}
-	}, [trip.category_id]); // Now it will trigger on category_id change
+	}, [trip.category_id, backgroundImage]);
 
 	const handleInputChange = (event) => {
 		setEditedTrip({ ...editedTrip, [event.target.name]: event.target.value });
 	};
 
-	// Handle category change
 	const handleCategoryChange = (event) => {
 		setEditedTrip({ ...editedTrip, category_id: event.target.value });
 	};
@@ -95,10 +117,9 @@ const TripDetails = ({ user }) => {
 
 	const handleSaveClick = async () => {
 		try {
-			await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip });
+			await dispatch({ type: 'UPDATE_TRIP', payload: editedTrip }); // `editedTrip` should include the updated `category_id`
 			setIsEditing(false);
-			// Fetch the updated trip details
-			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id });
+			dispatch({ type: 'FETCH_TRIP_BY_ID', payload: editedTrip.trip_id }); // Refresh with the latest data
 		} catch (error) {
 			console.error('Error updating trip:', error);
 		}
@@ -118,12 +139,6 @@ const TripDetails = ({ user }) => {
 
 	return (
 		<Container
-			style={{
-				backgroundImage: `url(${backgroundImage})`,
-				backgroundSize: 'cover',
-				backgroundPosition: 'center',
-				minHeight: '100vh',
-			}}
 		>
 			<Row>
 				<Col className='border-container'>
@@ -208,10 +223,10 @@ const TripDetails = ({ user }) => {
 									Edit Trip
 								</Button>
 							)}
-							<Button className='m-2' onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}>
+							<Button data-cy="daily-itinerary-button" className='m-2' onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}>
 								Create Daily Itinerary
 							</Button>
-							<Button className='m-2' onClick={() => navigate(`/packing-list/${trip.trip_id}`)}>
+							<Button  data-cy="packing-list-button" className='m-2' onClick={() => navigate(`/packing-list/${trip.trip_id}`)}>
 								Go to Packing List
 							</Button>
 							<Button className='m-2' onClick={() => navigate(`/checklist/${trip.trip_id}`)}>
@@ -227,12 +242,17 @@ const TripDetails = ({ user }) => {
 			</Row>
 			<Row className='border-container'>
 				<Col>
-					<DisplayItineraries trip_id={trip.trip_id} />
+					<DisplayItineraries 
+                        trip_id={trip.trip_id} 
+                        onSelectItinerary={handleSelectItinerary}
+                        selectedItinerary={selectedItinerary}
+                        onSaveItinerary={handleSaveItinerary} // Pass this prop for saving itinerary updates
+                    />
 				</Col>
 			</Row>
 			<Row>
 				<Col>
-					<TripMap tripId={trip.trip_id} />
+					<TripMap tripId={trip.trip_id} onMarkerClick={handleMarkerClick} />
 				</Col>
 			</Row>
 		</Container>

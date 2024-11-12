@@ -9,7 +9,7 @@ const {
 /**
  Get all trips for that user
  */
- router.get('/', rejectUnauthenticated, (req, res) => {
+ router.get('/', rejectUnauthenticated, async (req, res) => {
     const userId = req.user.id;
     const query = `
         SELECT DISTINCT t.*
@@ -20,21 +20,38 @@ const {
         ORDER BY t.start_date ASC;
     `;
 
-    pool.query(query, [userId])
-        .then(result => {
-            res.status(200).json({
-                success: true,
-                data: result.rows,
-                message: 'Trips retrieved successfully'
-            });
-        })
-        .catch(err => {
-            console.error('Error getting trips:', err);
-            res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-            });
+    try {
+        // Get all trips for the user
+        const tripResults = await pool.query(query, [userId]);
+        const trips = tripResults.rows;
+
+        // Fetch collaborators for each trip
+        const tripsWithCollaborators = await Promise.all(trips.map(async (trip) => {
+            const collaboratorsQuery = `
+                SELECT "user".id, "user".username 
+                FROM "collaborators"
+                JOIN "user" ON "collaborators"."user_id" = "user".id
+                WHERE "collaborators"."trip_id" = $1;
+            `;
+
+            const collaboratorsResult = await pool.query(collaboratorsQuery, [trip.trip_id]);
+            // Add collaborators as an array to each trip object
+            trip.collaborators = collaboratorsResult.rows.map(c => c.id); // store collaborator IDs
+            return trip;
+        }));
+
+        res.status(200).json({
+            success: true,
+            data: tripsWithCollaborators,
+            message: 'Trips with collaborators retrieved successfully'
         });
+    } catch (err) {
+        console.error('Error getting trips:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
 });
 
 router.get('/past', rejectUnauthenticated, (req, res) => {
@@ -152,7 +169,12 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
     const query = `
         UPDATE "trips"
         SET "trip_name" = $1, "start_date" = $2, "end_date" = $3, "locales" = $4, "map_locations" = $5, "category_id" = $6
-        WHERE "trip_id" = $7 AND "user_id" = $8
+        WHERE "trip_id" = $7 
+        AND (
+            "user_id" = $8 OR EXISTS (
+                SELECT 1 FROM "collaborators" WHERE "trip_id" = $7 AND "user_id" = $8
+            )
+        )
         RETURNING *;
     `;
 
@@ -254,20 +276,21 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
     const tripId = req.params.trip_id;
     const userId = req.user.id;
 
+    console.log('Fetching locations for trip:', tripId, 'and user:', userId);
+
     const query = `
         SELECT longitude, latitude 
         FROM "itinerary" 
         WHERE "trip_id" = $1
-        AND EXISTS (
-            SELECT 1
-            FROM "trips"
-            WHERE "trip_id" = $1
-            AND "user_id" = $2
+        AND (
+            EXISTS (SELECT 1 FROM "trips" WHERE "trip_id" = $1 AND "user_id" = $2)
+            OR EXISTS (SELECT 1 FROM "collaborators" WHERE "trip_id" = $1 AND "user_id" = $2)
         );
     `;
 
     pool.query(query, [tripId, userId])
         .then(result => {
+            console.log('Locations retrieved:', result.rows); // Log the result
             res.status(200).json({
                 success: true,
                 data: result.rows,
@@ -281,6 +304,36 @@ router.get('/:trip_id/itineraries/locations', rejectUnauthenticated, (req, res) 
                 message: 'Internal server error'
             });
         });
+});
+// Fetch itineraries and associated map items for a specific trip
+router.get('/:trip_id/itineraries-with-map-items', rejectUnauthenticated, async (req, res) => {
+    const tripId = req.params.trip_id;
+    const userId = req.user.id;
+
+    const query = `
+        SELECT i.*, m.id AS map_item_id, m.title, m.description, m.latitude, m.longitude
+        FROM "itinerary" i
+        JOIN "trips" t ON i.trip_id = t.trip_id
+        LEFT JOIN "itinerary_map_items" imi ON i.itinerary_id = imi.itinerary_id
+        LEFT JOIN "map_items" m ON imi.map_item_id = m.id
+        WHERE i.trip_id = $1 AND (t.user_id = $2 OR t.collaborator = $2)
+        ORDER BY i.day;
+    `;
+
+    try {
+        const result = await pool.query(query, [tripId, userId]);
+        res.status(200).json({
+            success: true,
+            data: result.rows,
+            message: 'Itineraries and map items retrieved successfully'
+        });
+    } catch (err) {
+        console.error('Error retrieving itineraries and map items:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
 });
 
 module.exports = router;

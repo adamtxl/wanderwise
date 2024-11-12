@@ -1,0 +1,73 @@
+/* TripDetails.css */
+
+/* Background and overlay styling */
+.bg-travel {
+    position: relative;
+    color: black;
+    text-shadow: white 1px 1px 8px;
+    font-size: 1.5em;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 1em;
+    border-radius: 8px;
+}
+
+.bg-travel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/planetravel.jpeg'); /* Replace with dynamic background if needed */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: -1;
+    border-radius: 8px;
+}
+
+/* Trip card styling */
+.trip-card {
+    background-color: #ffffff; /* or a color that matches your theme */
+    color: #444; /* Default text color */
+    font-weight: bold;
+    padding: 1em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+
+/* Highlighting the next trip card */
+.next-trip {
+    background-color: #7dd216; /* Customize for your theme */
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-weight: bold;
+    padding: 1em;
+    border-radius: 8px;
+}
+
+/* Button styling within TripDetails */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.button-group .btn {
+    font-weight: bold;
+}
+
+.button-group .btn-delete {
+    background-color: #d2161f; /* Red for delete */
+    color: white;
+}
+
+.button-group .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-group .btn-primary:hover {
+    background-color: #0056b3;
+}

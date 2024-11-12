@@ -91,3 +91,9 @@ VALUES
     completed BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE itinerary_map_items (
+    itinerary_id INTEGER REFERENCES itinerary(itinerary_id) ON DELETE CASCADE,
+    map_item_id INTEGER REFERENCES map_items(id) ON DELETE CASCADE,
+    PRIMARY KEY (itinerary_id, map_item_id)
+);
