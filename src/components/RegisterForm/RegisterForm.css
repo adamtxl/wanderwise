@@ -25,17 +25,121 @@
     border-radius: 4px;
   }
   
-  /* .button-proceed {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
+  .button-proceed {
     color: white;
-    font-size: 16px;
+    padding: 0.75em 1.25em;
+    border-radius: 5px;
+    background-color: #6b16d2; /* Or choose a prominent color from your palette */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    opacity: 0.9;
+    width: 100%;
+    font-size: 1rem;
     cursor: pointer;
-  } */
-  
-  .button-proceed:hover {
-    background-color: #0056b3;
-  }
+}
+
+.button-proceed:hover, .button-proceed:focus {
+    background-color: #0056b3; /* Darker shade for hover effect */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.formPanel {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 25px;
+  border: 1px solid rgba(107, 22, 210, 0.5); /* Matching the button color */
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.85); /* A slight opacity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #6b16d2; /* Highlight border to match button color */
+  box-shadow: 0 0 4px rgba(107, 22, 210, 0.3);
+}
+
+.log-register {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #6b16d2; /* Matches button color */
+  text-align: center;
+  margin-bottom: 1.5em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.alert {
+  box-sizing: border-box;
+  padding: 15px 10px;
+  margin: 15px 0;
+  border: 2px solid #d2161f; /* Red alert border */
+  background-color: rgba(239, 71, 71, 0.1); /* Light background for readability */
+  border-radius: 3px;
+  color: #d2161f;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+.pageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 80vh;
+  padding: 20px;
+  background-color: #d71414; /* Optional light background to differentiate */
+  background-image: url('/images/simpletravel.jpeg');
+  opacity: 1;
+}
+
+/* Style for the login and register headers */
+.pageContainer h2 {
+  background-color: transparent; /* Remove any background color */
+  color: #6b16d2; /* Set text color to your brand color */
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1em;
+  text-align: center;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+  padding: 0; /* Remove padding if any */
+  border: none; /* Remove any borders */
+}
+
+.switchButton {
+  margin-top: 1.5em;
+}
+
+.formPanel, .formBackground {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  backdrop-filter: blur(10px); /* Blurs the background image behind the form */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  color: #333; /* Ensures readability */
+}
+
+.form-group input, .form-group label {
+  color: #333; /* Ensures text color is clear against the background */
+}
+
+.formPanel h2 {
+  color: #6b16d2; /* Match with branding color */
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Optional shadow for text */
+}

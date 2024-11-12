@@ -71,3 +71,38 @@
 .button-group .btn-primary:hover {
     background-color: #0056b3;
 }
+/* Container with Background Image and Overlay */
+.bg-travel {
+    position: relative;
+    padding: 1.5em;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white; /* Ensures readability on dark overlay */
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgb(0, 0, 0); /* Strong shadow for readability */
+    overflow: hidden; /* Ensures overlay covers entire area */
+}
+
+/* Overlay to Darken Background Image */
+.bg-travel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    border-radius: 10px; /* Matches container's border radius */
+    z-index: 0; /* Places overlay below text */
+}
+
+/* Text Styling on top of Overlay */
+.bg-travel h2,
+.bg-travel .label,
+.bg-travel .card-text {
+    position: relative; /* Ensures text is above overlay */
+    color: #ffffff; /* Standout color for contrast */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9); /* Deep shadow for clarity */
+    z-index: 1; /* Keeps text above overlay */
+}
