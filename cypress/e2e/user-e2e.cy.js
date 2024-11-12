@@ -104,7 +104,7 @@ describe('End-to-End User Flow', () => {
 		cy.intercept('POST', '/api/itinerary/*/itineraries').as('addDailyItinerary');
 
 		// Fill in the itinerary form fields
-		cy.get('input[name="day"]').type('2024-10-02'); // Enter a valid date
+		cy.get('input[name="day"]').type('2024-11-27'); // Enter a valid date
 		cy.get('input[name="location"]').type('Downtown Park');
 		cy.get('input[name="description"]').type('Morning walk and museum visit');
 		cy.get('input[name="activity"]').type('Walking and Museum');

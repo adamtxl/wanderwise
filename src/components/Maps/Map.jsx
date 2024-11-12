@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
-import markerIcon from '../../../images/Globe_4.png';
+import markerIcon from '../../../public/images/Globe_4.png';
 
 const SimpleMap = ({ markers = [], onItemClick }) => {
   const [viewport, setViewport] = useState({

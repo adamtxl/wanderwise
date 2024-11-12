@@ -223,10 +223,10 @@ const TripDetails = ({ user }) => {
 									Edit Trip
 								</Button>
 							)}
-							<Button className='m-2' onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}>
+							<Button data-cy="daily-itinerary-button" className='m-2' onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}>
 								Create Daily Itinerary
 							</Button>
-							<Button className='m-2' onClick={() => navigate(`/packing-list/${trip.trip_id}`)}>
+							<Button  data-cy="packing-list-button" className='m-2' onClick={() => navigate(`/packing-list/${trip.trip_id}`)}>
 								Go to Packing List
 							</Button>
 							<Button className='m-2' onClick={() => navigate(`/checklist/${trip.trip_id}`)}>

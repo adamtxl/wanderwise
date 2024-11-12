@@ -5,7 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Card } from 'react-bootstrap';
 import bbox from '@turf/bbox';
 import { featureCollection, point } from '@turf/helpers';
-import eyeMarkerIcon from '../../../images/Eye_4.png';
+import eyeMarkerIcon from '../../../public/images/Eye_4.png';
 import { WebMercatorViewport } from 'react-map-gl';
 
 const TripMap = ({ tripId }) => {
