@@ -106,3 +106,8 @@
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9); /* Deep shadow for clarity */
     z-index: 1; /* Keeps text above overlay */
 }
+
+.bg-travel .btn {
+    position: relative;
+    z-index: 2; /* Ensures buttons are above any overlays */
+}

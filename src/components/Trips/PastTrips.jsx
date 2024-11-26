@@ -50,7 +50,7 @@ const PastTripsComponent = () => {
 			<Row>
 				{trips.map((trip, index) => (
 					<Col key={trip.trip_id} md={4} className='mb-4'>
-						<Card className='bg-light'>
+						<Card className='trip-card op'>
 							<Card.Body>
 								<Card.Title>{trip.trip_name}</Card.Title>
 								<Card.Text>
