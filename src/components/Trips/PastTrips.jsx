@@ -42,7 +42,7 @@ const PastTripsComponent = () => {
 		<Container>
 			<Row>
 				<Col className='mb-4'>
-					<Button variant='primary' onClick={() => history.push('/edit-create-trip')}>
+					<Button className='button-proceed' onClick={() => navigate('/edit-create-trips')}>
 						Create New Adventure
 					</Button>
 				</Col>

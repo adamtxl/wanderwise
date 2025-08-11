@@ -40,7 +40,7 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 	const createItinerary = () => {
 		history.push({
 			pathname: '/create-daily-itinerary',
-			state: { trip: trip },
+			state: { trip_id: trip_id },
 		});
 	};
 
