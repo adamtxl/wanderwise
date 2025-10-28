@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import './Trips.css';
+import './trips.css';
 
 const TripsComponent = () => {
 	const dispatch = useDispatch();

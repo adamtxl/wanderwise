@@ -252,7 +252,11 @@ const TripDetails = ({ user }) => {
 			</Row>
 			<Row>
 				<Col>
-					<TripMap tripId={trip.trip_id} onMarkerClick={handleMarkerClick} />
+					<TripMap tripId={trip.trip_id} onMarkerClick={handleMarkerClick} getCursor={(state) => {
+    if (state?.isDragging) return 'grabbing';
+    if (state?.isHovering) return 'pointer';
+    return 'grab';
+  }} />
 				</Col>
 			</Row>
 		</Container>
