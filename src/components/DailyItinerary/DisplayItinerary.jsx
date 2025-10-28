@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Card, Button, Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
 const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItinerary, trip_id }) => {
 	const selectItineraries = (state) => state.itineraries;
-
+	const navigate = useNavigate();
 	const reduxItineraries = useSelector(state => state.itineraries.itineraries);
 	const itinerariesArray = Array.isArray(reduxItineraries) ? reduxItineraries : [];
 	
@@ -38,8 +39,8 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
 	};
 
 	const createItinerary = () => {
-		history.push({
-			pathname: '/create-daily-itinerary',
+		navigate({
+			pathname: `/create-daily-itinerary/${trip_id}`,
 			state: { trip_id: trip_id },
 		});
 	};

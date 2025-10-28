@@ -6,7 +6,7 @@ import Map from '../Maps/Map';
 import './itinerary.css';
 import moment from 'moment';
 
-const CreateDailyItinerary = () => {
+const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
     const { tripId } = useParams(); // Get tripId from URL parameters
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -76,10 +76,27 @@ const CreateDailyItinerary = () => {
         });
     };
 
+    const [viewState, setViewState] = useState({
+  latitude: 46.8772,
+  longitude: -96.7898,
+  zoom: 10
+});
+
+    const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+
     const formatDate = (date) => moment(date).format('YYYY-MM-DD');
 
     const tripStartDate = trip ? formatDate(trip.start_date) : '';
     const tripEndDate = trip ? formatDate(trip.end_date) : '';
+
+
+    const cursorFn = getCursorProp ?? ((state) => {
+    if (state?.isDragging) return 'grabbing';
+    if (state?.isHovering) return 'pointer';
+    return 'grab';
+  });
+
+  console.log('VITE_MAPBOX_TOKEN present?', !!import.meta.env.VITE_MAPBOX_TOKEN);
 
     return (
         <Container fluid>
@@ -149,7 +166,18 @@ const CreateDailyItinerary = () => {
                 </Button>
             </Form>
 
-            <Map markers={mapItems} onItemClick={handleMarkerClick} />
+           <Map
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+        style={{ width: '100%', height: 400 }}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapboxAccessToken={MAPBOX_TOKEN}
+        getCursor={cursorFn}
+        touchAction="pan-y"
+        dragPan={true}
+        dragRotate={false}
+        markers={mapItems}
+        onItemClick={handleMarkerClick}
+      />
         </Container>
     );
 };
