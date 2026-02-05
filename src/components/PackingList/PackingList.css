@@ -1,32 +1,38 @@
-
 h2 {
-    color: white; 
-    background-color: rgba(0, 0, 0, 0.5); 
-    padding: 10px; 
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
     text-align: center;
     border: 1px solid #7dd216;
 }
+
 .Card.Body {
     opacity: 0.8;
 }
+
 @media (max-width: 576px) {
     .compact-card-text {
-        line-height: 1; 
-        margin-bottom: 5px; 
+        line-height: 1;
+        margin-bottom: 5px;
         font-size: medium;
     }
+
     .card-buttons .btn {
         padding: 0.25rem 0.5rem;
         font-size: 0.8rem;
     }
-    .Card.Body {
-        padding: 1000px
+
+    .card-body {
+        padding: 0.75rem;
     }
+
 }
+
 .lb-bg {
     opacity: 0.8;
     background-color: white;
 }
+
 .bigger {
     font-size: 1.1em;
 }
@@ -45,9 +51,9 @@ h2 {
 }
 
 .border-container {
-    color: white; 
-    background-color: rgba(0, 0, 0, 0.5); 
-    padding: 10px; 
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
     border: 1px solid #7dd216;
     margin-bottom: 10px;
 }
@@ -60,3 +66,43 @@ h2 {
     opacity: 0.0;
 }
 
+.packing-list-item-card .card-body {
+    min-height: 5.5rem;
+    /* tweak until it matches your font sizes */
+    align-items: flex-start !important;
+    /* keeps content starting at top */
+}
+
+.packing-list-item-card .bigger {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.item-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    /* optional, but usually looks cleaner */
+    width: 100%;
+}
+
+.item-name {
+    line-height: 1.2;
+    margin-bottom: 0.15rem;
+}
+
+/* optional: keep the meta from wrapping weirdly */
+.item-meta {
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta-sep {
+    opacity: 0.7;
+    margin: 0 0.35rem;
+}

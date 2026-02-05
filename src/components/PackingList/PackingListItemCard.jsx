@@ -16,14 +16,14 @@ const PackingListItemCard = ({ item }) => {
 		setEditedItem({ ...item });
 	};
 
-    const handleInputChange = (event) => {
-        event.stopPropagation();
-        const { name, value } = event.target;
-        setEditedItem({
-            ...editedItem,
-            [name]: name === 'packed' ? event.target.checked : value,
-        });
-    };
+	const handleInputChange = (event) => {
+		event.stopPropagation();
+		const { name, value } = event.target;
+		setEditedItem({
+			...editedItem,
+			[name]: name === 'packed' ? event.target.checked : value,
+		});
+	};
 
 	const handleUpdateItem = (event) => {
 		event.stopPropagation();
@@ -82,8 +82,14 @@ const PackingListItemCard = ({ item }) => {
 							</Form>
 						) : (
 							<>
-								<strong className='bigger'> {item.item_name} </strong> <span className='hidden'> - </span> <span className='smaller'><strong><em>Qty:</em></strong> {item.quantity} <strong><em> Packed: </em></strong> 
-								{item.packed ? ' Yes' : ' No'}</span>
+								<div className="item-lines">
+									<strong className="bigger item-name">{item.item_name}</strong>
+									<div className="smaller item-meta">
+										<strong><em>Qty:</em></strong> {item.quantity}
+										<span className="meta-sep"> • </span>
+										<strong><em>Packed:</em></strong> {item.packed ? ' Yes' : ' No'}
+									</div>
+								</div>
 							</>
 						)}
 					</div>
@@ -98,7 +104,7 @@ const PackingListItemCard = ({ item }) => {
 							</Button>
 						)}
 						<Button className='button-remove btn-xs' onClick={handleDeleteItem}>
-                        <i className="bi bi-x-lg"></i> Delete
+							<i className="bi bi-x-lg"></i> Delete
 						</Button>
 					</div>
 				</Card.Body>

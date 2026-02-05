@@ -1,15 +1,13 @@
 // ../Maps/Map.jsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Map, { Marker } from 'react-map-gl';
-import mapboxgl from 'mapbox-gl'; // optional global fallback
 
 const markerIcon = '/images/Globe_4.png';
 
 export default function AppMap({
-  // ✅ pass the token in from the parent OR fall back to Vite env
   mapboxAccessToken: tokenProp,
-  viewState,
-  onMove,
+  viewState,          // if provided => controlled
+  onMoveEnd,          // parent handler for controlled usage (optional)
   getCursor,
   touchAction = 'pan-y',
   dragPan = true,
@@ -24,9 +22,6 @@ export default function AppMap({
 }) {
   const token = (tokenProp ?? import.meta.env.VITE_MAPBOX_TOKEN)?.trim?.();
 
-  // Helpful debug: remove after verifying
-  // console.log('Wrapper sees token?', !!token, token?.slice(0, 12));
-
   if (!token) {
     return (
       <div style={{ padding: 8, color: 'crimson' }}>
@@ -36,24 +31,27 @@ export default function AppMap({
     );
   }
 
-  // Optional: also set the global for any libraries that read it
-  mapboxgl.accessToken = token;
+  // Controlled vs uncontrolled:
+  const isControlled = viewState != null;
 
-  // Controlled vs uncontrolled support
-  const isControlled = !!viewState && !!onMove;
+  // Uncontrolled internal state
   const [internalView, setInternalView] = useState(initialViewState);
   const vs = isControlled ? viewState : internalView;
-  const handleMove = isControlled ? onMove : (e) => setInternalView(e.viewState);
+
+  // One handler used by the Map:
+  const handleMoveEnd = isControlled
+    ? (e) => onMoveEnd?.(e) // let parent update state
+    : (e) => setInternalView(e.viewState); // update our own state
 
   const cursorFn = getCursor ?? ((s) => (s?.isDragging ? 'grabbing' : s?.isHovering ? 'pointer' : 'grab'));
 
   return (
     <Map
-      mapboxAccessToken={token}     
+      mapboxAccessToken={token}
       mapStyle={mapStyle}
       style={style}
       viewState={vs}
-      onMove={handleMove}
+      onMoveEnd={handleMoveEnd}      // ✅ no setViewState here
       getCursor={cursorFn}
       touchAction={touchAction}
       dragPan={dragPan}

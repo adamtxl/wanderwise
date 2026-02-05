@@ -165,11 +165,11 @@ const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
                     Save
                 </Button>
             </Form>
-
-           <Map
+            {MAPBOX_TOKEN
+           ? <Map
         mapStyle="mapbox://styles/mapbox/streets-v11"
         style={{ width: '100%', height: 400 }}
-        onMove={(evt) => setViewState(evt.viewState)}
+        onMoveEnd={(e) => setViewState(e.viewState)}
         mapboxAccessToken={MAPBOX_TOKEN}
         getCursor={cursorFn}
         touchAction="pan-y"
@@ -178,6 +178,13 @@ const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
         markers={mapItems}
         onItemClick={handleMarkerClick}
       />
+      : <Map
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+        style={{ width: '100%', height: 400 }}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapboxAccessToken={MAPBOX_TOKEN}
+        getCursor={cursorFn}
+        />}
         </Container>
     );
 };

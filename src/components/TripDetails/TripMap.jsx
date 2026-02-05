@@ -74,6 +74,36 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
     }
   }, [itineraries, tripId, dispatch]);
 
+const didFitRef = useRef(false);
+
+useEffect(() => {
+  if (!mapRef.current || !bounds) return;
+
+  const [[minLng, minLat], [maxLng, maxLat]] = bounds;
+  const singlePoint = minLng === maxLng && minLat === maxLat;
+
+  if (singlePoint) {
+    setViewState((vs) => ({
+      ...vs,
+      longitude: minLng,
+      latitude: minLat,
+      zoom: 14
+    }));
+    return;
+  }
+
+  // only fit once per locations set
+  if (didFitRef.current) return;
+  didFitRef.current = true;
+
+  mapRef.current.fitBounds(bounds, { padding: 40, duration: 1000 });
+}, [bounds]);
+
+useEffect(() => {
+  didFitRef.current = false;
+}, [tripId]);
+
+
   const handleMarkerClick = (location) => {
     let matched = itineraries.find(
       (itinerary) => String(itinerary.itinerary_id) === String(location.itinerary_id)
@@ -113,7 +143,7 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
       mapStyle="mapbox://styles/mapbox/streets-v11"
       style={{ width: '100%', height: 400 }}
       viewState={viewState}
-      onMove={(evt) => setViewState(evt.viewState)}
+      onMoveEnd={(evt) => setViewState(evt.viewState)}
 	  getCursor={cursorFn}
 	  touchAction="pan-y"     // or "none" if you prefer to disable page scroll on touch
 	  dragPan={true}
