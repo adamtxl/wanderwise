@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --gold:    #c9a84c;
+  --gold-lt: #e8c97a;
+  --cream:   #f5f0e8;
+  --muted:   rgba(245,240,232,0.5);
+  --border:  rgba(201,168,76,0.2);
+  --card-bg: rgba(255,255,255,0.04);
+}
+
+.past-wrapper {
+  padding: 2.5rem 0 4rem;
+  min-height: calc(100vh - 120px);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.past-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+/* ── Header ── */
+.past-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.past-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+
+.past-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin: 0 0 0.25rem;
+  line-height: 1;
+}
+
+.past-subtitle {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+/* ── Buttons ── */
+.btn-past-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+  border: none;
+  color: #0d1b2a;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(201,168,76,0.2);
+}
+
+.btn-past-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-past-secondary {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(245,240,232,0.65);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  padding: 0.55rem 1rem;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn-past-secondary:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: var(--border);
+  color: var(--cream);
+}
+
+/* ── Empty State ── */
+.past-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.past-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1.25rem;
+  opacity: 0.6;
+}
+
+.past-empty-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+
+.past-empty-text {
+  font-size: 0.87rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+}
+
+/* ── Cards ── */
+.past-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  height: 100%;
+}
+
+.past-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border);
+}
+
+.past-card-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  opacity: 0.8;
+}
+
+.past-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 0.4rem;
+}
+
+.past-card-dates {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.past-card-duration {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.past-card-location {
+  font-size: 0.78rem;
+  color: rgba(245,240,232,0.5);
+  margin-bottom: 0.25rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .past-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .past-title {
+    font-size: 2rem;
+  }
+}
