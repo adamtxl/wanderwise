@@ -1,23 +1,8 @@
-import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
-import RegisterForm from '../RegisterForm/RegisterForm';
-import { Button } from 'react-bootstrap';
-
+// Registration is now handled on the landing page (/)
 function RegisterPage() {
-  const navigate = useNavigate();
-
-  return (
-    <div>
-      <RegisterForm />
-
-      <center>
-      <Button variant='primary' className='button-proceed' onClick={() => navigate('/login')}>
-									 Switch to Login
-								</Button>
-      </center>
-    </div>
-  );
+  return <Navigate to="/" replace />;
 }
 
 export default RegisterPage;
