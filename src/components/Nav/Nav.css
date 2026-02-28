@@ -1,45 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+
 .nav {
-  /* flex box layout */
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin: 0 0 0px;
-  background-color: #7dd216;
-  overflow: hidden;
+  padding: 0 1.5rem;
+  background-color: rgba(13, 27, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 60px;
 }
 
 .nav a {
-  text-decoration: forestgreen;
+  text-decoration: none;
 }
 
 .nav-title {
-  font-size: 3.5em;
-  font-weight: 700;
-  color: #22e6d3;
-  text-shadow: #6B16D2 1px 1px 4px;
-  padding-left: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #f5f0e8;
+  padding: 0;
   margin: 0;
-  background-color: #7dd216;
+  letter-spacing: 0.02em;
+  background: none;
+}
+
+.nav-title::before {
+  content: '✦ ';
+  color: #c9a84c;
+  font-size: 0.8rem;
 }
 
 .navLink {
-  display: inline-block;
-  color: #f2f2f2;
-  background-color: #7dd216;
-  text-shadow: black 1px 1px 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(245, 240, 232, 0.65);
+  background: none;
   text-align: center;
-  padding: 24px 10px;
+  padding: 0.5rem 0.75rem;
   text-decoration: none;
-  font-size: 1.5em;
-
-  /* these last two make the logout button in
-  the nav bar look like another link */
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   border: none;
   cursor: pointer;
   outline: 0;
+  border-radius: 6px;
+  transition: color 0.2s ease, background 0.2s ease;
+  text-shadow: none;
 }
 
 .navLink:hover {
-  background-color: #608947;
+  color: #c9a84c;
+  background: rgba(201, 168, 76, 0.08);
+}
+
+/* Active state for current page */
+.navLink.active {
+  color: #c9a84c;
+}
+
+/* Override global button reset for nav buttons (LogOutButton etc.) */
+button.navLink {
+  font-size: 0.8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  line-height: normal;
 }

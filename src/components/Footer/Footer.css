@@ -1,17 +1,31 @@
 footer {
-  margin-top: 80px;
-  /* padding: 20px; */
+  margin-top: auto;
+  padding: 1rem 1.5rem;
   text-align: center;
-  background-color: #7dd216;
-  opacity: 0.8;
-
+  background-color: rgba(13, 27, 42, 0.95);
+  border-top: 1px solid rgba(201, 168, 76, 0.2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(245, 240, 232, 0.35);
+  letter-spacing: 0.05em;
 }
 
 .summerfooter {
-  opacity: 0.8;
-  padding-bottom: 20px;
-  padding-right: 10px;
-  text-align: right;
-  background-color: #7dd216;
-  color: white;
+  padding: 0;
+  margin: 0;
+  background: none;
+  text-align: center;
+  opacity: 1;
+}
+
+.summerfooter a {
+  color: rgba(201, 168, 76, 0.6);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
+}
+
+.summerfooter a:hover {
+  color: #c9a84c;
 }
