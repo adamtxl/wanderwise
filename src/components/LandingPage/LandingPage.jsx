@@ -7,7 +7,7 @@ function LandingPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [mode, setMode] = useState('register'); // 'register' | 'login'
+  const [mode, setMode] = useState('login'); // 'register' | 'login'
   const [loaded, setLoaded] = useState(false);
 
   const errors = useSelector((store) => store.errors);

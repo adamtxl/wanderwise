@@ -6,22 +6,41 @@ import { connect } from 'react-redux';
 import './MapPage.css';
 
 class MapPage extends Component {
-    componentDidMount = () => {
-        // fetch all the map items
-        this.props.dispatch({ type: 'FETCH_MAP_ITEMS' });
-    }
-    render = () => {
-        return (
-            <>
-                <h1 className='summer'>WanderWise Mapping</h1>
-                <p className='summer'>This is the map that displays available points when adding itineraries.
-                    You can add map pins to the map below.</p>
-                    <div className="map-container"> <Map /> </div>
-                <MapInfo />
-                <MapForm />
-            </>
-        );
-    }
-};
+  componentDidMount = () => {
+    this.props.dispatch({ type: 'FETCH_MAP_ITEMS' });
+  }
+
+  render = () => {
+    return (
+      <div className="mappage-wrapper">
+        {/* Header */}
+        <div className="mappage-header">
+          <div>
+            <div className="mappage-eyebrow">Navigation</div>
+            <h1 className="mappage-title">Map Your Journey</h1>
+            <p className="mappage-subtitle">
+              Pin your destinations and points of interest. Click any marker to view details.
+            </p>
+          </div>
+        </div>
+
+        {/* Map */}
+        <div className="mappage-map-container">
+          <Map />
+        </div>
+
+        {/* Info + Form row */}
+        <div className="mappage-bottom">
+          <div className="mappage-info-panel">
+            <MapInfo />
+          </div>
+          <div className="mappage-form-panel">
+            <MapForm />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
 export default connect()(MapPage);

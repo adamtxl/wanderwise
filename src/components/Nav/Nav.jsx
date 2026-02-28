@@ -65,7 +65,7 @@ function Nav() {
               )}
             </Link>
 
-            <LogOutButton className="navLink" />
+            
           </>
         )}
 
@@ -77,7 +77,7 @@ function Nav() {
             ) : (
               <i className="bi bi-file-person-fill"></i>
             )}
-        
+         <LogOutButton className="navLink" />
         </Link>
         {user.admin === true && (
           <Link className="navLink" to="/admin">
