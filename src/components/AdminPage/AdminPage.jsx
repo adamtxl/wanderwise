@@ -1,50 +1,98 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import FileUpload from '../FileUpload/FileUpload';
-
+import './AdminPage.css';
 
 function AdminPage() {
+  const [activeSection, setActiveSection] = useState('csv');
 
-    const [files, setFiles] = useState([]);
-    const [uploadedFiles, setUploadedFiles] = useState([]);
-  
-    function handleMultipleChange(event) {
-      setFiles([...event.target.files]);
-    }
-  
-    function handleMultipleSubmit(event) {
-      event.preventDefault();
-      const url = 'http://localhost:5173/uploadFiles';
-      const formData = new FormData();
-      files.forEach((file, index) => {
-        formData.append(`file${index}`, file);
-      });
-  
-      const config = {
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
-      };
-  
-      axios.post(url, formData, config)
-        .then((response) => {
-          console.log(response.data);
-          setUploadedFiles(response.data.files);
-        })
-        .catch((error) => {
-          console.error("Error uploading files: ", error);
-        });
-    }
+  return (
+    <div className="admin-wrapper">
+      <div className="admin-header">
+        <div className="admin-eyebrow">Admin</div>
+        <h1 className="admin-title">Control Panel</h1>
+        <p className="admin-subtitle">Site management tools — handle with care.</p>
+      </div>
 
-    return (
-       <>
-       <section>
-        <h2> Upload CSV file to Add to existing Map locations </h2>
-        <p className='shadow, visible'>Important to note: csv columns must be <strong>EXACTLY</strong> named: "name", "description", "latitude", "longitude".</p>
-        <FileUpload />
-       </section>
-       </>
+      {/* Nav tabs */}
+      <div className="admin-tabs">
+        <button
+          className={`admin-tab ${activeSection === 'csv' ? 'admin-tab-active' : ''}`}
+          onClick={() => setActiveSection('csv')}
+        >
+          📂 CSV Upload
+        </button>
+        <button
+          className={`admin-tab ${activeSection === 'users' ? 'admin-tab-active' : ''}`}
+          onClick={() => setActiveSection('users')}
+        >
+          👥 User Management
+        </button>
+        <button
+          className={`admin-tab ${activeSection === 'system' ? 'admin-tab-active' : ''}`}
+          onClick={() => setActiveSection('system')}
+        >
+          ⚙️ System
+        </button>
+      </div>
+
+      {/* CSV Upload */}
+      {activeSection === 'csv' && (
+        <div className="admin-section">
+          <div className="admin-section-heading">Upload Map Locations via CSV</div>
+          <div className="admin-card">
+            <div className="admin-schema">
+              <div className="admin-schema-label">Required CSV columns</div>
+              <div className="admin-schema-cols">
+                {['name', 'description', 'latitude', 'longitude'].map((col) => (
+                  <code key={col} className="admin-col-pill">{col}</code>
+                ))}
+              </div>
+              <p className="admin-schema-note">
+                Column names must match exactly — case sensitive. Any extra columns are ignored.
+              </p>
+            </div>
+            <div className="admin-upload-area">
+              <FileUpload />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* User Management — placeholder */}
+      {activeSection === 'users' && (
+        <div className="admin-section">
+          <div className="admin-section-heading">User Management</div>
+          <div className="admin-card admin-coming-soon">
+            <div className="admin-coming-icon">🔧</div>
+            <div className="admin-coming-title">Coming soon</div>
+            <ul className="admin-coming-list">
+              <li>Password reset by username or email</li>
+              <li>View all registered users</li>
+              <li>Revoke or promote user roles</li>
+              <li>Delete accounts</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* System — placeholder */}
+      {activeSection === 'system' && (
+        <div className="admin-section">
+          <div className="admin-section-heading">System</div>
+          <div className="admin-card admin-coming-soon">
+            <div className="admin-coming-icon">⚙️</div>
+            <div className="admin-coming-title">Coming soon</div>
+            <ul className="admin-coming-list">
+              <li>View error logs</li>
+              <li>Database health check</li>
+              <li>Clear stale sessions</li>
+              <li>Trip category management</li>
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
-  export default AdminPage;
+export default AdminPage;

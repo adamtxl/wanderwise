@@ -1,34 +1,51 @@
 import React from 'react';
 import LogOutButton from '../LogOutButton/LogOutButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import './UserPage.css';
 
 function UserPage() {
-  // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
+
   return (
-    <div className="container">
-      <h2>Welcome, {user.username}!</h2>
-      <p>Your ID is: {user.id}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{user.username}</td>
-            <td>{user.first_name}</td>
-            <td>{user.email}</td>
-          </tr>
-        </tbody>
-      </table>
-      <LogOutButton className="btn" />
+    <div className="up-wrapper">
+      <div className="up-avatar">
+        {user.username?.[0]?.toUpperCase()}
+      </div>
+
+      <h1 className="up-name">{user.first_name || user.username}</h1>
+      <div className="up-username">@{user.username}</div>
+      {user.email && <div className="up-email">{user.email}</div>}
+
+      <div className="up-card">
+        <div className="up-card-label">Account Details</div>
+        <div className="up-detail">
+          <span className="up-detail-label">Username</span>
+          <span className="up-detail-value">{user.username}</span>
+        </div>
+        {user.first_name && (
+          <div className="up-detail">
+            <span className="up-detail-label">Name</span>
+            <span className="up-detail-value">{user.first_name}</span>
+          </div>
+        )}
+        {user.email && (
+          <div className="up-detail">
+            <span className="up-detail-label">Email</span>
+            <span className="up-detail-value">{user.email}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="up-actions">
+        <button className="btn-up-primary" onClick={() => navigate('/trips')}>
+          View My Trips →
+        </button>
+        <LogOutButton className="btn-up-ghost" />
+      </div>
     </div>
   );
 }
 
-// this allows us to use <App /> in index.js
 export default UserPage;

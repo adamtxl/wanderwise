@@ -1,81 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
 
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1.5rem;
-  background-color: rgba(13, 27, 42, 0.95);
+  background: rgba(10, 22, 35, 0.95);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
-  min-height: 60px;
+  height: 52px;
 }
 
-.nav a {
-  text-decoration: none;
-}
-
-.nav-title {
+/* Brand */
+.nav-brand {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 400;
-  color: #f5f0e8;
-  padding: 0;
-  margin: 0;
-  letter-spacing: 0.02em;
-  background: none;
-}
-
-.nav-title::before {
-  content: '✦ ';
   color: #c9a84c;
-  font-size: 0.8rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
 }
 
-.navLink {
+.nav-brand:hover { opacity: 0.8; }
+
+/* Links container */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* The fix: both <a> and <button> get identical treatment */
+.navLink,
+button.navLink {
+  /* Reset button defaults */
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  outline: none;
+
+  /* Shared styles */
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  color: rgba(245, 240, 232, 0.65);
-  background: none;
-  text-align: center;
-  padding: 0.5rem 0.75rem;
+  height: 52px;
+  padding: 0 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.55);
   text-decoration: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border: none;
   cursor: pointer;
-  outline: 0;
-  border-radius: 6px;
+  white-space: nowrap;
   transition: color 0.2s ease, background 0.2s ease;
-  text-shadow: none;
+  box-sizing: border-box;
+  line-height: 1;
+  vertical-align: middle;
+
+  /* Prevent any layout bleed */
+  position: relative;
+  z-index: 1;
 }
 
-.navLink:hover {
+.navLink:hover,
+button.navLink:hover {
   color: #c9a84c;
-  background: rgba(201, 168, 76, 0.08);
+  background: rgba(201, 168, 76, 0.06);
 }
 
-/* Active state for current page */
-.navLink.active {
-  color: #c9a84c;
+/* Admin badge */
+.nav-admin {
+  color: #c9a84c !important;
+  font-size: 0.7rem;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 4px;
+  margin-left: 0.4rem;
+  height: auto !important;
+  padding: 0.25rem 0.6rem !important;
 }
 
-/* Override global button reset for nav buttons (LogOutButton etc.) */
-button.navLink {
-  font-size: 0.8rem;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin: 0;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  line-height: normal;
+.nav-admin:hover {
+  background: rgba(201, 168, 76, 0.1) !important;
 }

@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --gold:    #c9a84c;
+  --gold-lt: #e8c97a;
+  --cream:   #f5f0e8;
+  --muted:   rgba(245,240,232,0.5);
+  --faint:   rgba(245,240,232,0.25);
+  --border:  rgba(201,168,76,0.2);
+  --card-bg: rgba(255,255,255,0.04);
+  --navy:    #0d1b2a;
+}
+
+.cl-wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.cl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cl-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.cl-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin: 0;
+}
+
+/* Progress */
+.cl-progress-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.cl-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.cl-progress-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.cl-progress-pct {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.cl-progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.cl-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* Add row */
+.cl-add-row {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.cl-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 9px;
+  padding: 0.65rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.87rem;
+  color: var(--cream);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.cl-input::placeholder { color: var(--faint); }
+.cl-input:focus { border-color: var(--gold); }
+
+/* Empty */
+.cl-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cl-empty-icon { font-size: 2rem; opacity: 0.4; }
+.cl-empty-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--cream);
+}
+.cl-empty-text { font-size: 0.82rem; color: var(--muted); }
+
+/* List */
+.cl-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.cl-section { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.cl-section-label {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 0.35rem;
+  padding-left: 0.25rem;
+}
+
+.cl-section-done { color: rgba(201,168,76,0.4); }
+
+/* Item */
+.cl-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  transition: border-color 0.2s ease;
+}
+
+.cl-item:hover { border-color: rgba(255,255,255,0.1); }
+.cl-item-done { opacity: 0.5; }
+
+/* Checkbox */
+.cl-checkbox {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  padding: 0;
+}
+
+.cl-checkbox:hover { border-color: var(--gold); }
+.cl-checkbox-inner { width: 8px; height: 8px; border-radius: 50%; }
+.cl-checkbox:hover .cl-checkbox-inner { background: var(--gold); }
+
+.cl-checkbox-done {
+  border-color: var(--gold) !important;
+  background: rgba(201,168,76,0.15) !important;
+}
+
+.cl-checkbox-check { font-size: 0.65rem; color: var(--gold); }
+
+.cl-item-name {
+  flex: 1;
+  font-size: 0.87rem;
+  color: rgba(245,240,232,0.85);
+  line-height: 1.3;
+}
+
+.cl-item-name-done {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.cl-edit-input {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--cream);
+  outline: none;
+}
+
+.cl-item-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+/* Buttons */
+.btn-cl-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+  border: none;
+  color: var(--navy);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.65rem 1.1rem;
+  border-radius: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.btn-cl-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-cl-primary:not(:disabled):hover { opacity: 0.88; }
+
+.btn-cl-ghost {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-cl-ghost:hover { color: var(--cream); background: rgba(255,255,255,0.09); }
+
+.btn-cl-save {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cl-cancel {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cl-icon {
+  background: none;
+  border: none;
+  color: rgba(245,240,232,0.2);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.25rem 0.35rem;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+  line-height: 1;
+}
+
+.btn-cl-icon:hover { color: var(--cream); background: rgba(255,255,255,0.07); }
+.btn-cl-icon-danger:hover { color: #e07070 !important; background: rgba(192,57,43,0.1) !important; }

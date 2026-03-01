@@ -12,7 +12,7 @@ const eyeMarkerIcon = '/images/Eye_4.png';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN; // Vite-style env var
 
-const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
+const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick, height = 400 }) => {
   const dispatch = useDispatch();
   const locations = useSelector((state) => state.location.locations) || [];
   const itineraries = useSelector((state) => state.itineraries.itineraries) || [];
@@ -141,7 +141,7 @@ useEffect(() => {
       ref={mapRef}
       mapboxAccessToken={MAPBOX_TOKEN}
       mapStyle="mapbox://styles/mapbox/streets-v11"
-      style={{ width: '100%', height: 400 }}
+      style={{ width: '100%', height }}
       viewState={viewState}
       onMoveEnd={(evt) => setViewState(evt.viewState)}
 	  getCursor={cursorFn}

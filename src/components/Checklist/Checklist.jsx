@@ -1,141 +1,174 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Button, Form, Container, ListGroup } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
+import './Checklist.css';
 
 const ChecklistComponent = () => {
-    const { tripId } = useParams();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const { tripId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const checklist = useSelector((state) => state.checklistReducer || []);
 
-    // Get the checklist items from Redux
-    const checklist = useSelector((state) => state.checklistReducer || []);
-    const [newItem, setNewItem] = useState('');
-    const [editItemId, setEditItemId] = useState(null); // Track item being edited
-    const [editedName, setEditedName] = useState(''); // Track name change during editing
+  const [newItem, setNewItem] = useState('');
+  const [editItemId, setEditItemId] = useState(null);
+  const [editedName, setEditedName] = useState('');
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_CHECKLIST', payload: tripId });
-    }, [dispatch, tripId]);
+  useEffect(() => {
+    dispatch({ type: 'FETCH_CHECKLIST', payload: tripId });
+  }, [dispatch, tripId]);
 
-    const handleAddItem = () => {
-        if (newItem.trim()) {
-            dispatch({
-                type: 'ADD_CHECKLIST_ITEM',
-                payload: { trip_id: tripId, item_name: newItem, completed: false },
-            });
-            setNewItem(''); // Clear the input field after adding
-        }
-    };
+  const handleAddItem = () => {
+    if (newItem.trim()) {
+      dispatch({
+        type: 'ADD_CHECKLIST_ITEM',
+        payload: { trip_id: tripId, item_name: newItem, completed: false },
+      });
+      setNewItem('');
+    }
+  };
 
-    const handleToggleComplete = (item) => {
-        dispatch({
-            type: 'UPDATE_CHECKLIST_ITEM',
-            payload: {
-                checklistId: item.checklist_id,
-                updatedItem: { item_name: item.item_name, completed: !item.completed, trip_id: tripId }, // Include both item_name and completed
-            },
-        });
-    };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleAddItem();
+  };
 
-    const handleDeleteItem = (checklistId) => {
-        dispatch({
-            type: 'DELETE_CHECKLIST_ITEM',
-            payload: checklistId,
-            trip_id: tripId,
-        });
-    };
+  const handleToggleComplete = (item) => {
+    dispatch({
+      type: 'UPDATE_CHECKLIST_ITEM',
+      payload: {
+        checklistId: item.checklist_id,
+        updatedItem: { item_name: item.item_name, completed: !item.completed, trip_id: tripId },
+      },
+    });
+  };
 
-    const handleEditClick = (item) => {
-        setEditItemId(item.checklist_id); // Set the item to be edited
-        setEditedName(item.item_name); // Set the current name to be edited
-    };
+  const handleDeleteItem = (checklistId) => {
+    dispatch({ type: 'DELETE_CHECKLIST_ITEM', payload: checklistId, trip_id: tripId });
+  };
 
-    const handleSaveEdit = (checklistId) => {
-        if (editedName.trim()) {
-            dispatch({
-                type: 'UPDATE_CHECKLIST_ITEM',
-                payload: { checklistId, updatedItem: { item_name: editedName, trip_id: tripId } },  // Include both item_name and completed
-            });
-            setEditItemId(null); // Exit edit mode
-        }
-    };
+  const handleSaveEdit = (checklistId) => {
+    if (editedName.trim()) {
+      dispatch({
+        type: 'UPDATE_CHECKLIST_ITEM',
+        payload: { checklistId, updatedItem: { item_name: editedName, trip_id: tripId } },
+      });
+      setEditItemId(null);
+    }
+  };
 
-    return (
-        <Container>
-            <Button variant='secondary' onClick={() => navigate(`/trip-details/${tripId}`)}>
-                Return to Trip
-            </Button>
-            <Card className='mb-4'>
-                <Card.Body>
-                    <Card.Title>Trip Checklist</Card.Title>
-                    <Form.Control
-                        type='text'
-                        placeholder='Add a new task'
-                        value={newItem}
-                        onChange={(e) => setNewItem(e.target.value)}
-                        className='mb-3'
+  const completed = checklist.filter((i) => i.completed);
+  const pending = checklist.filter((i) => !i.completed);
+  const progress = checklist.length ? Math.round((completed.length / checklist.length) * 100) : 0;
+
+  return (
+    <div className="cl-wrapper">
+      {/* Header */}
+      <div className="cl-header">
+        <div>
+          <div className="cl-eyebrow">Pre-Departure</div>
+          <h1 className="cl-title">Trip Checklist</h1>
+        </div>
+        <button className="btn-cl-ghost" onClick={() => navigate(`/trip-details/${tripId}`)}>
+          ← Back to Trip
+        </button>
+      </div>
+
+      {/* Progress */}
+      {checklist.length > 0 && (
+        <div className="cl-progress-card">
+          <div className="cl-progress-meta">
+            <span className="cl-progress-label">{completed.length} of {checklist.length} complete</span>
+            <span className="cl-progress-pct">{progress}%</span>
+          </div>
+          <div className="cl-progress-bar">
+            <div className="cl-progress-fill" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+      )}
+
+      {/* Add item */}
+      <div className="cl-add-row">
+        <input
+          className="cl-input"
+          type="text"
+          placeholder="Add a task..."
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button className="btn-cl-primary" onClick={handleAddItem} disabled={!newItem.trim()}>
+          + Add
+        </button>
+      </div>
+
+      {/* List */}
+      {checklist.length === 0 ? (
+        <div className="cl-empty">
+          <div className="cl-empty-icon">✅</div>
+          <div className="cl-empty-heading">No tasks yet</div>
+          <p className="cl-empty-text">Add your pre-departure tasks above.</p>
+        </div>
+      ) : (
+        <div className="cl-list">
+          {/* Pending */}
+          {pending.length > 0 && (
+            <div className="cl-section">
+              <div className="cl-section-label">To Do · {pending.length}</div>
+              {pending.map((item) => (
+                <div key={item.checklist_id} className="cl-item">
+                  <button className="cl-checkbox" onClick={() => handleToggleComplete(item)}>
+                    <span className="cl-checkbox-inner" />
+                  </button>
+                  {editItemId === item.checklist_id ? (
+                    <input
+                      className="cl-edit-input"
+                      type="text"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSaveEdit(item.checklist_id)}
+                      autoFocus
                     />
-                    <Button onClick={handleAddItem} variant='primary'>
-                        Add Task
-                    </Button>
-                    <ListGroup className='mt-4'>
-                        {/* Mapping over the checklist */}
-                        {checklist.length > 0 ? (
-                            checklist.map((item) => (
-                                <ListGroup.Item
-                                    key={item.checklist_id}
-                                    className='d-flex align-items-center justify-content-between'
-                                    style={{
-                                        textDecoration: item.completed ? 'line-through' : 'none',
-                                        color: item.completed ? 'gray' : 'black',
-                                        backgroundColor: item.completed ? '#A9A9A9' : 'white', // Dark gray background for completed items
-                                    }}
-                                >
-                                    <div>
-                                        {/* Toggle between display and edit mode */}
-                                        {editItemId === item.checklist_id ? (
-                                            <Form.Control
-                                                type='text'
-                                                value={editedName || ''} // Ensure the input is controlled
-                                                onChange={(e) => setEditedName(e.target.value)}
-                                                className='mb-2'
-                                            />
-                                        ) : (
-                                            <Form.Check
-                                                type='checkbox'
-                                                label={item.item_name}
-                                                checked={item.completed}
-                                                onChange={() => handleToggleComplete(item)} // Pass the full item object
-                                            />
-                                        )}
-                                    </div>
+                  ) : (
+                    <span className="cl-item-name">{item.item_name}</span>
+                  )}
+                  <div className="cl-item-actions">
+                    {editItemId === item.checklist_id ? (
+                      <>
+                        <button className="btn-cl-save" onClick={() => handleSaveEdit(item.checklist_id)}>Save</button>
+                        <button className="btn-cl-cancel" onClick={() => setEditItemId(null)}>Cancel</button>
+                      </>
+                    ) : (
+                      <>
+                        <button className="btn-cl-icon" onClick={() => { setEditItemId(item.checklist_id); setEditedName(item.item_name); }}>✎</button>
+                        <button className="btn-cl-icon btn-cl-icon-danger" onClick={() => handleDeleteItem(item.checklist_id)}>✕</button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-                                    {/* Show buttons depending on edit mode */}
-                                    <div>
-                                        {editItemId === item.checklist_id ? (
-                                            <Button variant='success' className='me-2' onClick={() => handleSaveEdit(item.checklist_id)}>
-                                                Save
-                                            </Button>
-                                        ) : (
-                                            <Button variant='warning' className='me-2' onClick={() => handleEditClick(item)}>
-                                                Edit
-                                            </Button>
-                                        )}
-                                        <Button variant='danger' onClick={() => handleDeleteItem(item.checklist_id)}>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </ListGroup.Item>
-                            ))
-                        ) : (
-                            <p>No checklist items found.</p>
-                        )}
-                    </ListGroup>
-                </Card.Body>
-            </Card>
-        </Container>
-    );
+          {/* Completed */}
+          {completed.length > 0 && (
+            <div className="cl-section">
+              <div className="cl-section-label cl-section-done">Done · {completed.length}</div>
+              {completed.map((item) => (
+                <div key={item.checklist_id} className="cl-item cl-item-done">
+                  <button className="cl-checkbox cl-checkbox-done" onClick={() => handleToggleComplete(item)}>
+                    <span className="cl-checkbox-check">✓</span>
+                  </button>
+                  <span className="cl-item-name cl-item-name-done">{item.item_name}</span>
+                  <div className="cl-item-actions">
+                    <button className="btn-cl-icon btn-cl-icon-danger" onClick={() => handleDeleteItem(item.checklist_id)}>✕</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ChecklistComponent;

@@ -11,6 +11,8 @@ class MapPage extends Component {
   }
 
   render = () => {
+    const { mapItems } = this.props;
+
     return (
       <div className="mappage-wrapper">
         {/* Header */}
@@ -22,11 +24,25 @@ class MapPage extends Component {
               Pin your destinations and points of interest. Click any marker to view details.
             </p>
           </div>
+          {mapItems.length > 0 && (
+            <div className="mappage-pin-count">
+              {mapItems.length} pin{mapItems.length !== 1 ? 's' : ''}
+            </div>
+          )}
         </div>
 
-        {/* Map */}
+        {/* Map — centered on continental US, all pins visible */}
         <div className="mappage-map-container">
-          <Map />
+          <Map
+            markers={mapItems}
+            initialViewState={{
+              latitude: 39.5,
+              longitude: -98.35,
+              zoom: 3.5,
+            }}
+            style={{ width: '100%', height: '100%' }}
+            onItemClick={(item) => this.props.dispatch({ type: 'SET_CURRENT_ITEM', payload: item })}
+          />
         </div>
 
         {/* Info + Form row */}
@@ -43,4 +59,8 @@ class MapPage extends Component {
   }
 }
 
-export default connect()(MapPage);
+const mapStateToProps = (state) => ({
+  mapItems: state.mapItems.items || [],
+});
+
+export default connect(mapStateToProps)(MapPage);
