@@ -1,192 +1,192 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import Map from '../Maps/Map';
 import './itinerary.css';
 import moment from 'moment';
 
 const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
-    const { tripId } = useParams(); // Get tripId from URL parameters
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const trip = useSelector((state) => state.tripDetailReducer.currentTrip?.data); // Fetch trip details from Redux
-    const mapItems = useSelector((state) => state.mapItems.items);
+  const { tripId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const trip = useSelector((state) => state.tripDetailReducer.currentTrip?.data);
+  const mapItems = useSelector((state) => state.mapItems.items);
 
-    const [itinerary, setItinerary] = useState({
-        day: '',
-        location: '',
-        latitude: '40.813600',
-        longitude: '-96.789800',
-        activity: '',
-        notes: ''
-    });
+  const [itinerary, setItinerary] = useState({
+    day: '',
+    location: '',
+    latitude: '39.5',
+    longitude: '-98.35',
+    activity: '',
+    notes: '',
+  });
 
-    useEffect(() => {
-        console.log('Fetching map items');
-        dispatch({ type: 'FETCH_MAP_ITEMS' });
-        dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId }); // Ensure trip details are fetched
-    }, [dispatch, tripId]);
+  const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setItinerary(prevItinerary => ({
-            ...prevItinerary,
-            [name]: value
-        }));
-    };
+  useEffect(() => {
+    dispatch({ type: 'FETCH_MAP_ITEMS' });
+    dispatch({ type: 'FETCH_TRIP_BY_ID', payload: tripId });
+  }, [dispatch, tripId]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            // Step 1: Dispatch action to add itinerary
-            const addItineraryResponse = await dispatch({ 
-                type: 'ADD_ITINERARY', 
-                payload: { itinerary, tripId } 
-            });
-    
-            // Step 2: Get new itinerary ID from response if possible
-            const newItineraryId = addItineraryResponse?.data?.id; // Adjust if addItinerary saga returns data
-    
-            // Step 3: Dispatch action to link map item with itinerary if map item is set
-            if (newItineraryId && itinerary.map_item_id) {
-                dispatch({
-                    type: 'ADD_ITINERARY_MAP_ITEM',
-                    payload: {
-                        itinerary_id: newItineraryId,
-                        map_item_id: itinerary.map_item_id
-                    }
-                });
-            }
-    
-            // Navigate back to Trip Details after creation
-            navigate(`/trip-details/${tripId}`);
-        } catch (error) {
-            console.error('Error creating itinerary:', error);
-        }
-    };
-    const handleMarkerClick = (item) => {
-        setItinerary({
-            ...itinerary,
-            location: item.title,
-            latitude: item.latitude,
-            longitude: item.longitude,
-            description: item.description || itinerary.description, // Fallback to existing description if undefined
-            map_item_id: item.id // Capture the map item ID
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setItinerary((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch({
+        type: 'ADD_ITINERARY',
+        payload: { itinerary, tripId },
+      });
+      const newItineraryId = response?.data?.id;
+      if (newItineraryId && itinerary.map_item_id) {
+        dispatch({
+          type: 'ADD_ITINERARY_MAP_ITEM',
+          payload: { itinerary_id: newItineraryId, map_item_id: itinerary.map_item_id },
         });
-    };
+      }
+      navigate(`/trip-details/${tripId}`);
+    } catch (err) {
+      console.error('Error creating itinerary:', err);
+    }
+  };
 
-    const [viewState, setViewState] = useState({
-  latitude: 46.8772,
-  longitude: -96.7898,
-  zoom: 10
-});
+  const handleMarkerClick = (item) => {
+    setItinerary((prev) => ({
+      ...prev,
+      location: item.title,
+      latitude: item.latitude,
+      longitude: item.longitude,
+      description: item.description || prev.description,
+      map_item_id: item.id,
+    }));
+  };
 
-    const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
-
-    const formatDate = (date) => moment(date).format('YYYY-MM-DD');
-
-    const tripStartDate = trip ? formatDate(trip.start_date) : '';
-    const tripEndDate = trip ? formatDate(trip.end_date) : '';
-
-
-    const cursorFn = getCursorProp ?? ((state) => {
+  const cursorFn = getCursorProp ?? ((state) => {
     if (state?.isDragging) return 'grabbing';
     if (state?.isHovering) return 'pointer';
     return 'grab';
   });
 
-  console.log('VITE_MAPBOX_TOKEN present?', !!import.meta.env.VITE_MAPBOX_TOKEN);
+  const tripStartDate = trip ? moment(trip.start_date).format('YYYY-MM-DD') : '';
+  const tripEndDate = trip ? moment(trip.end_date).format('YYYY-MM-DD') : '';
 
-    return (
-        <Container fluid>
-            <Form onSubmit={handleSubmit}>
-                <Row>
-                    <Col xs={12} md={6}>
-                        <Form.Group controlId="day">
-                            <Form.Label className="form-label">Day</Form.Label>
-                            <Form.Control
-                                type="date"
-                                name="day"
-                                value={itinerary.day}
-                                onChange={handleInputChange}
-                                min={tripStartDate}
-                                max={tripEndDate}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col xs={12} md={6}>
-                        <Form.Group controlId="location">
-                            <Form.Label className="form-label">Location</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="location"
-                                value={itinerary.location}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12} md={6}>
-                        <Form.Group controlId="description">
-                            <Form.Label className="form-label">Description</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="description"
-                                value={itinerary.description}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col xs={12} md={6}>
-                        <Form.Group controlId="activity">
-                            <Form.Label className="form-label">Activity</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="activity"
-                                value={itinerary.activity}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Form.Group controlId="notes">
-                    <Form.Label className="form-label">Notes</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        rows={3}
-                        name="notes"
-                        value={itinerary.notes}
-                        onChange={handleInputChange}
-                    />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Save
-                </Button>
-            </Form>
-            {MAPBOX_TOKEN
-           ? <Map
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        style={{ width: '100%', height: 400 }}
-        onMoveEnd={(e) => setViewState(e.viewState)}
-        mapboxAccessToken={MAPBOX_TOKEN}
-        getCursor={cursorFn}
-        touchAction="pan-y"
-        dragPan={true}
-        dragRotate={false}
-        markers={mapItems}
-        onItemClick={handleMarkerClick}
-      />
-      : <Map
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        style={{ width: '100%', height: 400 }}
-        onMove={(evt) => setViewState(evt.viewState)}
-        mapboxAccessToken={MAPBOX_TOKEN}
-        getCursor={cursorFn}
-        />}
-        </Container>
-    );
+  return (
+    <div className="ci-wrapper">
+
+      {/* Header */}
+      <div className="ci-header">
+        <div>
+          <div className="ci-eyebrow">
+            {trip?.trip_name || 'Trip'}
+          </div>
+          <h1 className="ci-title">Add a Day</h1>
+          <p className="ci-subtitle">
+            Click a map pin to auto-fill location, or enter details manually.
+          </p>
+        </div>
+        <button className="btn-ci-ghost" onClick={() => navigate(`/trip-details/${tripId}`)}>
+          ← Back to Trip
+        </button>
+      </div>
+
+      {/* Two column layout */}
+      <div className="ci-body">
+
+        {/* Form */}
+        <div className="ci-form-panel">
+          <form onSubmit={handleSubmit} className="ci-form">
+
+            <div className="ci-field">
+              <label>Date</label>
+              <input
+                type="date"
+                name="day"
+                value={itinerary.day}
+                onChange={handleInputChange}
+                min={tripStartDate}
+                max={tripEndDate}
+                required
+              />
+              {tripStartDate && (
+                <span className="ci-field-hint">
+                  {moment(tripStartDate).format('MMM D')} – {moment(tripEndDate).format('MMM D, YYYY')}
+                </span>
+              )}
+            </div>
+
+            <div className="ci-field">
+              <label>Location</label>
+              <input
+                type="text"
+                name="location"
+                value={itinerary.location}
+                onChange={handleInputChange}
+                placeholder="e.g. Juneau, AK or click a map pin"
+              />
+            </div>
+
+            <div className="ci-field">
+              <label>Activity</label>
+              <input
+                type="text"
+                name="activity"
+                value={itinerary.activity}
+                onChange={handleInputChange}
+                placeholder="e.g. Whale watching tour"
+              />
+            </div>
+
+            <div className="ci-field">
+              <label>Notes</label>
+              <textarea
+                name="notes"
+                rows={4}
+                value={itinerary.notes}
+                onChange={handleInputChange}
+                placeholder="Reservations, reminders, packing notes..."
+              />
+            </div>
+
+            {itinerary.location && (
+              <div className="ci-selected-pin">
+                <span className="ci-pin-icon">📍</span>
+                <span className="ci-pin-label">Pin selected: <strong>{itinerary.location}</strong></span>
+              </div>
+            )}
+
+            <div className="ci-form-actions">
+              <button type="submit" className="btn-ci-primary">Save Day →</button>
+              <button type="button" className="btn-ci-ghost" onClick={() => navigate(`/trip-details/${tripId}`)}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Map */}
+        <div className="ci-map-panel">
+          <div className="ci-map-label">Click a pin to select a location</div>
+          <div className="ci-map-container">
+            <Map
+              mapStyle="mapbox://styles/mapbox/streets-v11"
+              style={{ width: '100%', height: '100%' }}
+              mapboxAccessToken={MAPBOX_TOKEN}
+              getCursor={cursorFn}
+              touchAction="pan-y"
+              dragPan={true}
+              dragRotate={false}
+              markers={mapItems}
+              onItemClick={handleMarkerClick}
+              initialViewState={{ latitude: 39.5, longitude: -98.35, zoom: 3.5 }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default CreateDailyItinerary;

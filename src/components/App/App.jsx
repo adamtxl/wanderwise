@@ -25,55 +25,76 @@ import AdminPage from '../AdminPage/AdminPage';
 import NonAdminLanding from '../AdminPage/NonAdminLanding';
 import ChecklistComponent from '../Checklist/Checklist';
 
-// Separate component so we can use useLocation inside Router
+const getCategoryBackground = (category_id) => {
+  const images = {
+    1: '/images/beach.jpeg',
+    2: '/images/Alaska-Desktop-Summer.jpeg',
+    3: '/images/cityscape.jpeg',
+    4: '/images/highway.jpeg',
+    5: '/images/desert.jpeg',
+    6: '/images/forest.jpeg',
+    7: '/images/countryside.jpeg',
+    8: '/images/island.jpeg',
+    9: '/images/winter.jpeg',
+    10: '/images/landmarks.jpeg',
+    11: '/images/themepark.jpeg',
+  };
+  return images[category_id] || null;
+};
+
 function AppShell() {
   const dispatch = useDispatch();
   const trips = useSelector((state) => state.trip.trips || []);
-  const currentTrip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data);
-  const [backgroundImage, setBackgroundImage] = useState('');
+  const [tripsBackground, setTripsBackground] = useState('');
   const location = useLocation();
 
   const isLanding = location.pathname === '/';
+  const isTripsPage = location.pathname === '/trips';
 
-  const getCategoryBackground = (category_id) => {
-    const images = {
-      1: '/images/beach.jpeg',
-      2: '/images/Alaska-Desktop-Summer.jpeg',
-      3: '/images/cityscape.jpeg',
-      4: '/images/highway.jpeg',
-      5: '/images/desert.jpeg',
-      6: '/images/forest.jpeg',
-      7: '/images/countryside.jpeg',
-      8: '/images/island.jpeg',
-      9: '/images/winter.jpeg',
-      10: '/images/landmarks.jpeg',
-      11: '/images/themepark.jpeg',
-    };
-    return images[category_id] || '/images/generic.jpeg';
-  };
+  // Determine next upcoming trip for the trips page background
+  useEffect(() => {
+    if (trips.length > 0) {
+      // trips are already sorted, index 0 is the next trip
+      const nextTrip = trips[0];
+      const bg = getCategoryBackground(nextTrip.category_id);
+      setTripsBackground(bg || '');
+    } else {
+      // No trips yet — use a beautiful default travel background
+      setTripsBackground('https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1600&q=80');
+    }
+  }, [trips]);
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
     dispatch({ type: 'FETCH_TRIPS' });
   }, [dispatch]);
 
-  useEffect(() => {
-    if (currentTrip?.category_id) {
-      setBackgroundImage(getCategoryBackground(currentTrip.category_id));
-    } else if (trips.length > 0) {
-      setBackgroundImage(getCategoryBackground(trips[0].category_id));
-    } else {
-      setBackgroundImage('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80');
+  // Determine background style based on route
+  const getBackgroundStyle = () => {
+    if (isLanding) {
+      // Landing page handles its own background
+      return {};
     }
-  }, [trips, currentTrip]);
+    if (isTripsPage && tripsBackground) {
+      // Trips page: next trip category image with strong overlay
+      return {
+        backgroundImage: `
+          linear-gradient(rgba(13,27,42,0.72), rgba(13,27,42,0.72)),
+          url(${tripsBackground})
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      };
+    }
+    // All other pages: clean navy — no distraction while working
+    return {
+      backgroundColor: '#0d1b2a',
+    };
+  };
 
   return (
-    <div
-      className='app-background'
-      style={isLanding ? {} : {
-        backgroundImage: `url(${backgroundImage}?v=${new Date().getTime()})`,
-      }}
-    >
+    <div className='app-background' style={getBackgroundStyle()}>
       {!isLanding && <Nav />}
       <Routes>
         <Route path='/' element={<LandingPage />} />

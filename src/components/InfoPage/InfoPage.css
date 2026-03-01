@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --navy:    #0d1b2a;
+  --gold:    #c9a84c;
+  --gold-lt: #e8c97a;
+  --cream:   #f5f0e8;
+  --muted:   rgba(245,240,232,0.5);
+  --border:  rgba(201,168,76,0.2);
+  --card-bg: rgba(255,255,255,0.04);
+}
+
+.info-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Hero ── */
+.info-hero {
+  text-align: center;
+  padding: 3rem 0 4rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4rem;
+}
+
+.info-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.info-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+.info-accent {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.info-subhead {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 540px;
+  margin: 0 auto 2rem;
+}
+
+/* ── Buttons ── */
+.btn-info-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+  border: none;
+  color: var(--navy);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.8rem 1.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+}
+
+.btn-info-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ── Sections ── */
+.info-section {
+  margin-bottom: 4.5rem;
+}
+
+.info-section-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+
+.info-section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 2rem;
+}
+
+/* ── Features Grid ── */
+.info-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.info-feature-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.info-feature-card:hover {
+  border-color: var(--border);
+  background: rgba(201,168,76,0.05);
+}
+
+.info-feature-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.85rem;
+  display: block;
+}
+
+.info-feature-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.info-feature-desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ── Steps ── */
+.info-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.info-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.2s ease;
+}
+
+.info-step:last-child {
+  border-bottom: none;
+}
+
+.info-step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--gold);
+  opacity: 0.6;
+  min-width: 3rem;
+  line-height: 1;
+  padding-top: 0.1rem;
+}
+
+.info-step-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 0.3rem;
+}
+
+.info-step-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── CTA ── */
+.info-cta {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.info-cta-mark {
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.info-cta-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.info-cta-sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .info-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .info-features-grid {
+    grid-template-columns: 1fr;
+  }
+}

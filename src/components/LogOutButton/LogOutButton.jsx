@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 function LogOutButton(props) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();  // useNavigate replaces history.push
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    navigate('/login'); 
+    navigate('/');
   };
 
   return (

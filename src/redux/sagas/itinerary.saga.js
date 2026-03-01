@@ -12,23 +12,22 @@ function* fetchItineraries(action) {
         console.log('Error fetching itineraries', error);
     }
 }
-// Worker Saga: will be fired on "ADD_ITINERARY" actions
 function* addItinerary(action) {
     try {
         const response = yield call(axios.post, `/api/itinerary/${action.payload.tripId}/itineraries`, action.payload.itinerary);
-        const newItineraryId = response.data.id; 
+        const newItineraryId = response.data?.data?.itinerary_id || response.data?.id;
 
-        // Dispatch to refresh itineraries
         yield put({ type: 'FETCH_ITINERARIES', payload: action.payload.tripId });
+        yield put({ type: 'FETCH_ITINERARIES_WITH_MAP_ITEMS', payload: action.payload.tripId });
 
-        // Add the map item to the itinerary once created
-        yield put({
-            type: 'ADD_ITINERARY_MAP_ITEM',
-            payload: {
-                itinerary_id: newItineraryId,
-                map_item_id: action.payload.mapItemId, // Pass the selected map item ID
-            },
-        });
+        // Use map_item_id from the itinerary object, not a non-existent mapItemId field
+        const mapItemId = action.payload.itinerary?.map_item_id;
+        if (newItineraryId && mapItemId) {
+            yield put({
+                type: 'ADD_ITINERARY_MAP_ITEM',
+                payload: { itinerary_id: newItineraryId, map_item_id: mapItemId },
+            });
+        }
     } catch (error) {
         console.log('Error with adding itinerary:', error);
     }
@@ -67,17 +66,6 @@ function* deleteItinerary(action) {
         yield put({ type: 'FETCH_ITINERARIES', payload: tripId });
     } catch (error) {
         console.error('Delete itinerary failed', error);
-    }
-}
-
-function* fetchLocations(action) {
-    try {
-        const response = yield call(axios.get, `/api/trips/${action.payload}/itineraries/locations`);
-        console.log('Locations fetched:', response.data.data); // Log to verify the response
-        yield put({ type: 'SET_LOCATIONS', payload: response.data.data });
-    } catch (error) {
-        console.error('Error fetching locations:', error);
-        yield put({ type: 'LOCATIONS_ERROR', payload: error.message });
     }
 }
 
@@ -131,7 +119,7 @@ function* itinerarySaga() {
     yield takeEvery('UPDATE_ITINERARY', updateItinerary);
     yield takeEvery('DELETE_ITINERARY', deleteItinerary);
     yield takeEvery('FETCH_ITINERARIES_WITH_MAP_ITEMS', fetchItinerariesWithMapItems);
-    yield takeEvery('FETCH_LOCATIONS', fetchLocations);
+
     yield takeEvery('FETCH_ITINERARY_MAP_ITEMS', fetchItineraryMapItems);
     yield takeEvery('ADD_ITINERARY_MAP_ITEM', addItineraryMapItem);
     yield takeEvery('UPDATE_ITINERARY_MAP_ITEM', updateItineraryMapItem);

@@ -1,77 +1,114 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import './PastTrips.css';
 
 const PastTripsComponent = () => {
-	const dispatch = useDispatch();
-	const trips = useSelector((state) => state.trip.trips || []); // Default to an empty array
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const navigate = useNavigate();
-	const [countdown, setCountdown] = useState(null);
+  const dispatch = useDispatch();
+  const trips = useSelector((state) => state.trip.trips || []);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		dispatch({ type: 'FETCH_PAST_TRIPS' });
+  useEffect(() => {
+    dispatch({ type: 'FETCH_PAST_TRIPS' });
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, [dispatch]);
 
-		// Simulate loading and error states
-		const timer = setTimeout(() => {
-			setLoading(false);
-		}, 1000);
+  const getCategoryIcon = (categoryId) => {
+    const icons = {
+      1: '🏖️', 2: '🏔️', 3: '🌆', 4: '🛣️',
+      5: '🏜️', 6: '🌲', 7: '🌄', 8: '🏝️',
+      9: '❄️', 10: '🗺️', 11: '🎢',
+    };
+    return icons[categoryId] || '✈️';
+  };
 
-		return () => clearTimeout(timer);
-	}, [dispatch]);
+  const getTripDuration = (start, end) => {
+    const days = moment(end).diff(moment(start), 'days');
+    return `${days} day${days !== 1 ? 's' : ''}`;
+  };
 
-	const editTrip = () => {
-		navigate({
-			pathname: '/trip-details',
-			state: { trip: trips[0] },
-		});
-	};
+  if (loading) {
+    return (
+      <div className="past-loading">
+        <Spinner animation="border" style={{ color: '#c9a84c' }} />
+      </div>
+    );
+  }
 
-	if (loading) {
-		return <Spinner animation='border' />;
-	}
+  if (error) {
+    return <Alert variant="danger">{error}</Alert>;
+  }
 
-	if (error) {
-		return <Alert variant='danger'>{error}</Alert>;
-	}
+  return (
+    <div className="past-wrapper">
+      <Container>
+        {/* Header */}
+        <div className="past-header">
+          <div>
+            <div className="past-eyebrow">Travel History</div>
+            <h1 className="past-title">Past Adventures</h1>
+            <p className="past-subtitle">
+              {trips.length > 0
+                ? `${trips.length} trip${trips.length !== 1 ? 's' : ''} completed`
+                : 'Your travel history will appear here'}
+            </p>
+          </div>
+          <button className="btn-past-primary" onClick={() => navigate('/edit-create-trips')}>
+            + Plan Next Trip
+          </button>
+        </div>
 
-	return (
-		<Container>
-			<Row>
-				<Col className='mb-4'>
-					<Button className='button-proceed' onClick={() => navigate('/edit-create-trips')}>
-						Create New Adventure
-					</Button>
-				</Col>
-			</Row>
-			<Row>
-				{trips.map((trip, index) => (
-					<Col key={trip.trip_id} md={4} className='mb-4'>
-						<Card className='bg-light'>
-							<Card.Body>
-								<Card.Title>{trip.trip_name}</Card.Title>
-								<Card.Text>
-									<strong>Start Date:</strong> {moment(trip.start_date).format('MM/DD/YYYY')}
-									<br />
-									<strong>End Date:</strong> {moment(trip.end_date).format('MM/DD/YYYY')}
-									<br />
-									<strong>Location:</strong> {trip.locales}
-									<br />
-									<strong>Destinations:</strong> {trip.map_locations}
-								</Card.Text>
-								<Button variant='primary' onClick={() => navigate(`/trip-details/${trip.trip_id}`)}>
-									View Details
-								</Button>
-							</Card.Body>
-						</Card>
-					</Col>
-				))}
-			</Row>
-		</Container>
-	);
+        {/* Empty state */}
+        {trips.length === 0 && (
+          <div className="past-empty">
+            <div className="past-empty-icon">🌍</div>
+            <h2 className="past-empty-heading">No past trips yet</h2>
+            <p className="past-empty-text">
+              Your completed adventures will live here. Once a trip's end date passes,
+              it moves from your trips page into your travel history.
+            </p>
+            <button className="btn-past-primary" onClick={() => navigate('/trips')}>
+              View Upcoming Trips →
+            </button>
+          </div>
+        )}
+
+        {/* Trip cards */}
+        {trips.length > 0 && (
+          <Row>
+            {trips.map((trip) => (
+              <Col key={trip.trip_id} md={4} className="mb-4">
+                <div className="past-card">
+                  <div className="past-card-icon">{getCategoryIcon(trip.category_id)}</div>
+                  <div className="past-card-title">{trip.trip_name}</div>
+                  <div className="past-card-dates">
+                    {moment(trip.start_date).format('MMM D')} – {moment(trip.end_date).format('MMM D, YYYY')}
+                    <span className="past-card-duration">
+                      · {getTripDuration(trip.start_date, trip.end_date)}
+                    </span>
+                  </div>
+                  {trip.locales && (
+                    <div className="past-card-location">📍 {trip.locales}</div>
+                  )}
+                  <button
+                    className="btn-past-secondary"
+                    onClick={() => navigate(`/trip-details/${trip.trip_id}`)}
+                  >
+                    View Details →
+                  </button>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Container>
+    </div>
+  );
 };
 
 export default PastTripsComponent;

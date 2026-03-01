@@ -1,50 +1,308 @@
-/* Trips.css */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap');
 
-.trip-card {
-    background-color: #f8f9fa; /* Light background, similar to bg-light */
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+:root {
+  --navy:       #0d1b2a;
+  --gold:       #c9a84c;
+  --gold-light: #e8c97a;
+  --cream:      #f5f0e8;
+  --border:     rgba(201,168,76,0.2);
+  --card-bg:    rgba(255,255,255,0.05);
+  --card-border:rgba(255,255,255,0.1);
 }
 
-.trip-card:hover {
-    transform: translateY(-3px);
+/* ── Wrapper ── */
+.trips-wrapper {
+  padding: 2.5rem 0 4rem;
+  min-height: calc(100vh - 120px);
 }
 
-.next-trip {
-    background-color: #7dd216;
-    color: white !important;
-    text-shadow: 1px 1px 2px black;
-    border-radius: 8px;
-    font-weight: bold;
+.trips-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
 }
 
-/* Target specific text elements inside .next-trip */
-.next-trip .card-title,
-.next-trip .card-text {
-    color: white !important; /* Override color for title and text */
+/* ── Header ── */
+.trips-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.collaborator-trip {
-    background-color: #e8f1ff; /* Light blue background */
-    border: 2px solid #007bff; /* Blue border */
-    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.2); /* Soft blue shadow */
+.trips-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin: 0 0 0.25rem;
+  line-height: 1;
 }
 
-.collaborator-trip .card-title,
-.collaborator-trip .card-text {
-    color: #007bff; /* Blue text for collaborator trips */
+.trips-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
 }
 
-/* Button styles */
-.button-proceed {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
+.trips-header-actions {
+  display: flex;
+  gap: 0.75rem;
 }
 
-.button-proceed:hover {
-    background-color: #0056b3;
+/* ── Buttons ── */
+.btn-ww-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light)) !important;
+  border: none !important;
+  color: var(--navy) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 8px !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+  box-shadow: 0 4px 16px rgba(201,168,76,0.25) !important;
+}
+
+.btn-ww-primary:hover {
+  opacity: 0.88 !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-ww-secondary {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid var(--card-border) !important;
+  color: rgba(245,240,232,0.7) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-ww-secondary:hover {
+  background: rgba(255,255,255,0.1) !important;
+  color: var(--cream) !important;
+}
+
+.btn-lg-ww {
+  padding: 0.85rem 2rem !important;
+  font-size: 0.9rem !important;
+  margin-top: 0.5rem;
+}
+
+.btn-card {
+  width: 100%;
+  margin-top: 1rem !important;
+}
+
+/* ── Empty State ── */
+.trips-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.trips-empty-icon {
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+.trips-empty-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 1rem;
+}
+
+.trips-empty-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(245,240,232,0.55);
+  margin-bottom: 2rem;
+}
+
+.trips-empty-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.trips-empty-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(245,240,232,0.7);
+}
+
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ── Trip Cards ── */
+.ww-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(12px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.ww-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3) !important;
+}
+
+.ww-card-next {
+  border-color: rgba(201,168,76,0.4) !important;
+  background: rgba(201,168,76,0.07) !important;
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.2) !important;
+}
+
+.ww-card-collab {
+  border-color: rgba(100,160,255,0.3) !important;
+  background: rgba(100,160,255,0.05) !important;
+}
+
+.ww-card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+}
+
+.ww-badge-collab {
+  background: linear-gradient(135deg, #4a90d9, #6ab0ff) !important;
+  color: white !important;
+}
+
+.ww-card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.ww-card-title {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 1.5rem !important;
+  font-weight: 400 !important;
+  color: var(--cream) !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.ww-card-category {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.ww-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.ww-card-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.ww-card-detail:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: rgba(245,240,232,0.4);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
+.detail-value {
+  color: rgba(245,240,232,0.85);
+  font-weight: 400;
+  text-align: right;
+}
+
+.detail-countdown {
+  color: var(--gold-light) !important;
+  font-weight: 500 !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .trips-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .trips-title {
+    font-size: 2rem;
+  }
+
+  .trips-empty {
+    padding: 2.5rem 1rem;
+  }
 }

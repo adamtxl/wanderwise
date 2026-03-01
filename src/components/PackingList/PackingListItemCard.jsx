@@ -1,116 +1,85 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Card, Form, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 const PackingListItemCard = ({ item }) => {
-	const dispatch = useDispatch();
-	const { tripId } = useParams();
-	const [editMode, setEditMode] = useState(false);
-	const [editedItem, setEditedItem] = useState({ ...item });
-	console.log('Trip ID:', tripId);
+  const dispatch = useDispatch();
+  const { tripId } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [editedItem, setEditedItem] = useState({ ...item });
 
-	const handleToggleEditMode = (event) => {
-		event.stopPropagation();
-		setEditMode(!editMode);
-		setEditedItem({ ...item });
-	};
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    e.stopPropagation();
+    setEditedItem({ ...editedItem, [name]: type === 'checkbox' ? checked : value });
+  };
 
-	const handleInputChange = (event) => {
-		event.stopPropagation();
-		const { name, value } = event.target;
-		setEditedItem({
-			...editedItem,
-			[name]: name === 'packed' ? event.target.checked : value,
-		});
-	};
+  const handleUpdate = (e) => {
+    e.stopPropagation();
+    dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: editedItem, tripId });
+    setEditMode(false);
+  };
 
-	const handleUpdateItem = (event) => {
-		event.stopPropagation();
-		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: editedItem, tripId });
-		setEditMode(false);
-	};
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item, tripId });
+  };
 
-	const handleDeleteItem = (event) => {
-		event.stopPropagation();
-		dispatch({ type: 'DELETE_PACKING_LIST_ITEM', payload: item, tripId });
-	};
+  const handleTogglePacked = () => {
+    dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: { ...item, packed: !item.packed }, tripId });
+  };
 
-	const handleTogglePacked = () => {
-		const updatedItem = { ...item, packed: !item.packed };
-		dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: updatedItem, tripId });
-	};
+  return (
+    <div
+      className={`pl-item ${item.packed ? 'pl-item-packed' : ''}`}
+      onClick={!editMode ? handleTogglePacked : undefined}
+      data-cy="packing-item"
+    >
+      <div className="pl-item-check">
+        {item.packed ? <span className="pl-check-done">✓</span> : <span className="pl-check-empty" />}
+      </div>
 
-	return (
-		<div className='d-flex justify-content-between align-items-start '>
-			<Card
-				className={`packing-list-item-card ${item.packed ? 'bg-success text-white op' : 'lb-bg'}`}
-				style={{ cursor: 'pointer', marginBottom: '.5em', flex: 1 }}
-				onClick={handleTogglePacked}
-				data-cy="packing-item"
-			>
-				<Card.Body className='d-flex justify-content-between align-items-center'>
-					<div className='flex-grow-1 d-flex align-items-center'>
-						{editMode ? (
-							<Form inline>
-								{/* Form inputs for editing */}
-								<Form.Group controlId='item_name' className='mr-2 '>
-									<Form.Control
-										type='text'
-										name='item_name'
-										value={editedItem.item_name}
-										onChange={handleInputChange}
-									/>
-								</Form.Group>
-								<Form.Group controlId='quantity' className='mr-2'>
-									<Form.Control
-										type='number'
-										name='quantity'
-										value={editedItem.quantity}
-										onChange={handleInputChange}
-									/>
-								</Form.Group>
-								<Form.Group controlId='packed' className='mr-2'>
-									<Form.Check
-										type='checkbox'
-										label='Packed'
-										name='packed'
-										checked={editedItem.packed}
-										onChange={handleInputChange}
-									/>
-								</Form.Group>
-							</Form>
-						) : (
-							<>
-								<div className="item-lines">
-									<strong className="bigger item-name">{item.item_name}</strong>
-									<div className="smaller item-meta">
-										<strong><em>Qty:</em></strong> {item.quantity}
-										<span className="meta-sep"> • </span>
-										<strong><em>Packed:</em></strong> {item.packed ? ' Yes' : ' No'}
-									</div>
-								</div>
-							</>
-						)}
-					</div>
-					<div>
-						{editMode ? (
-							<Button className=' btn-primary btn-xs mr-2' onClick={handleUpdateItem}>
-								<i className="bi bi-floppy-fill"></i> Save
-							</Button>
-						) : (
-							<Button className=' btn-secondary btn-xs op mr-2' onClick={handleToggleEditMode}>
-								<i className="bi bi-pencil-square"></i> Edit
-							</Button>
-						)}
-						<Button className='button-remove btn-xs' onClick={handleDeleteItem}>
-							<i className="bi bi-x-lg"></i> Delete
-						</Button>
-					</div>
-				</Card.Body>
-			</Card>
-		</div>
-	);
+      {editMode ? (
+        <div className="pl-item-edit" onClick={(e) => e.stopPropagation()}>
+          <input
+            className="pl-edit-input"
+            type="text"
+            name="item_name"
+            value={editedItem.item_name}
+            onChange={handleInputChange}
+            autoFocus
+          />
+          <input
+            className="pl-edit-input pl-edit-qty"
+            type="number"
+            name="quantity"
+            value={editedItem.quantity}
+            onChange={handleInputChange}
+            min="1"
+          />
+        </div>
+      ) : (
+        <div className="pl-item-content">
+          <span className="pl-item-name">{item.item_name}</span>
+          {item.quantity > 1 && <span className="pl-item-qty">×{item.quantity}</span>}
+        </div>
+      )}
+
+      <div className="pl-item-actions" onClick={(e) => e.stopPropagation()}>
+        {editMode ? (
+          <>
+            <button className="btn-pl-icon-save" onClick={handleUpdate}>Save</button>
+            <button className="btn-pl-icon-cancel" onClick={() => setEditMode(false)}>✕</button>
+          </>
+        ) : (
+          <>
+            <button className="btn-pl-icon" onClick={(e) => { e.stopPropagation(); setEditMode(true); setEditedItem({ ...item }); }}>✎</button>
+            <button className="btn-pl-icon btn-pl-icon-danger" onClick={handleDelete}>✕</button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default PackingListItemCard;

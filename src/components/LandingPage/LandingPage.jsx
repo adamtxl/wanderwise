@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './LandingPage.css';
 
@@ -7,13 +7,15 @@ function LandingPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [mode, setMode] = useState('register'); // 'register' | 'login'
+  const [mode, setMode] = useState('login'); // 'register' | 'login'
   const [loaded, setLoaded] = useState(false);
 
   const errors = useSelector((store) => store.errors);
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/trips';
 
   useEffect(() => {
     setTimeout(() => setLoaded(true), 50);
@@ -22,13 +24,13 @@ function LandingPage() {
   // Redirect after successful login
   useEffect(() => {
     if (user.id) {
-      navigate('/trips');
+      navigate(from);
     }
   }, [user, navigate]);
 
   useEffect(() => {
     if (errors.registrationMessage === 'Registration successful!') {
-      navigate('/trips');
+      navigate(from);
     } else if (errors.registrationMessage === 'Username already exists. Please choose another one.') {
       alert('Username already exists. Please choose another one.');
       setTimeout(() => navigate('/login'), 2000);

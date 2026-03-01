@@ -47,25 +47,6 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
   });
 
 
-  // Fit to bounds when locations change
-  useEffect(() => {
-    if (!mapRef.current || !bounds) return;
-
-    // If all points are the same, just set a reasonable zoom and center
-    const [[minLng, minLat], [maxLng, maxLat]] = bounds;
-    const singlePoint = minLng === maxLng && minLat === maxLat;
-
-    if (singlePoint) {
-      setViewState((vs) => ({
-        ...vs,
-        longitude: minLng,
-        latitude: minLat,
-        zoom: 14
-      }));
-    } else {
-      mapRef.current.fitBounds(bounds, { padding: 40, duration: 1000 });
-    }
-  }, [bounds]);
 
   // If itineraries load, fetch locations for this trip
   useEffect(() => {
@@ -75,12 +56,18 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
   }, [itineraries, tripId, dispatch]);
 
 const didFitRef = useRef(false);
+const prevBoundsRef = useRef(null);
 
 useEffect(() => {
   if (!mapRef.current || !bounds) return;
 
   const [[minLng, minLat], [maxLng, maxLat]] = bounds;
   const singlePoint = minLng === maxLng && minLat === maxLat;
+
+  // Stringify bounds to detect actual content change
+  const boundsKey = bounds.toString();
+  const boundsChanged = prevBoundsRef.current !== boundsKey;
+  prevBoundsRef.current = boundsKey;
 
   if (singlePoint) {
     setViewState((vs) => ({
@@ -92,11 +79,11 @@ useEffect(() => {
     return;
   }
 
-  // only fit once per locations set
-  if (didFitRef.current) return;
+  // Re-fit whenever bounds actually change with real data
+  if (didFitRef.current && !boundsChanged) return;
   didFitRef.current = true;
 
-  mapRef.current.fitBounds(bounds, { padding: 40, duration: 1000 });
+  mapRef.current.fitBounds(bounds, { padding: 60, duration: 50 });
 }, [bounds]);
 
 useEffect(() => {
@@ -141,7 +128,7 @@ useEffect(() => {
       ref={mapRef}
       mapboxAccessToken={MAPBOX_TOKEN}
       mapStyle="mapbox://styles/mapbox/streets-v11"
-      style={{ width: '100%', height: 400 }}
+      style={{ width: '100%', height: 800 }}
       viewState={viewState}
       onMoveEnd={(evt) => setViewState(evt.viewState)}
 	  getCursor={cursorFn}
