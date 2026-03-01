@@ -19,13 +19,6 @@ router.get('/:trip_id/itineraries', rejectUnauthenticated, (req, res) => {
 
     pool.query(query, [tripId, userId])
         .then(result => {
-            if (result.rows.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'No itineraries found for this trip'
-                });
-            }
-
             res.status(200).json({
                 success: true,
                 data: result.rows,
@@ -114,7 +107,7 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 });
 
 
-router.delete('/:itineraryId', (req, res) => {
+router.delete('/:itineraryId', rejectUnauthenticated, (req, res) => {
     const itineraryId = req.params.itineraryId;
 
     const queryText = 'DELETE FROM itinerary WHERE itinerary_id = $1 RETURNING *;';

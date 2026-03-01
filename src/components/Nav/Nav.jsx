@@ -9,7 +9,7 @@ function Nav() {
 
   return (
     <nav className="nav">
-      <Link to="/home" className="nav-brand">
+      <Link to="/info" className="nav-brand">
         WanderWise
       </Link>
 

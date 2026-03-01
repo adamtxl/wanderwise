@@ -57,10 +57,12 @@ const {
 router.get('/past', rejectUnauthenticated, (req, res) => {
     const userId = req.user.id;
     const query = `
-        SELECT * FROM "trips"
-        WHERE ("user_id" = $1 OR "collaborator" = $1)
-        AND "end_date" < CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
-        ORDER BY "start_date" ASC;
+        SELECT DISTINCT t.*
+        FROM "trips" t
+        LEFT JOIN "collaborators" c ON t.trip_id = c.trip_id
+        WHERE (t.user_id = $1 OR c.user_id = $1)
+        AND t.end_date < CURRENT_DATE AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago'
+        ORDER BY t.start_date ASC;
     `;
 
     pool.query(query, [userId])
@@ -314,9 +316,10 @@ router.get('/:trip_id/itineraries-with-map-items', rejectUnauthenticated, async 
         SELECT i.*, m.id AS map_item_id, m.title, m.description, m.latitude, m.longitude
         FROM "itinerary" i
         JOIN "trips" t ON i.trip_id = t.trip_id
+        LEFT JOIN "collaborators" c ON t.trip_id = c.trip_id
         LEFT JOIN "itinerary_map_items" imi ON i.itinerary_id = imi.itinerary_id
         LEFT JOIN "map_items" m ON imi.map_item_id = m.id
-        WHERE i.trip_id = $1 AND (t.user_id = $2 OR t.collaborator = $2)
+        WHERE i.trip_id = $1 AND (t.user_id = $2 OR c.user_id = $2)
         ORDER BY i.day;
     `;
 

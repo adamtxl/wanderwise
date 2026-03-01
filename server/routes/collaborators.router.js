@@ -58,40 +58,8 @@ router.post('/add', rejectUnauthenticated, checkTripOwnerOrCollaborator, (req, r
         });
 });
 
-// List collaborators for a trip
-router.get('/non-collaborators/:tripId', rejectUnauthenticated, checkTripOwnerOrCollaborator, async (req, res) => {
-    const tripId = req.params.tripId;
 
-    const query = `
-        SELECT u.id, u.username
-        FROM "user" u
-        WHERE u.id NOT IN (
-            SELECT c.user_id
-            FROM "collaborators" c
-            WHERE c.trip_id = $1
-        )
-        AND u.id NOT IN (
-            SELECT t.user_id
-            FROM "trips" t
-            WHERE t.trip_id = $1
-        );
-    `;
 
-    try {
-        const result = await pool.query(query, [tripId]);
-        res.status(200).json({
-            success: true,
-            data: result.rows,
-            message: 'Non-collaborators retrieved successfully'
-        });
-    } catch (err) {
-        console.error('Error retrieving non-collaborators:', err);
-        res.status(500).json({
-            success: false,
-            message: 'Internal server error'
-        });
-    }
-});
 
 // Remove a collaborator from a trip
 router.delete('/remove', rejectUnauthenticated, checkTripOwnerOrCollaborator, (req, res) => {
@@ -160,7 +128,7 @@ router.get('/non-collaborators/:tripId', rejectUnauthenticated, checkTripOwnerOr
     }
 });
 
-router.get('/:tripId', checkTripOwnerOrCollaborator, async (req, res) => {
+router.get('/:tripId', rejectUnauthenticated, checkTripOwnerOrCollaborator, async (req, res) => {
     const tripId = req.params.tripId;
 
     const query = `
