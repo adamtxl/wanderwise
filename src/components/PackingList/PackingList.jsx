@@ -100,17 +100,21 @@ const PackingList = () => {
               {unpacked.length > 0 && (
                 <div className="pl-group">
                   <div className="pl-group-label">To Pack · {unpacked.length}</div>
-                  {unpacked.map((item) => (
-                    <PackingListItemCard key={item.packinglist_id} item={item} />
-                  ))}
+                  <div className="pl-group-items">
+                    {unpacked.map((item) => (
+                      <PackingListItemCard key={item.packinglist_id} item={item} />
+                    ))}
+                  </div>
                 </div>
               )}
               {packed.length > 0 && (
                 <div className="pl-group">
                   <div className="pl-group-label pl-group-label-done">Packed ✓ · {packed.length}</div>
-                  {packed.map((item) => (
-                    <PackingListItemCard key={item.packinglist_id} item={item} />
-                  ))}
+                  <div className="pl-group-items">
+                    {packed.map((item) => (
+                      <PackingListItemCard key={item.packinglist_id} item={item} />
+                    ))}
+                  </div>
                 </div>
               )}
             </>
