@@ -1,7 +1,7 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment';
 import './itinerary.css';
 
 const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItinerary, trip_id }) => {
@@ -41,7 +41,9 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
         <div className="di-header-left">
           <div className="di-label">Daily Itineraries</div>
           {uniqueItineraries.length > 0 && (
-            <span className="di-count">{uniqueItineraries.length} day{uniqueItineraries.length !== 1 ? 's' : ''} planned</span>
+            <span className="di-count">
+              {uniqueItineraries.length} day{uniqueItineraries.length !== 1 ? 's' : ''} planned
+            </span>
           )}
         </div>
         <button
@@ -79,32 +81,51 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
                   <div className="di-edit-fields">
                     <div className="di-field">
                       <label>Day</label>
-                      <input type="date" name="day"
+                      <input
+                        type="date"
+                        name="day"
                         value={moment(selectedItinerary.day).format('YYYY-MM-DD')}
-                        onChange={handleItineraryChange} />
+                        onChange={handleItineraryChange}
+                      />
                     </div>
                     <div className="di-field">
                       <label>Location</label>
-                      <input type="text" name="location"
+                      <input
+                        type="text"
+                        name="location"
                         value={selectedItinerary.location}
-                        onChange={handleItineraryChange} />
+                        onChange={handleItineraryChange}
+                      />
                     </div>
                     <div className="di-field">
                       <label>Activity</label>
-                      <input type="text" name="activity"
+                      <input
+                        type="text"
+                        name="activity"
                         value={selectedItinerary.activity}
-                        onChange={handleItineraryChange} />
+                        onChange={handleItineraryChange}
+                      />
                     </div>
                     <div className="di-field">
                       <label>Notes</label>
-                      <textarea name="notes" rows={2}
+                      <textarea
+                        name="notes"
+                        rows={2}
                         value={selectedItinerary.notes}
-                        onChange={handleItineraryChange} />
+                        onChange={handleItineraryChange}
+                      />
                     </div>
                   </div>
                   <div className="di-edit-actions">
-                    <button className="btn-di-save" onClick={() => onSaveItinerary(selectedItinerary)}>Save</button>
-                    <button className="btn-di-ghost" onClick={() => onSelectItinerary(null)}>Cancel</button>
+                    <button
+                      className="btn-di-save"
+                      onClick={() => onSaveItinerary(selectedItinerary)}
+                    >
+                      Save
+                    </button>
+                    <button className="btn-di-ghost" onClick={() => onSelectItinerary(null)}>
+                      Cancel
+                    </button>
                   </div>
                 </div>
               ) : (
@@ -112,9 +133,7 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
                 <div className="di-view">
                   <div className="di-day-badge">Day {index + 1}</div>
                   <div className="di-date">{moment(itinerary.day).format('MMMM D, YYYY')}</div>
-                  {itinerary.location && (
-                    <div className="di-location">📍 {itinerary.location}</div>
-                  )}
+                  {itinerary.location && <div className="di-location">📍 {itinerary.location}</div>}
                   {itinerary.activity && (
                     <div className="di-detail">
                       <span className="di-detail-label">Activity</span>
@@ -131,13 +150,33 @@ const DisplayItineraries = ({ onSelectItinerary, selectedItinerary, onSaveItiner
                     {deleteConfirmId === itinerary.itinerary_id ? (
                       <>
                         <span className="di-delete-confirm-text">Delete this day?</span>
-                        <button className="btn-di-danger-sm" onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}>Yes</button>
-                        <button className="btn-di-ghost-sm" onClick={() => setDeleteConfirmId(null)}>No</button>
+                        <button
+                          className="btn-di-danger-sm"
+                          onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          className="btn-di-ghost-sm"
+                          onClick={() => setDeleteConfirmId(null)}
+                        >
+                          No
+                        </button>
                       </>
                     ) : (
                       <>
-                        <button className="btn-di-ghost-sm" onClick={() => onSelectItinerary(itinerary)}>Edit</button>
-                        <button className="btn-di-danger-sm" onClick={() => setDeleteConfirmId(itinerary.itinerary_id)}>Delete</button>
+                        <button
+                          className="btn-di-ghost-sm"
+                          onClick={() => onSelectItinerary(itinerary)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn-di-danger-sm"
+                          onClick={() => setDeleteConfirmId(itinerary.itinerary_id)}
+                        >
+                          Delete
+                        </button>
                       </>
                     )}
                   </div>

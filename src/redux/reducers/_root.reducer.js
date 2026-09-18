@@ -1,17 +1,18 @@
 import { combineReducers } from 'redux';
-import errors from './errors.reducer';
-import user from './user.reducer';
-import trip from './trip.reducer';
-import itineraryReducer from './itinerary.reducer';
-import packingList from './packingList.reducer';
-import userItems from './userItems.reducer';
-import tripDetailReducer from './tripDetail.reducer';
-import mapItemReducer from './mapItemReducer.js';
-import locationReducer from './location.reducer.js';
-import collaboratorsReducer from './collaborators.reducer.js';
+
 import categoryReducer from './category.reducer.js';
 import checklistReducer from './checklist.reducer.js';
+import collaboratorsReducer from './collaborators.reducer.js';
+import errors from './errors.reducer';
+import itineraryReducer from './itinerary.reducer';
 import itineraryMapItems from './itineraryMapItems.reducer.js';
+import locationReducer from './location.reducer.js';
+import mapItemReducer from './mapItemReducer.js';
+import packingList from './packingList.reducer';
+import trip from './trip.reducer';
+import tripDetailReducer from './tripDetail.reducer';
+import user from './user.reducer';
+import userItems from './userItems.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.

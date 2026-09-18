@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -31,7 +31,9 @@ function LandingPage() {
   useEffect(() => {
     if (errors.registrationMessage === 'Registration successful!') {
       navigate(from);
-    } else if (errors.registrationMessage === 'Username already exists. Please choose another one.') {
+    } else if (
+      errors.registrationMessage === 'Username already exists. Please choose another one.'
+    ) {
       alert('Username already exists. Please choose another one.');
       setTimeout(() => navigate('/login'), 2000);
     }
@@ -66,7 +68,10 @@ function LandingPage() {
         <div className="ww-hero-content">
           <div className="ww-eyebrow">Travel Planning, Reimagined</div>
           <h1 className="ww-headline">
-            Every great<br />journey starts<br />
+            Every great
+            <br />
+            journey starts
+            <br />
             <span className="ww-headline-accent">with a plan.</span>
           </h1>
           <p className="ww-subhead">
@@ -111,7 +116,9 @@ function LandingPage() {
           </div>
 
           <div className="ww-tab-indicator-wrap">
-            <div className={`ww-tab-indicator ${mode === 'login' ? 'ww-tab-indicator-right' : ''}`} />
+            <div
+              className={`ww-tab-indicator ${mode === 'login' ? 'ww-tab-indicator-right' : ''}`}
+            />
           </div>
 
           {mode === 'register' ? (
@@ -160,9 +167,7 @@ function LandingPage() {
           ) : (
             <form className="ww-form" onSubmit={handleLogin}>
               <p className="ww-form-tagline">Welcome back, traveler.</p>
-              {errors.loginMessage && (
-                <div className="ww-error">{errors.loginMessage}</div>
-              )}
+              {errors.loginMessage && <div className="ww-error">{errors.loginMessage}</div>}
               <div className="ww-field">
                 <label>Username</label>
                 <input

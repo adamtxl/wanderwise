@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import FileUpload from '../FileUpload/FileUpload';
 import './AdminPage.css';
 
@@ -44,7 +45,9 @@ function AdminPage() {
               <div className="admin-schema-label">Required CSV columns</div>
               <div className="admin-schema-cols">
                 {['name', 'description', 'latitude', 'longitude'].map((col) => (
-                  <code key={col} className="admin-col-pill">{col}</code>
+                  <code key={col} className="admin-col-pill">
+                    {col}
+                  </code>
                 ))}
               </div>
               <p className="admin-schema-note">

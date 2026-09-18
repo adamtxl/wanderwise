@@ -34,27 +34,51 @@ function InfoPage() {
     {
       icon: '📋',
       title: 'Checklists',
-      desc: 'Track what\'s done and what\'s left. Pre-departure checklists keep you organized on the way out the door.',
+      desc: "Track what's done and what's left. Pre-departure checklists keep you organized on the way out the door.",
     },
   ];
 
   const steps = [
-    { num: '01', title: 'Create a Trip', desc: 'Add your destination, travel dates, and trip type to get started.' },
-    { num: '02', title: 'Build Your Itinerary', desc: 'Plan each day with activities, locations, and times.' },
-    { num: '03', title: 'Map Your Journey', desc: 'Pin every destination and visualize your route.' },
-    { num: '04', title: 'Pack Smarter', desc: 'Build your packing list and check items off as you go.' },
-    { num: '05', title: 'Invite Companions', desc: 'Add collaborators so everyone can plan and track together.' },
-    { num: '06', title: 'Travel Confidently', desc: 'Arrive prepared. Focus on the adventure, not the logistics.' },
+    {
+      num: '01',
+      title: 'Create a Trip',
+      desc: 'Add your destination, travel dates, and trip type to get started.',
+    },
+    {
+      num: '02',
+      title: 'Build Your Itinerary',
+      desc: 'Plan each day with activities, locations, and times.',
+    },
+    {
+      num: '03',
+      title: 'Map Your Journey',
+      desc: 'Pin every destination and visualize your route.',
+    },
+    {
+      num: '04',
+      title: 'Pack Smarter',
+      desc: 'Build your packing list and check items off as you go.',
+    },
+    {
+      num: '05',
+      title: 'Invite Companions',
+      desc: 'Add collaborators so everyone can plan and track together.',
+    },
+    {
+      num: '06',
+      title: 'Travel Confidently',
+      desc: 'Arrive prepared. Focus on the adventure, not the logistics.',
+    },
   ];
 
   return (
     <div className="info-wrapper">
-
       {/* Hero */}
       <div className="info-hero">
         <div className="info-eyebrow">How it works</div>
         <h1 className="info-headline">
-          Everything you need to<br />
+          Everything you need to
+          <br />
           <span className="info-accent">plan the perfect trip.</span>
         </h1>
         <p className="info-subhead">
@@ -107,7 +131,6 @@ function InfoPage() {
           Create Your First Trip →
         </button>
       </div>
-
     </div>
   );
 }

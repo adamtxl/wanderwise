@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
+
 import PackingListItemCard from './PackingListItemCard';
 import UserItems from './UserItems';
 import './PackingList.css';
@@ -33,7 +34,13 @@ const PackingList = () => {
   const handleAddToPackingList = (item) => {
     dispatch({
       type: 'ADD_PACKING_LIST_ITEM',
-      payload: { item_name: item.item_name, quantity: 1, packed: false, trip_id: tripId, packinglist_id: item.packinglist_id },
+      payload: {
+        item_name: item.item_name,
+        quantity: 1,
+        packed: false,
+        trip_id: tripId,
+        packinglist_id: item.packinglist_id,
+      },
       tripId,
     });
     setAddedItems((prev) => [...prev, item.item_id]);
@@ -63,7 +70,9 @@ const PackingList = () => {
       {packingList.length > 0 && (
         <div className="pl-progress-card">
           <div className="pl-progress-meta">
-            <span className="pl-progress-label">{packed.length} of {packingList.length} packed</span>
+            <span className="pl-progress-label">
+              {packed.length} of {packingList.length} packed
+            </span>
             <span className="pl-progress-pct">{progress}%</span>
           </div>
           <div className="pl-progress-bar">
@@ -74,13 +83,24 @@ const PackingList = () => {
 
       {/* Tabs */}
       <div className="pl-tabs">
-        <button className={`pl-tab ${activeTab === 'list' ? 'pl-tab-active' : ''}`} onClick={() => setActiveTab('list')}>
-          📋 My List {packingList.length > 0 && <span className="pl-tab-count">{packingList.length}</span>}
+        <button
+          className={`pl-tab ${activeTab === 'list' ? 'pl-tab-active' : ''}`}
+          onClick={() => setActiveTab('list')}
+        >
+          📋 My List{' '}
+          {packingList.length > 0 && <span className="pl-tab-count">{packingList.length}</span>}
         </button>
-        <button className={`pl-tab ${activeTab === 'items' ? 'pl-tab-active' : ''}`} onClick={() => setActiveTab('items')}>
-          🗂️ Item Library {userItems.length > 0 && <span className="pl-tab-count">{userItems.length}</span>}
+        <button
+          className={`pl-tab ${activeTab === 'items' ? 'pl-tab-active' : ''}`}
+          onClick={() => setActiveTab('items')}
+        >
+          🗂️ Item Library{' '}
+          {userItems.length > 0 && <span className="pl-tab-count">{userItems.length}</span>}
         </button>
-        <button className={`pl-tab ${activeTab === 'add' ? 'pl-tab-active' : ''}`} onClick={() => setActiveTab('add')}>
+        <button
+          className={`pl-tab ${activeTab === 'add' ? 'pl-tab-active' : ''}`}
+          onClick={() => setActiveTab('add')}
+        >
           + New Item
         </button>
       </div>
@@ -93,7 +113,9 @@ const PackingList = () => {
               <div className="pl-empty-icon">🧳</div>
               <div className="pl-empty-heading">Nothing packed yet</div>
               <p className="pl-empty-text">Add items from your library or create new ones.</p>
-              <button className="btn-pl-primary" onClick={() => setActiveTab('items')}>Browse Item Library →</button>
+              <button className="btn-pl-primary" onClick={() => setActiveTab('items')}>
+                Browse Item Library →
+              </button>
             </div>
           ) : (
             <>
@@ -109,7 +131,9 @@ const PackingList = () => {
               )}
               {packed.length > 0 && (
                 <div className="pl-group">
-                  <div className="pl-group-label pl-group-label-done">Packed ✓ · {packed.length}</div>
+                  <div className="pl-group-label pl-group-label-done">
+                    Packed ✓ · {packed.length}
+                  </div>
                   <div className="pl-group-items">
                     {packed.map((item) => (
                       <PackingListItemCard key={item.packinglist_id} item={item} />

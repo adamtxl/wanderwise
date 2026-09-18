@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --gold:    #c9a84c;
+  --gold: #c9a84c;
   --gold-lt: #e8c97a;
-  --cream:   #f5f0e8;
-  --muted:   rgba(245,240,232,0.5);
-  --faint:   rgba(245,240,232,0.25);
-  --border:  rgba(201,168,76,0.2);
-  --card-bg: rgba(255,255,255,0.04);
-  --navy:    #0d1b2a;
+  --cream: #f5f0e8;
+  --muted: rgba(245, 240, 232, 0.5);
+  --faint: rgba(245, 240, 232, 0.25);
+  --border: rgba(201, 168, 76, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --navy: #0d1b2a;
 }
 
 .up-wrapper {
@@ -27,7 +27,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: rgba(201,168,76,0.12);
+  background: rgba(201, 168, 76, 0.12);
   border: 2px solid var(--border);
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
 .up-card {
   width: 100%;
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
   padding: 1.5rem;
   margin-top: 1rem;
@@ -83,12 +83,19 @@
   justify-content: space-between;
   align-items: baseline;
   padding: 0.6rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 0.85rem;
 }
-.up-detail:last-child { border-bottom: none; }
-.up-detail-label { color: var(--faint); font-size: 0.78rem; }
-.up-detail-value { color: rgba(245,240,232,0.8); }
+.up-detail:last-child {
+  border-bottom: none;
+}
+.up-detail-label {
+  color: var(--faint);
+  font-size: 0.78rem;
+}
+.up-detail-value {
+  color: rgba(245, 240, 232, 0.8);
+}
 
 .up-actions {
   display: flex;
@@ -111,11 +118,13 @@
   width: 100%;
   transition: opacity 0.2s;
 }
-.btn-up-primary:hover { opacity: 0.88; }
+.btn-up-primary:hover {
+  opacity: 0.88;
+}
 
 .btn-up-ghost {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--muted);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.85rem;
@@ -125,4 +134,7 @@
   width: 100%;
   transition: all 0.2s;
 }
-.btn-up-ghost:hover { color: var(--cream); background: rgba(255,255,255,0.09); }
+.btn-up-ghost:hover {
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.09);
+}

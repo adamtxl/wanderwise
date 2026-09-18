@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --gold:    #c9a84c;
+  --gold: #c9a84c;
   --gold-lt: #e8c97a;
-  --cream:   #f5f0e8;
-  --muted:   rgba(245,240,232,0.5);
-  --border:  rgba(201,168,76,0.2);
-  --card-bg: rgba(255,255,255,0.04);
+  --cream: #f5f0e8;
+  --muted: rgba(245, 240, 232, 0.5);
+  --border: rgba(201, 168, 76, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
 }
 
 .admin-wrapper {
@@ -58,7 +58,9 @@
   font-size: 0.82rem;
   color: var(--muted);
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
   white-space: nowrap;
 }
 
@@ -83,7 +85,7 @@
 
 .admin-card {
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 1.75rem;
 }
@@ -92,7 +94,7 @@
 .admin-schema {
   margin-bottom: 1.75rem;
   padding-bottom: 1.75rem;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .admin-schema-label {
@@ -100,7 +102,7 @@
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(245,240,232,0.4);
+  color: rgba(245, 240, 232, 0.4);
   margin-bottom: 0.75rem;
 }
 
@@ -112,7 +114,7 @@
 }
 
 .admin-col-pill {
-  background: rgba(201,168,76,0.1);
+  background: rgba(201, 168, 76, 0.1);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.35rem 0.75rem;
@@ -137,12 +139,12 @@
   flex-wrap: wrap;
 }
 
-.admin-upload-area input[type="file"] {
+.admin-upload-area input[type='file'] {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
-  color: rgba(245,240,232,0.65);
-  background: rgba(255,255,255,0.05);
-  border: 1px dashed rgba(255,255,255,0.15);
+  color: rgba(245, 240, 232, 0.65);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   padding: 0.65rem 1rem;
   cursor: pointer;
@@ -150,8 +152,8 @@
   min-width: 0;
 }
 
-.admin-upload-area input[type="file"]::-webkit-file-upload-button {
-  background: rgba(201,168,76,0.15);
+.admin-upload-area input[type='file']::-webkit-file-upload-button {
+  background: rgba(201, 168, 76, 0.15);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--gold);
@@ -163,8 +165,8 @@
   transition: background 0.2s ease;
 }
 
-.admin-upload-area input[type="file"]::-webkit-file-upload-button:hover {
-  background: rgba(201,168,76,0.25);
+.admin-upload-area input[type='file']::-webkit-file-upload-button:hover {
+  background: rgba(201, 168, 76, 0.25);
 }
 
 .admin-upload-area button {
@@ -178,8 +180,10 @@
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 16px rgba(201,168,76,0.2);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.2);
 }
 
 .admin-upload-area button:hover {

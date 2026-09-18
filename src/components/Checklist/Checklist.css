@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --gold:    #c9a84c;
+  --gold: #c9a84c;
   --gold-lt: #e8c97a;
-  --cream:   #f5f0e8;
-  --muted:   rgba(245,240,232,0.5);
-  --faint:   rgba(245,240,232,0.25);
-  --border:  rgba(201,168,76,0.2);
-  --card-bg: rgba(255,255,255,0.04);
-  --navy:    #0d1b2a;
+  --cream: #f5f0e8;
+  --muted: rgba(245, 240, 232, 0.5);
+  --faint: rgba(245, 240, 232, 0.25);
+  --border: rgba(201, 168, 76, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --navy: #0d1b2a;
 }
 
 .cl-wrapper {
@@ -47,7 +47,7 @@
 /* Progress */
 .cl-progress-card {
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-bottom: 1.25rem;
@@ -72,7 +72,7 @@
 
 .cl-progress-bar {
   height: 4px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   border-radius: 99px;
   overflow: hidden;
 }
@@ -93,8 +93,8 @@
 
 .cl-input {
   flex: 1;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 9px;
   padding: 0.65rem 1rem;
   font-family: 'DM Sans', sans-serif;
@@ -104,8 +104,12 @@
   transition: border-color 0.2s ease;
 }
 
-.cl-input::placeholder { color: var(--faint); }
-.cl-input:focus { border-color: var(--gold); }
+.cl-input::placeholder {
+  color: var(--faint);
+}
+.cl-input:focus {
+  border-color: var(--gold);
+}
 
 /* Empty */
 .cl-empty {
@@ -117,19 +121,33 @@
   gap: 0.4rem;
 }
 
-.cl-empty-icon { font-size: 2rem; opacity: 0.4; }
+.cl-empty-icon {
+  font-size: 2rem;
+  opacity: 0.4;
+}
 .cl-empty-heading {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.4rem;
   font-weight: 300;
   color: var(--cream);
 }
-.cl-empty-text { font-size: 0.82rem; color: var(--muted); }
+.cl-empty-text {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
 
 /* List */
-.cl-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.cl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
-.cl-section { display: flex; flex-direction: column; gap: 0.35rem; }
+.cl-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
 
 .cl-section-label {
   font-size: 0.62rem;
@@ -141,7 +159,9 @@
   padding-left: 0.25rem;
 }
 
-.cl-section-done { color: rgba(201,168,76,0.4); }
+.cl-section-done {
+  color: rgba(201, 168, 76, 0.4);
+}
 
 /* Item */
 .cl-item {
@@ -150,13 +170,17 @@
   gap: 0.75rem;
   padding: 0.7rem 0.85rem;
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
   transition: border-color 0.2s ease;
 }
 
-.cl-item:hover { border-color: rgba(255,255,255,0.1); }
-.cl-item-done { opacity: 0.5; }
+.cl-item:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.cl-item-done {
+  opacity: 0.5;
+}
 
 /* Checkbox */
 .cl-checkbox {
@@ -164,31 +188,44 @@
   height: 20px;
   min-width: 20px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   background: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
   padding: 0;
 }
 
-.cl-checkbox:hover { border-color: var(--gold); }
-.cl-checkbox-inner { width: 8px; height: 8px; border-radius: 50%; }
-.cl-checkbox:hover .cl-checkbox-inner { background: var(--gold); }
+.cl-checkbox:hover {
+  border-color: var(--gold);
+}
+.cl-checkbox-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.cl-checkbox:hover .cl-checkbox-inner {
+  background: var(--gold);
+}
 
 .cl-checkbox-done {
   border-color: var(--gold) !important;
-  background: rgba(201,168,76,0.15) !important;
+  background: rgba(201, 168, 76, 0.15) !important;
 }
 
-.cl-checkbox-check { font-size: 0.65rem; color: var(--gold); }
+.cl-checkbox-check {
+  font-size: 0.65rem;
+  color: var(--gold);
+}
 
 .cl-item-name {
   flex: 1;
   font-size: 0.87rem;
-  color: rgba(245,240,232,0.85);
+  color: rgba(245, 240, 232, 0.85);
   line-height: 1.3;
 }
 
@@ -199,7 +236,7 @@
 
 .cl-edit-input {
   flex: 1;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--gold);
   border-radius: 6px;
   padding: 0.3rem 0.6rem;
@@ -230,12 +267,17 @@
   transition: opacity 0.2s ease;
 }
 
-.btn-cl-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-cl-primary:not(:disabled):hover { opacity: 0.88; }
+.btn-cl-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-cl-primary:not(:disabled):hover {
+  opacity: 0.88;
+}
 
 .btn-cl-ghost {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--muted);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
@@ -246,10 +288,13 @@
   white-space: nowrap;
 }
 
-.btn-cl-ghost:hover { color: var(--cream); background: rgba(255,255,255,0.09); }
+.btn-cl-ghost:hover {
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.09);
+}
 
 .btn-cl-save {
-  background: rgba(201,168,76,0.15);
+  background: rgba(201, 168, 76, 0.15);
   border: 1px solid var(--border);
   color: var(--gold);
   font-family: 'DM Sans', sans-serif;
@@ -261,7 +306,7 @@
 
 .btn-cl-cancel {
   background: none;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--muted);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.72rem;
@@ -273,14 +318,22 @@
 .btn-cl-icon {
   background: none;
   border: none;
-  color: rgba(245,240,232,0.2);
+  color: rgba(245, 240, 232, 0.2);
   font-size: 0.75rem;
   cursor: pointer;
   padding: 0.25rem 0.35rem;
   border-radius: 4px;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
   line-height: 1;
 }
 
-.btn-cl-icon:hover { color: var(--cream); background: rgba(255,255,255,0.07); }
-.btn-cl-icon-danger:hover { color: #e07070 !important; background: rgba(192,57,43,0.1) !important; }
+.btn-cl-icon:hover {
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.07);
+}
+.btn-cl-icon-danger:hover {
+  color: #e07070 !important;
+  background: rgba(192, 57, 43, 0.1) !important;
+}

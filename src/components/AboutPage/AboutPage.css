@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --gold:    #c9a84c;
+  --gold: #c9a84c;
   --gold-lt: #e8c97a;
-  --cream:   #f5f0e8;
-  --muted:   rgba(245,240,232,0.5);
-  --border:  rgba(201,168,76,0.2);
-  --card-bg: rgba(255,255,255,0.04);
+  --cream: #f5f0e8;
+  --muted: rgba(245, 240, 232, 0.5);
+  --border: rgba(201, 168, 76, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
 }
 
 .about-wrapper {
@@ -83,14 +83,14 @@
 .about-body {
   font-size: 0.9rem;
   line-height: 1.75;
-  color: rgba(245,240,232,0.7);
+  color: rgba(245, 240, 232, 0.7);
   margin-bottom: 1rem;
 }
 
 /* ── Dev Card ── */
 .about-dev-card {
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 1.75rem;
 }
@@ -107,17 +107,19 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  background: rgba(201,168,76,0.08);
+  background: rgba(201, 168, 76, 0.08);
   border: 1px solid var(--border);
   border-radius: 20px;
   font-size: 0.78rem;
   color: var(--gold);
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .about-link:hover {
-  background: rgba(201,168,76,0.15);
+  background: rgba(201, 168, 76, 0.15);
   color: var(--gold-lt);
 }
 
@@ -131,10 +133,10 @@
 .about-stack-item {
   padding: 0.45rem 1rem;
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   font-size: 0.78rem;
-  color: rgba(245,240,232,0.65);
+  color: rgba(245, 240, 232, 0.65);
   letter-spacing: 0.03em;
 }
 

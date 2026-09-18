@@ -26,7 +26,9 @@
   transition: opacity 0.2s ease;
 }
 
-.nav-brand:hover { opacity: 0.8; }
+.nav-brand:hover {
+  opacity: 0.8;
+}
 
 /* Links container */
 .nav-links {
@@ -59,7 +61,9 @@ button.navLink {
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
   box-sizing: border-box;
   line-height: 1;
   vertical-align: middle;

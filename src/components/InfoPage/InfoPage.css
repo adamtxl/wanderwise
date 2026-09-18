@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --navy:    #0d1b2a;
-  --gold:    #c9a84c;
+  --navy: #0d1b2a;
+  --gold: #c9a84c;
   --gold-lt: #e8c97a;
-  --cream:   #f5f0e8;
-  --muted:   rgba(245,240,232,0.5);
-  --border:  rgba(201,168,76,0.2);
-  --card-bg: rgba(255,255,255,0.04);
+  --cream: #f5f0e8;
+  --muted: rgba(245, 240, 232, 0.5);
+  --border: rgba(201, 168, 76, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
 }
 
 .info-wrapper {
@@ -68,8 +68,10 @@
   padding: 0.8rem 1.75rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.25);
 }
 
 .btn-info-primary:hover {
@@ -108,15 +110,17 @@
 
 .info-feature-card {
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 1.5rem;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .info-feature-card:hover {
   border-color: var(--border);
-  background: rgba(201,168,76,0.05);
+  background: rgba(201, 168, 76, 0.05);
 }
 
 .info-feature-icon {
@@ -152,7 +156,7 @@
   align-items: flex-start;
   gap: 1.5rem;
   padding: 1.25rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   transition: background 0.2s ease;
 }
 

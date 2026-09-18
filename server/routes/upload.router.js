@@ -4,9 +4,7 @@ const csv = require('csv-parser');
 const fs = require('fs');
 const pool = require('../modules/pool');
 const router = express.Router();
-const {
-    rejectUnauthenticated,
-  } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -19,11 +17,13 @@ router.post('/', upload.single('file'), (req, res) => {
     .on('data', (data) => results.push(data))
     .on('end', () => {
       // Use a transaction to ensure all inserts succeed or fail together
-      pool.connect()
-        .then(client => {
-          return client.query('BEGIN')
+      pool
+        .connect()
+        .then((client) => {
+          return client
+            .query('BEGIN')
             .then(() => {
-              const insertPromises = results.map(row => {
+              const insertPromises = results.map((row) => {
                 const { name, description, latitude, longitude } = row;
                 return client.query(
                   'INSERT INTO testtable (name, description, latitude, longitude) VALUES ($1, $2, $3, $4)',
@@ -33,7 +33,7 @@ router.post('/', upload.single('file'), (req, res) => {
               return Promise.all(insertPromises);
             })
             .then(() => client.query('COMMIT'))
-            .catch(err => {
+            .catch((err) => {
               console.error('Error during the transaction, rolling back.', err);
               return client.query('ROLLBACK');
             })
@@ -44,7 +44,7 @@ router.post('/', upload.single('file'), (req, res) => {
               res.send('File uploaded and data inserted successfully');
             });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error('Error acquiring client', err);
           res.status(500).send('Error inserting data');
         });

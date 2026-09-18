@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --gold:    #c9a84c;
+  --gold: #c9a84c;
   --gold-lt: #e8c97a;
-  --cream:   #f5f0e8;
-  --muted:   rgba(245,240,232,0.5);
-  --border:  rgba(201,168,76,0.2);
-  --card-bg: rgba(255,255,255,0.04);
+  --cream: #f5f0e8;
+  --muted: rgba(245, 240, 232, 0.5);
+  --border: rgba(201, 168, 76, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
 }
 
 .past-wrapper {
@@ -69,8 +69,10 @@
   padding: 0.65rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 16px rgba(201,168,76,0.2);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.2);
 }
 
 .btn-past-primary:hover {
@@ -79,9 +81,9 @@
 }
 
 .btn-past-secondary {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(245,240,232,0.65);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(245, 240, 232, 0.65);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
@@ -94,7 +96,7 @@
 }
 
 .btn-past-secondary:hover {
-  background: rgba(201,168,76,0.08);
+  background: rgba(201, 168, 76, 0.08);
   border-color: var(--border);
   color: var(--cream);
 }
@@ -134,10 +136,12 @@
 /* ── Cards ── */
 .past-card {
   background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
   padding: 1.5rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
   height: 100%;
 }
 
@@ -174,7 +178,7 @@
 
 .past-card-location {
   font-size: 0.78rem;
-  color: rgba(245,240,232,0.5);
+  color: rgba(245, 240, 232, 0.5);
   margin-bottom: 0.25rem;
 }
 

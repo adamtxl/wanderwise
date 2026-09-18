@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import MapForm from './MapForm';
-import Map from './Map';
-import MapInfo from './MapInfo';
 import { connect } from 'react-redux';
+
+import Map from './Map';
+import MapForm from './MapForm';
+import MapInfo from './MapInfo';
+
 import './MapPage.css';
 
 class MapPage extends Component {
   componentDidMount = () => {
     this.props.dispatch({ type: 'FETCH_MAP_ITEMS' });
-  }
+  };
 
   render = () => {
     const { mapItems } = this.props;
@@ -56,7 +58,7 @@ class MapPage extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
 const mapStateToProps = (state) => ({

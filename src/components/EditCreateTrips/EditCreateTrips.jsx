@@ -1,11 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './EditCreateTrips.css';
 
 const getCategoryIcon = (id) => {
-  const icons = { 1:'🏖️', 2:'🏔️', 3:'🌆', 4:'🛣️', 5:'🏜️', 6:'🌲', 7:'🌄', 8:'🏝️', 9:'❄️', 10:'🗺️', 11:'🎢' };
+  const icons = {
+    1: '🏖️',
+    2: '🏔️',
+    3: '🌆',
+    4: '🛣️',
+    5: '🏜️',
+    6: '🌲',
+    7: '🌄',
+    8: '🏝️',
+    9: '❄️',
+    10: '🗺️',
+    11: '🎢',
+  };
   return icons[id] || '✈️';
 };
 
@@ -18,10 +30,16 @@ const EditCreateTrips = () => {
 
   const categories = useSelector((state) => state.categoryReducer.categories);
 
-  const [editedTrip, setEditedTrip] = useState(trip || {
-    trip_name: '', start_date: '', end_date: '',
-    locales: '', map_locations: '', category_id: '',
-  });
+  const [editedTrip, setEditedTrip] = useState(
+    trip || {
+      trip_name: '',
+      start_date: '',
+      end_date: '',
+      locales: '',
+      map_locations: '',
+      category_id: '',
+    }
+  );
 
   useEffect(() => {
     dispatch({ type: 'FETCH_CATEGORIES' });
@@ -44,21 +62,26 @@ const EditCreateTrips = () => {
     }
   };
 
-  const selectedCategory = categories.find((c) => String(c.category_id) === String(editedTrip.category_id));
+  const selectedCategory = categories.find(
+    (c) => String(c.category_id) === String(editedTrip.category_id)
+  );
 
   return (
     <div className="ect-wrapper">
       <div className="ect-header">
         <div>
           <div className="ect-eyebrow">{isEditing ? 'Edit Trip' : 'New Trip'}</div>
-          <h1 className="ect-title">{isEditing ? editedTrip.trip_name || 'Edit Trip' : 'Plan a Trip'}</h1>
+          <h1 className="ect-title">
+            {isEditing ? editedTrip.trip_name || 'Edit Trip' : 'Plan a Trip'}
+          </h1>
         </div>
-        <button className="btn-ect-ghost" onClick={() => navigate('/trips')}>← Back</button>
+        <button className="btn-ect-ghost" onClick={() => navigate('/trips')}>
+          ← Back
+        </button>
       </div>
 
       <div className="ect-body">
         <div className="ect-form-panel">
-
           {/* Name */}
           <div className="ect-field">
             <label>Trip Name</label>
@@ -79,7 +102,9 @@ const EditCreateTrips = () => {
               <input
                 type="date"
                 name="start_date"
-                value={editedTrip.start_date ? moment(editedTrip.start_date).format('YYYY-MM-DD') : ''}
+                value={
+                  editedTrip.start_date ? moment(editedTrip.start_date).format('YYYY-MM-DD') : ''
+                }
                 onChange={handleInputChange}
                 max={editedTrip.end_date || ''}
               />
@@ -144,17 +169,25 @@ const EditCreateTrips = () => {
           {/* Category preview */}
           {selectedCategory && (
             <div className="ect-category-preview">
-              <span className="ect-preview-icon">{getCategoryIcon(selectedCategory.category_id)}</span>
+              <span className="ect-preview-icon">
+                {getCategoryIcon(selectedCategory.category_id)}
+              </span>
               <span className="ect-preview-name">{selectedCategory.category_name}</span>
               <span className="ect-preview-hint">Background will match this category</span>
             </div>
           )}
 
           <div className="ect-actions">
-            <button className="btn-ect-primary" onClick={handleSave} disabled={!editedTrip.trip_name}>
+            <button
+              className="btn-ect-primary"
+              onClick={handleSave}
+              disabled={!editedTrip.trip_name}
+            >
               {isEditing ? 'Save Changes' : 'Create Trip'} →
             </button>
-            <button className="btn-ect-ghost" onClick={() => navigate('/trips')}>Cancel</button>
+            <button className="btn-ect-ghost" onClick={() => navigate('/trips')}>
+              Cancel
+            </button>
           </div>
         </div>
       </div>

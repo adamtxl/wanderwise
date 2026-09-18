@@ -2,19 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
+
 import './App.css';
-import Nav from '../Nav/Nav';
-import Footer from '../Footer/Footer';
-import TripDetails from '../TripDetails/TripDetails';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import AdminRoute from '../ProtectedRoute/AdminRoute';
 
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
-import InfoPage from '../InfoPage/InfoPage';
-import LandingPage from '../LandingPage/LandingPage';
-import LoginPage from '../LoginPage/LoginPage';
-import RegisterPage from '../RegisterPage/RegisterPage';
 import Trips from '../Trips/Trips';
 import EditCreateTrips from '../EditCreateTrips/EditCreateTrips';
 import DailyItinerary from '../DailyItinerary/CreateDailyItinerary';
@@ -24,6 +15,16 @@ import PastTrips from '../Trips/PastTrips';
 import AdminPage from '../AdminPage/AdminPage';
 import NonAdminLanding from '../AdminPage/NonAdminLanding';
 import ChecklistComponent from '../Checklist/Checklist';
+import Footer from '../Footer/Footer';
+import InfoPage from '../InfoPage/InfoPage';
+import LandingPage from '../LandingPage/LandingPage';
+import LoginPage from '../LoginPage/LoginPage';
+import Nav from '../Nav/Nav';
+import AdminRoute from '../ProtectedRoute/AdminRoute';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import RegisterPage from '../RegisterPage/RegisterPage';
+import TripDetails from '../TripDetails/TripDetails';
+import UserPage from '../UserPage/UserPage';
 
 const getCategoryBackground = (category_id) => {
   const images = {
@@ -60,7 +61,9 @@ function AppShell() {
       setTripsBackground(bg || '');
     } else {
       // No trips yet — use a beautiful default travel background
-      setTripsBackground('https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1600&q=80');
+      setTripsBackground(
+        'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1600&q=80'
+      );
     }
   }, [trips]);
 
@@ -94,46 +97,46 @@ function AppShell() {
   };
 
   return (
-    <div className='app-background' style={getBackgroundStyle()}>
+    <div className="app-background" style={getBackgroundStyle()}>
       {!isLanding && <Nav />}
       <Routes>
-        <Route path='/' element={<LandingPage />} />
-        <Route path='/about' element={<AboutPage />} />
-        <Route path='/user' element={<ProtectedRoute />}>
-          <Route path='/user' element={<UserPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/user" element={<ProtectedRoute />}>
+          <Route path="/user" element={<UserPage />} />
         </Route>
-        <Route path='/info' element={<ProtectedRoute />}>
-          <Route path='/info' element={<InfoPage />} />
+        <Route path="/info" element={<ProtectedRoute />}>
+          <Route path="/info" element={<InfoPage />} />
         </Route>
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/trips' element={<ProtectedRoute />}>
-          <Route path='/trips' element={<Trips />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/trips" element={<ProtectedRoute />}>
+          <Route path="/trips" element={<Trips />} />
         </Route>
-        <Route path='/edit-create-trips' element={<ProtectedRoute />}>
-          <Route path='/edit-create-trips' element={<EditCreateTrips />} />
+        <Route path="/edit-create-trips" element={<ProtectedRoute />}>
+          <Route path="/edit-create-trips" element={<EditCreateTrips />} />
         </Route>
-        <Route path='/create-daily-itinerary/:tripId' element={<ProtectedRoute />}>
-          <Route path='/create-daily-itinerary/:tripId' element={<DailyItinerary />} />
+        <Route path="/create-daily-itinerary/:tripId" element={<ProtectedRoute />}>
+          <Route path="/create-daily-itinerary/:tripId" element={<DailyItinerary />} />
         </Route>
-        <Route path='/packing-list/:tripId' element={<ProtectedRoute />}>
-          <Route path='/packing-list/:tripId' element={<PackingList />} />
+        <Route path="/packing-list/:tripId" element={<ProtectedRoute />}>
+          <Route path="/packing-list/:tripId" element={<PackingList />} />
         </Route>
-        <Route path='/map-page' element={<ProtectedRoute />}>
-          <Route path='/map-page' element={<MapPage />} />
+        <Route path="/map-page" element={<ProtectedRoute />}>
+          <Route path="/map-page" element={<MapPage />} />
         </Route>
-        <Route path='/past-trips' element={<ProtectedRoute />}>
-          <Route path='/past-trips' element={<PastTrips />} />
+        <Route path="/past-trips" element={<ProtectedRoute />}>
+          <Route path="/past-trips" element={<PastTrips />} />
         </Route>
-        <Route path='/checklist/:tripId' element={<ProtectedRoute />}>
-          <Route path='/checklist/:tripId' element={<ChecklistComponent />} />
+        <Route path="/checklist/:tripId" element={<ProtectedRoute />}>
+          <Route path="/checklist/:tripId" element={<ChecklistComponent />} />
         </Route>
-        <Route path='/admin' element={<AdminRoute />}>
-          <Route path='/admin' element={<AdminPage />} />
+        <Route path="/admin" element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
-        <Route path='/non-admin-landing' element={<NonAdminLanding />} />
-        <Route path='/trip-details/:tripId' element={<ProtectedRoute />}>
-          <Route path='/trip-details/:tripId' element={<TripDetails />} />
+        <Route path="/non-admin-landing" element={<NonAdminLanding />} />
+        <Route path="/trip-details/:tripId" element={<ProtectedRoute />}>
+          <Route path="/trip-details/:tripId" element={<TripDetails />} />
         </Route>
       </Routes>
       {!isLanding && <Footer />}

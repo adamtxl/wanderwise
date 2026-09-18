@@ -6,8 +6,8 @@ const markerIcon = '/images/Globe_4.png';
 
 export default function AppMap({
   mapboxAccessToken: tokenProp,
-  viewState,          // if provided => controlled
-  onMoveEnd,          // parent handler for controlled usage (optional)
+  viewState, // if provided => controlled
+  onMoveEnd, // parent handler for controlled usage (optional)
   getCursor,
   touchAction = 'pan-y',
   dragPan = true,
@@ -25,7 +25,8 @@ export default function AppMap({
   if (!token) {
     return (
       <div style={{ padding: 8, color: 'crimson' }}>
-        Mapbox token missing. Provide <code>mapboxAccessToken</code> prop or set <code>VITE_MAPBOX_TOKEN</code> in
+        Mapbox token missing. Provide <code>mapboxAccessToken</code> prop or set{' '}
+        <code>VITE_MAPBOX_TOKEN</code> in
         <code>.env.local</code>, then restart dev server.
       </div>
     );
@@ -43,7 +44,8 @@ export default function AppMap({
     ? (e) => onMoveEnd?.(e) // let parent update state
     : (e) => setInternalView(e.viewState); // update our own state
 
-  const cursorFn = getCursor ?? ((s) => (s?.isDragging ? 'grabbing' : s?.isHovering ? 'pointer' : 'grab'));
+  const cursorFn =
+    getCursor ?? ((s) => (s?.isDragging ? 'grabbing' : s?.isHovering ? 'pointer' : 'grab'));
 
   return (
     <Map
@@ -51,7 +53,7 @@ export default function AppMap({
       mapStyle={mapStyle}
       style={style}
       viewState={vs}
-      onMoveEnd={handleMoveEnd}      // ✅ no setViewState here
+      onMoveEnd={handleMoveEnd} // ✅ no setViewState here
       getCursor={cursorFn}
       touchAction={touchAction}
       dragPan={dragPan}
@@ -61,7 +63,8 @@ export default function AppMap({
     >
       {Array.isArray(markers) &&
         markers.map((m, i) => {
-          const lat = Number(m.latitude), lng = Number(m.longitude);
+          const lat = Number(m.latitude),
+            lng = Number(m.longitude);
           if (Number.isNaN(lat) || Number.isNaN(lng)) return null;
           return (
             <Marker key={m.id ?? i} latitude={lat} longitude={lng} anchor="bottom">

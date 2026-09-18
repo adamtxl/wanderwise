@@ -7,10 +7,12 @@ const cors = require('cors');
 const PORT = process.env.PORT || 8080;
 
 // Enable CORS for development (adjust origin if needed)
-app.use(cors({
-  origin: 'http://localhost:5173', // Change to your frontend's origin if different
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Change to your frontend's origin if different
+    credentials: true,
+  })
+);
 
 // Middleware for JSON and URL encoding
 app.use(express.json());

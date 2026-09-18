@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './PackingList.css';
 
-const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, handleUpdateUserItem, addedItems }) => {
+const UserItems = ({
+  userItems,
+  handleAddToPackingList,
+  handleDeleteUserItem,
+  handleUpdateUserItem,
+  addedItems,
+}) => {
   const [editItemId, setEditItemId] = useState(null);
   const [editItemData, setEditItemData] = useState({ item_name: '', category: '' });
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -19,9 +25,10 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
     setEditItemId(null);
   };
 
-  const filteredItems = selectedCategory === 'All'
-    ? userItems
-    : userItems.filter((i) => i.category === selectedCategory);
+  const filteredItems =
+    selectedCategory === 'All'
+      ? userItems
+      : userItems.filter((i) => i.category === selectedCategory);
 
   const isOnList = (item) => packingList?.some((p) => p.item_name === item.item_name);
 
@@ -51,25 +58,37 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
           {filteredItems.map((item) => {
             const onList = isOnList(item);
             return (
-              <div key={item.item_id} className={`ui-card ${onList ? 'ui-card-added' : ''}`} data-cy="user-item">
+              <div
+                key={item.item_id}
+                className={`ui-card ${onList ? 'ui-card-added' : ''}`}
+                data-cy="user-item"
+              >
                 {editItemId === item.item_id ? (
                   <div className="ui-edit">
                     <input
                       className="pl-edit-input"
                       type="text"
                       value={editItemData.item_name}
-                      onChange={(e) => setEditItemData({ ...editItemData, item_name: e.target.value })}
+                      onChange={(e) =>
+                        setEditItemData({ ...editItemData, item_name: e.target.value })
+                      }
                       autoFocus
                     />
                     <input
                       className="pl-edit-input"
                       type="text"
                       value={editItemData.category}
-                      onChange={(e) => setEditItemData({ ...editItemData, category: e.target.value })}
+                      onChange={(e) =>
+                        setEditItemData({ ...editItemData, category: e.target.value })
+                      }
                     />
                     <div className="ui-edit-actions">
-                      <button className="btn-pl-icon-save" onClick={handleSaveClick}>Save</button>
-                      <button className="btn-pl-icon-cancel" onClick={() => setEditItemId(null)}>Cancel</button>
+                      <button className="btn-pl-icon-save" onClick={handleSaveClick}>
+                        Save
+                      </button>
+                      <button className="btn-pl-icon-cancel" onClick={() => setEditItemId(null)}>
+                        Cancel
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -90,8 +109,21 @@ const UserItems = ({ userItems, handleAddToPackingList, handleDeleteUserItem, ha
                           + Add
                         </button>
                       )}
-                      <button className="btn-pl-icon" onClick={() => { setEditItemId(item.item_id); setEditItemData({ item_name: item.item_name, category: item.category }); }}>✎</button>
-                      <button className="btn-pl-icon btn-pl-icon-danger" onClick={() => handleDeleteUserItem(item.item_id)}>✕</button>
+                      <button
+                        className="btn-pl-icon"
+                        onClick={() => {
+                          setEditItemId(item.item_id);
+                          setEditItemData({ item_name: item.item_name, category: item.category });
+                        }}
+                      >
+                        ✎
+                      </button>
+                      <button
+                        className="btn-pl-icon btn-pl-icon-danger"
+                        onClick={() => handleDeleteUserItem(item.item_id)}
+                      >
+                        ✕
+                      </button>
                     </div>
                   </div>
                 )}

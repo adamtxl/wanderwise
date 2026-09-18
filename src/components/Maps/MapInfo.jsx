@@ -30,11 +30,11 @@ class MapInfo extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
 const mapStateToProps = (state) => ({
-  currentItem: state.mapItems.currentItem
+  currentItem: state.mapItems.currentItem,
 });
 
 export default connect(mapStateToProps)(MapInfo);

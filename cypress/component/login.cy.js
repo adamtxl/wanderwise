@@ -26,7 +26,10 @@ describe('Login Component Tests', () => {
       cy.get('button[type="submit"]').click();
 
       // Assert that an error message is shown
-      cy.get('.alert').should('contain', `The username and password didn't match an existing user.`);
+      cy.get('.alert').should(
+        'contain',
+        `The username and password didn't match an existing user.`
+      );
     });
 
     it('should display an error for incorrect password', () => {
@@ -37,7 +40,10 @@ describe('Login Component Tests', () => {
       cy.get('input[name="password"]').type('WrongPassword');
       cy.get('button[type="submit"]').click();
 
-      cy.get('.alert').should('contain', `The username and password didn't match an existing user.`);
+      cy.get('.alert').should(
+        'contain',
+        `The username and password didn't match an existing user.`
+      );
     });
 
     it('should show an error when the username is empty (server-side validation)', () => {

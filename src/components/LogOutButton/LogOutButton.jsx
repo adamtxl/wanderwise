@@ -12,11 +12,7 @@ function LogOutButton(props) {
   };
 
   return (
-    <button
-      className={props.className}
-      onClick={handleLogout}
-      data-cy="logout-button"
-    >
+    <button className={props.className} onClick={handleLogout} data-cy="logout-button">
       Log Out
     </button>
   );
