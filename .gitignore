@@ -69,5 +69,3 @@ typings/
 # Zip archives
 *.zip
 
-# ignore package-lock as it complicates merging
-package-lock.json
