@@ -1,4 +1,4 @@
-# Project Name
+# WanderWise
 
 WanderWise is a comprehensive travel planning application designed to streamline the process of organizing trips. It includes features such as trip details, daily itineraries, and map locations, making it easy to keep everything in one place. This project showcases my ability to integrate multiple technologies and tools to create a user-friendly and efficient solution for travel planning.
 ## Getting Started
@@ -40,7 +40,7 @@ A step-by-step series of examples that tell you how to get a development environ
 
 ## Authors
 
-- **Adam Troxell* - *Initial work* - [YourGitHub](https://github.com/adamtxl)
+- **Adam Troxell* - *Initial work* - [adamtxl](https://github.com/adamtxl)
 
 
 
