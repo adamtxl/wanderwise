@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 // GET route for master item list for logged in user
-router.get('/', async (req, res) => {
+router.get('/', rejectUnauthenticated, async (req, res) => {
   try {
     const packingList = await pool.query(
       'SELECT * FROM items WHERE user_id = $1 ORDER BY item_name',
@@ -13,6 +13,7 @@ router.get('/', async (req, res) => {
     res.json(packingList.rows);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server error');
   }
 });
 
@@ -39,7 +40,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', rejectUnauthenticated, async (req, res) => {
   const { item_name, category } = req.body;
   const { id } = req.params;
 
@@ -47,12 +48,12 @@ router.put('/:id', async (req, res) => {
   const updateText = `
         UPDATE items 
         SET item_name = $1, category = $2
-        WHERE item_id = $3
+        WHERE item_id = $3 AND user_id = $4
         RETURNING *
     `;
 
   try {
-    const updatedItem = await pool.query(updateText, [item_name, category, id]);
+    const updatedItem = await pool.query(updateText, [item_name, category, id, req.user.id]);
     if (updatedItem.rows.length === 0) {
       res.status(404).send('Item not found');
     } else {
@@ -64,18 +65,18 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', rejectUnauthenticated, async (req, res) => {
   const { id } = req.params;
 
   // SQL query to delete an existing user item
   const deleteText = `
         DELETE FROM items 
-        WHERE item_id = $1
+        WHERE item_id = $1 AND user_id = $2
         RETURNING *
     `;
 
   try {
-    const deletedItem = await pool.query(deleteText, [id]);
+    const deletedItem = await pool.query(deleteText, [id, req.user.id]);
     if (deletedItem.rows.length === 0) {
       res.status(404).send('Item not found');
     } else {

@@ -21,6 +21,13 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the 'build' directory
 app.use(express.static(path.join(__dirname, '../build'))); // Ensure path to 'build' is correct
 
+// On Fly, TLS ends at the proxy and requests reach Express over HTTP. Trusting
+// the first proxy lets Express see the original HTTPS request, which
+// express-session needs before it will set a `secure` cookie.
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Passport session configuration
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./strategies/user.strategy');

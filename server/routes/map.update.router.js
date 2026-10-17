@@ -1,8 +1,9 @@
 const pool = require('../modules/pool');
 const express = require('express');
 const router = express.Router();
+const { rejectUnauthenticated, requireAdmin } = require('../modules/authentication-middleware');
 
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, requireAdmin, (req, res) => {
   const { title, description, latitude, longitude } = req.body;
   const queryText = `COPY "testtable" ("name", description, latitude, longitude)
     FROM '/users/adamtroxell/Documents/pop22.csv'

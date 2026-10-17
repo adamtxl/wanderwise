@@ -4,11 +4,12 @@ const csv = require('csv-parser');
 const fs = require('fs');
 const pool = require('../modules/pool');
 const router = express.Router();
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated, requireAdmin } = require('../modules/authentication-middleware');
 
 const upload = multer({ dest: 'uploads/' });
 
-router.post('/', upload.single('file'), (req, res) => {
+// Auth runs before multer so unauthenticated uploads never touch the disk
+router.post('/', rejectUnauthenticated, requireAdmin, upload.single('file'), (req, res) => {
   const filePath = req.file.path;
   const results = [];
 

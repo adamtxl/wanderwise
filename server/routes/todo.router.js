@@ -2,39 +2,49 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
-const { checkTripOwnerOrCollaborator } = require('../modules/collaborators.middleware'); // Import the middleware
+const { accessibleTripIds, requireTripAccess } = require('../modules/trip-access');
 
 // GET all checklist items for a specific trip
-router.get('/:trip_id', rejectUnauthenticated, async (req, res) => {
-  const tripId = req.params.trip_id;
-  try {
-    const results = await pool.query('SELECT * FROM "checklist" WHERE "trip_id" = $1;', [tripId]);
-    res.json(results.rows);
-  } catch (error) {
-    console.error('Error fetching checklist:', error);
-    res.status(500).send('Server error');
+router.get(
+  '/:trip_id',
+  rejectUnauthenticated,
+  requireTripAccess((req) => req.params.trip_id),
+  async (req, res) => {
+    const tripId = req.params.trip_id;
+    try {
+      const results = await pool.query('SELECT * FROM "checklist" WHERE "trip_id" = $1;', [tripId]);
+      res.json(results.rows);
+    } catch (error) {
+      console.error('Error fetching checklist:', error);
+      res.status(500).send('Server error');
+    }
   }
-});
+);
 
 // POST a new checklist item
-router.post('/', rejectUnauthenticated, async (req, res) => {
-  const { trip_id, item_name, completed } = req.body;
+router.post(
+  '/',
+  rejectUnauthenticated,
+  requireTripAccess((req) => req.body.trip_id),
+  async (req, res) => {
+    const { trip_id, item_name, completed } = req.body;
 
-  // Validate input
-  if (!item_name) {
-    return res.status(400).send('item_name is required');
+    // Validate input
+    if (!item_name) {
+      return res.status(400).send('item_name is required');
+    }
+
+    const query = `INSERT INTO "checklist" ("trip_id", "item_name", "completed") VALUES ($1, $2, $3) RETURNING *;`;
+
+    try {
+      const result = await pool.query(query, [trip_id, item_name, completed || false]);
+      res.status(201).json(result.rows[0]);
+    } catch (error) {
+      console.error('Error in POST checklist:', error);
+      res.status(500).send('Server error');
+    }
   }
-
-  const query = `INSERT INTO "checklist" ("trip_id", "item_name", "completed") VALUES ($1, $2, $3) RETURNING *;`;
-
-  try {
-    const result = await pool.query(query, [trip_id, item_name, completed || false]);
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error('Error in POST checklist:', error);
-    res.status(500).send('Server error');
-  }
-});
+);
 
 // PUT route to update a checklist item (mark as complete or update item_name)
 router.put('/:id', rejectUnauthenticated, async (req, res) => {
@@ -46,9 +56,12 @@ router.put('/:id', rejectUnauthenticated, async (req, res) => {
     return res.status(400).send('item_name is required');
   }
 
-  const queryText = `UPDATE "checklist" SET "item_name" = $1, "completed" = $2 WHERE "checklist_id" = $3 RETURNING *;`;
+  const queryText = `
+    UPDATE "checklist" SET "item_name" = $1, "completed" = $2
+    WHERE "checklist_id" = $3 AND "trip_id" IN (${accessibleTripIds('$4')})
+    RETURNING *;`;
   try {
-    const result = await pool.query(queryText, [item_name, completed, checklistId]);
+    const result = await pool.query(queryText, [item_name, completed, checklistId, req.user.id]);
     if (result.rowCount === 0) {
       return res.status(404).send('Checklist item not found');
     }
@@ -63,9 +76,12 @@ router.put('/:id', rejectUnauthenticated, async (req, res) => {
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {
   const checklistId = req.params.id;
 
-  const query = `DELETE FROM "checklist" WHERE "checklist_id" = $1 RETURNING *;`;
+  const query = `
+    DELETE FROM "checklist"
+    WHERE "checklist_id" = $1 AND "trip_id" IN (${accessibleTripIds('$2')})
+    RETURNING *;`;
   try {
-    const result = await pool.query(query, [checklistId]);
+    const result = await pool.query(query, [checklistId, req.user.id]);
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Checklist item not found' });
     }
