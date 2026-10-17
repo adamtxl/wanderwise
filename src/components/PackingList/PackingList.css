@@ -365,6 +365,15 @@
   color: var(--cream);
   border-color: rgba(255, 255, 255, 0.15);
 }
+
+.ui-visibility-filters {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 .ui-filter-active {
   background: rgba(201, 168, 76, 0.1) !important;
   border-color: var(--border) !important;

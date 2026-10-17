@@ -28,6 +28,16 @@ const PackingList = () => {
       type: 'ADD_USER_ITEM',
       payload: { ...newItem, category: capitalize(newItem.category) },
     });
+    dispatch({
+      type: 'ADD_PACKING_LIST_ITEM',
+      payload: {
+        item_name: newItem.item_name,
+        quantity: 1,
+        packed: false,
+        trip_id: tripId,
+      },
+      tripId,
+    });
     setNewItem({ item_name: '', category: '' });
   };
 
