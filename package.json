@@ -44,7 +44,7 @@
   },
   "scripts": {
     "start": "node server/server.js",
-    "deploy": "npm run build && fly deploy --ha=false",
+    "deploy": "npm run build && fly deploy --ha=false --build-arg VITE_MAPBOX_TOKEN=\"$VITE_MAPBOX_TOKEN\"",
     "client": "vite --host",
     "server": "nodemon --watch server server/server.js",
     "build": "vite build",

@@ -13,10 +13,12 @@ coverage
 
 # misc
 **/.DS_Store
-**/.env.local
-**/.env.development.local
-**/.env.test.local
-**/.env.production.local
+
+# Secrets: Fly injects runtime secrets via `fly secrets`, and the Mapbox token
+# comes in as a build arg, so no .env file belongs in the image.
+**/.env
+**/.env.*
+!.env.example
 
 **/npm-debug.log*
 **/yarn-debug.log*
@@ -24,3 +26,5 @@ coverage
 
 **/.eslintcache
 fly.toml
+
+build
