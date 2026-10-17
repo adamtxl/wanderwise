@@ -1,18 +1,27 @@
+import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import TripMap from './TripMap';
-import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
-import moment from 'moment';
 import TripCollaborators from '../Collaborators/TripCollaborators';
+import DisplayItineraries from '../DailyItinerary/DisplayItinerary';
 import './TripDetails.css';
 
 const getCategoryIcon = (id) => {
   const icons = {
-    1: '🏖️', 2: '🏔️', 3: '🌆', 4: '🛣️',
-    5: '🏜️', 6: '🌲', 7: '🌄', 8: '🏝️',
-    9: '❄️', 10: '🗺️', 11: '🎢',
+    1: '🏖️',
+    2: '🏔️',
+    3: '🌆',
+    4: '🛣️',
+    5: '🏜️',
+    6: '🌲',
+    7: '🌄',
+    8: '🏝️',
+    9: '❄️',
+    10: '🗺️',
+    11: '🎢',
   };
   return icons[id] || '✈️';
 };
@@ -23,8 +32,13 @@ const TripDetails = ({ user }) => {
   const { tripId } = useParams();
 
   const trip = useSelector((state) => state.tripDetailReducer?.currentTrip?.data) || {
-    trip_id: '', trip_name: '', start_date: '', end_date: '',
-    locales: '', map_locations: '', category_id: '',
+    trip_id: '',
+    trip_name: '',
+    start_date: '',
+    end_date: '',
+    locales: '',
+    map_locations: '',
+    category_id: '',
   };
   const categories = useSelector((state) => state.categoryReducer.categories);
   const reduxItineraries = useSelector((state) => state.itinerary) || [];
@@ -46,18 +60,22 @@ const TripDetails = ({ user }) => {
     setEditedTrip({ ...trip });
   }, [trip.trip_id]);
 
-  const categoryName = categories?.find((c) => c.category_id === trip.category_id)?.category_name || '';
-  const tripDuration = trip.start_date && trip.end_date
-    ? moment(trip.end_date).diff(moment(trip.start_date), 'days') + ' days'
-    : '';
+  const categoryName =
+    categories?.find((c) => c.category_id === trip.category_id)?.category_name || '';
+  const tripDuration =
+    trip.start_date && trip.end_date
+      ? moment(trip.end_date).diff(moment(trip.start_date), 'days') + ' days'
+      : '';
   const countdown = trip.start_date
     ? moment(trip.start_date).isAfter(moment())
       ? moment(trip.start_date).diff(moment(), 'days') + ' days away'
       : 'Underway'
     : '';
 
-  const handleInputChange = (e) => setEditedTrip({ ...editedTrip, [e.target.name]: e.target.value });
-  const handleCategoryChange = (e) => setEditedTrip({ ...editedTrip, category_id: Number(e.target.value) });
+  const handleInputChange = (e) =>
+    setEditedTrip({ ...editedTrip, [e.target.name]: e.target.value });
+  const handleCategoryChange = (e) =>
+    setEditedTrip({ ...editedTrip, category_id: Number(e.target.value) });
 
   const handleSaveClick = async () => {
     try {
@@ -87,7 +105,6 @@ const TripDetails = ({ user }) => {
 
   return (
     <div className="td-wrapper">
-
       {/* ── Hero Header ── */}
       <div className="td-hero">
         <div className="td-hero-left">
@@ -107,7 +124,10 @@ const TripDetails = ({ user }) => {
             )}
             <div className="td-meta">
               {trip.start_date && (
-                <span>{moment(trip.start_date).format('MMM D')} – {moment(trip.end_date).format('MMM D, YYYY')}</span>
+                <span>
+                  {moment(trip.start_date).format('MMM D')} –{' '}
+                  {moment(trip.end_date).format('MMM D, YYYY')}
+                </span>
               )}
               {tripDuration && <span className="td-meta-sep">·</span>}
               {tripDuration && <span>{tripDuration}</span>}
@@ -121,21 +141,31 @@ const TripDetails = ({ user }) => {
         <div className="td-hero-actions">
           {isEditing ? (
             <>
-              <button className="btn-td-primary" onClick={handleSaveClick}>Save Changes</button>
-              <button className="btn-td-ghost" onClick={() => { setIsEditing(false); setEditedTrip({ ...trip }); }}>Cancel</button>
+              <button className="btn-td-primary" onClick={handleSaveClick}>
+                Save Changes
+              </button>
+              <button
+                className="btn-td-ghost"
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditedTrip({ ...trip });
+                }}
+              >
+                Cancel
+              </button>
             </>
           ) : (
-            <button className="btn-td-ghost" onClick={() => setIsEditing(true)}>✎ Edit Trip</button>
+            <button className="btn-td-ghost" onClick={() => setIsEditing(true)}>
+              ✎ Edit Trip
+            </button>
           )}
         </div>
       </div>
 
       {/* ── Main Body ── */}
       <div className="td-body">
-
         {/* Left col: Details + Nav + Collaborators */}
         <div className="td-left">
-
           {/* Trip details card */}
           <div className="td-card">
             <div className="td-card-label">Trip Details</div>
@@ -143,30 +173,49 @@ const TripDetails = ({ user }) => {
               <div className="td-edit-fields">
                 <div className="td-field">
                   <label>Start Date</label>
-                  <input type="date" name="start_date"
+                  <input
+                    type="date"
+                    name="start_date"
                     value={moment(editedTrip.start_date).format('YYYY-MM-DD')}
-                    onChange={handleInputChange} />
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="td-field">
                   <label>End Date</label>
-                  <input type="date" name="end_date"
+                  <input
+                    type="date"
+                    name="end_date"
                     value={moment(editedTrip.end_date).format('YYYY-MM-DD')}
-                    onChange={handleInputChange} />
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="td-field">
                   <label>Location</label>
-                  <input type="text" name="locales" value={editedTrip.locales} onChange={handleInputChange} placeholder="e.g. Juneau, Alaska" />
+                  <input
+                    type="text"
+                    name="locales"
+                    value={editedTrip.locales}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Juneau, Alaska"
+                  />
                 </div>
                 <div className="td-field">
                   <label>Map Locations</label>
-                  <input type="text" name="map_locations" value={editedTrip.map_locations} onChange={handleInputChange} />
+                  <input
+                    type="text"
+                    name="map_locations"
+                    value={editedTrip.map_locations}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="td-field">
                   <label>Category</label>
                   <select value={editedTrip.category_id} onChange={handleCategoryChange}>
                     <option value="">Select a category</option>
                     {categories?.map((c) => (
-                      <option key={c.category_id} value={c.category_id}>{c.category_name}</option>
+                      <option key={c.category_id} value={c.category_id}>
+                        {c.category_name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -187,11 +236,15 @@ const TripDetails = ({ user }) => {
                 )}
                 <div className="td-detail">
                   <span className="td-detail-label">Start</span>
-                  <span className="td-detail-value">{moment(trip.start_date).format('MMMM D, YYYY')}</span>
+                  <span className="td-detail-value">
+                    {moment(trip.start_date).format('MMMM D, YYYY')}
+                  </span>
                 </div>
                 <div className="td-detail">
                   <span className="td-detail-label">End</span>
-                  <span className="td-detail-value">{moment(trip.end_date).format('MMMM D, YYYY')}</span>
+                  <span className="td-detail-value">
+                    {moment(trip.end_date).format('MMMM D, YYYY')}
+                  </span>
                 </div>
               </div>
             )}
@@ -201,8 +254,11 @@ const TripDetails = ({ user }) => {
           <div className="td-card">
             <div className="td-card-label">Plan Your Trip</div>
             <div className="td-nav-buttons">
-              <button className="btn-td-nav" data-cy="daily-itinerary-button"
-                onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}>
+              <button
+                className="btn-td-nav"
+                data-cy="daily-itinerary-button"
+                onClick={() => navigate(`/create-daily-itinerary/${trip.trip_id}`)}
+              >
                 <span className="btn-td-nav-icon">📅</span>
                 <div>
                   <div className="btn-td-nav-title">Daily Itinerary</div>
@@ -210,8 +266,11 @@ const TripDetails = ({ user }) => {
                 </div>
                 <span className="btn-td-nav-arrow">→</span>
               </button>
-              <button className="btn-td-nav" data-cy="packing-list-button"
-                onClick={() => navigate(`/packing-list/${trip.trip_id}`)}>
+              <button
+                className="btn-td-nav"
+                data-cy="packing-list-button"
+                onClick={() => navigate(`/packing-list/${trip.trip_id}`)}
+              >
                 <span className="btn-td-nav-icon">🧳</span>
                 <div>
                   <div className="btn-td-nav-title">Packing List</div>
@@ -219,8 +278,7 @@ const TripDetails = ({ user }) => {
                 </div>
                 <span className="btn-td-nav-arrow">→</span>
               </button>
-              <button className="btn-td-nav"
-                onClick={() => navigate(`/checklist/${trip.trip_id}`)}>
+              <button className="btn-td-nav" onClick={() => navigate(`/checklist/${trip.trip_id}`)}>
                 <span className="btn-td-nav-icon">✅</span>
                 <div>
                   <div className="btn-td-nav-title">Trip Checklist</div>
@@ -240,8 +298,12 @@ const TripDetails = ({ user }) => {
           {/* Danger zone */}
           <div className="td-card td-danger-card">
             <div className="td-card-label td-danger-label">Danger Zone</div>
-            <p className="td-danger-text">Deleting a trip removes all itineraries, packing lists, and data permanently.</p>
-            <button className="btn-td-danger" onClick={handleDeleteClick}>Delete This Trip</button>
+            <p className="td-danger-text">
+              Deleting a trip removes all itineraries, packing lists, and data permanently.
+            </p>
+            <button className="btn-td-danger" onClick={handleDeleteClick}>
+              Delete This Trip
+            </button>
           </div>
         </div>
 
@@ -284,11 +346,16 @@ const TripDetails = ({ user }) => {
             <div className="td-modal-icon">⚠️</div>
             <h2 className="td-modal-title">Delete "{trip.trip_name}"?</h2>
             <p className="td-modal-text">
-              This will permanently delete the trip and all associated itineraries, packing lists, and data. This cannot be undone.
+              This will permanently delete the trip and all associated itineraries, packing lists,
+              and data. This cannot be undone.
             </p>
             <div className="td-modal-actions">
-              <button className="btn-td-ghost" onClick={() => setShowDeleteConfirm(false)}>Cancel</button>
-              <button className="btn-td-danger" onClick={handleDeleteConfirm}>Yes, Delete Trip</button>
+              <button className="btn-td-ghost" onClick={() => setShowDeleteConfirm(false)}>
+                Cancel
+              </button>
+              <button className="btn-td-danger" onClick={handleDeleteConfirm}>
+                Yes, Delete Trip
+              </button>
             </div>
           </div>
         </div>

@@ -5,7 +5,8 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 
 router.get('/', rejectUnauthenticated, (req, res) => {
   const queryText = 'SELECT * from "map_items" order by created_at;';
-  pool.query(queryText)
+  pool
+    .query(queryText)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.log(err);
@@ -15,8 +16,10 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 
 router.post('/', rejectUnauthenticated, (req, res) => {
   const { title, description, latitude, longitude } = req.body;
-  const queryText = 'INSERT INTO "map_items" (title, description, latitude, longitude) VALUES ($1, $2, $3, $4);';
-  pool.query(queryText, [title, description, latitude, longitude])
+  const queryText =
+    'INSERT INTO "map_items" (title, description, latitude, longitude) VALUES ($1, $2, $3, $4);';
+  pool
+    .query(queryText, [title, description, latitude, longitude])
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log(err);

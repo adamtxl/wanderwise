@@ -1,7 +1,8 @@
 import React from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import LogOutButton from '../LogOutButton/LogOutButton';
 import './UserPage.css';
 
 function UserPage() {
@@ -10,9 +11,7 @@ function UserPage() {
 
   return (
     <div className="up-wrapper">
-      <div className="up-avatar">
-        {user.username?.[0]?.toUpperCase()}
-      </div>
+      <div className="up-avatar">{user.username?.[0]?.toUpperCase()}</div>
 
       <h1 className="up-name">{user.first_name || user.username}</h1>
       <div className="up-username">@{user.username}</div>

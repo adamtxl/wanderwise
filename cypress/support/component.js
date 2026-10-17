@@ -1,7 +1,8 @@
 import './commands';
 import { mount } from 'cypress/react18';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import store from '../../src/redux/store'; // Adjust the path as necessary
 
 Cypress.Commands.add('mount', (component) => {

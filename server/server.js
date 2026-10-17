@@ -7,10 +7,12 @@ const cors = require('cors');
 const PORT = process.env.PORT || 8080;
 
 // Enable CORS for development (adjust origin if needed)
-app.use(cors({
-  origin: 'http://localhost:5173', // Change to your frontend's origin if different
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Change to your frontend's origin if different
+    credentials: true,
+  })
+);
 
 // Middleware for JSON and URL encoding
 app.use(express.json());
@@ -18,6 +20,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the 'build' directory
 app.use(express.static(path.join(__dirname, '../build'))); // Ensure path to 'build' is correct
+
+// On Fly, TLS ends at the proxy and requests reach Express over HTTP. Trusting
+// the first proxy lets Express see the original HTTPS request, which
+// express-session needs before it will set a `secure` cookie.
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
 
 // Passport session configuration
 const sessionMiddleware = require('./modules/session-middleware');

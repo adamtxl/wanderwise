@@ -8,14 +8,20 @@ import { Row, Col } from 'react-bootstrap';
 // or even care what the redux state is, so it doesn't need 'connect()'
 
 function Footer() {
-	return (
-		<>
-    
-			<footer>&copy; WanderWise</footer>
-     <p className='summerfooter'> <a href='mailto:adamtxl@hotmail.com ?
-     &subject=WanderWise Feedback'>Suggestions?</a> </p>
-		</>
-	);
+  return (
+    <>
+      <footer>&copy; WanderWise</footer>
+      <p className="summerfooter">
+        {' '}
+        <a
+          href="mailto:adamtxl@hotmail.com ?
+     &subject=WanderWise Feedback"
+        >
+          Suggestions?
+        </a>{' '}
+      </p>
+    </>
+  );
 }
 
 export default Footer;

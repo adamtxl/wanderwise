@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import Map from '../Maps/Map';
+
 import './itinerary.css';
 import moment from 'moment';
 
@@ -64,24 +66,23 @@ const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
     }));
   };
 
-  const cursorFn = getCursorProp ?? ((state) => {
-    if (state?.isDragging) return 'grabbing';
-    if (state?.isHovering) return 'pointer';
-    return 'grab';
-  });
+  const cursorFn =
+    getCursorProp ??
+    ((state) => {
+      if (state?.isDragging) return 'grabbing';
+      if (state?.isHovering) return 'pointer';
+      return 'grab';
+    });
 
   const tripStartDate = trip ? moment(trip.start_date).format('YYYY-MM-DD') : '';
   const tripEndDate = trip ? moment(trip.end_date).format('YYYY-MM-DD') : '';
 
   return (
     <div className="ci-wrapper">
-
       {/* Header */}
       <div className="ci-header">
         <div>
-          <div className="ci-eyebrow">
-            {trip?.trip_name || 'Trip'}
-          </div>
+          <div className="ci-eyebrow">{trip?.trip_name || 'Trip'}</div>
           <h1 className="ci-title">Add a Day</h1>
           <p className="ci-subtitle">
             Click a map pin to auto-fill location, or enter details manually.
@@ -94,11 +95,9 @@ const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
 
       {/* Two column layout */}
       <div className="ci-body">
-
         {/* Form */}
         <div className="ci-form-panel">
           <form onSubmit={handleSubmit} className="ci-form">
-
             <div className="ci-field">
               <label>Date</label>
               <input
@@ -112,7 +111,8 @@ const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
               />
               {tripStartDate && (
                 <span className="ci-field-hint">
-                  {moment(tripStartDate).format('MMM D')} – {moment(tripEndDate).format('MMM D, YYYY')}
+                  {moment(tripStartDate).format('MMM D')} –{' '}
+                  {moment(tripEndDate).format('MMM D, YYYY')}
                 </span>
               )}
             </div>
@@ -153,13 +153,21 @@ const CreateDailyItinerary = ({ getCursor: getCursorProp }) => {
             {itinerary.location && (
               <div className="ci-selected-pin">
                 <span className="ci-pin-icon">📍</span>
-                <span className="ci-pin-label">Pin selected: <strong>{itinerary.location}</strong></span>
+                <span className="ci-pin-label">
+                  Pin selected: <strong>{itinerary.location}</strong>
+                </span>
               </div>
             )}
 
             <div className="ci-form-actions">
-              <button type="submit" className="btn-ci-primary">Save Day →</button>
-              <button type="button" className="btn-ci-ghost" onClick={() => navigate(`/trip-details/${tripId}`)}>
+              <button type="submit" className="btn-ci-primary">
+                Save Day →
+              </button>
+              <button
+                type="button"
+                className="btn-ci-ghost"
+                onClick={() => navigate(`/trip-details/${tripId}`)}
+              >
                 Cancel
               </button>
             </div>

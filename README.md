@@ -1,6 +1,7 @@
-# Project Name
+# WanderWise
 
 WanderWise is a comprehensive travel planning application designed to streamline the process of organizing trips. It includes features such as trip details, daily itineraries, and map locations, making it easy to keep everything in one place. This project showcases my ability to integrate multiple technologies and tools to create a user-friendly and efficient solution for travel planning.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -25,10 +26,6 @@ A step-by-step series of examples that tell you how to get a development environ
 6. In a separate terminal, start the client using `npm run client`.
 7. Navigate to `http://localhost:5173` to view the application.
 
-
-
-
-
 ## Built With
 
 - [React](https://reactjs.org/) - The web framework used
@@ -36,15 +33,9 @@ A step-by-step series of examples that tell you how to get a development environ
 - [Express](https://expressjs.com/) - Server framework
 - [PostgreSQL](https://www.postgresql.org) - Database
 
-
-
 ## Authors
 
-- **Adam Troxell* - *Initial work* - [YourGitHub](https://github.com/adamtxl)
-
-
-
-
+- *_Adam Troxell_ - _Initial work_ - [adamtxl](https://github.com/adamtxl)
 
 ## Acknowledgments
 

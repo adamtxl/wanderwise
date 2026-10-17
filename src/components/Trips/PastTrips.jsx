@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './PastTrips.css';
 
 const PastTripsComponent = () => {
@@ -20,9 +20,17 @@ const PastTripsComponent = () => {
 
   const getCategoryIcon = (categoryId) => {
     const icons = {
-      1: '🏖️', 2: '🏔️', 3: '🌆', 4: '🛣️',
-      5: '🏜️', 6: '🌲', 7: '🌄', 8: '🏝️',
-      9: '❄️', 10: '🗺️', 11: '🎢',
+      1: '🏖️',
+      2: '🏔️',
+      3: '🌆',
+      4: '🛣️',
+      5: '🏜️',
+      6: '🌲',
+      7: '🌄',
+      8: '🏝️',
+      9: '❄️',
+      10: '🗺️',
+      11: '🎢',
     };
     return icons[categoryId] || '✈️';
   };
@@ -69,8 +77,8 @@ const PastTripsComponent = () => {
             <div className="past-empty-icon">🌍</div>
             <h2 className="past-empty-heading">No past trips yet</h2>
             <p className="past-empty-text">
-              Your completed adventures will live here. Once a trip's end date passes,
-              it moves from your trips page into your travel history.
+              Your completed adventures will live here. Once a trip's end date passes, it moves from
+              your trips page into your travel history.
             </p>
             <button className="btn-past-primary" onClick={() => navigate('/trips')}>
               View Upcoming Trips →
@@ -87,14 +95,13 @@ const PastTripsComponent = () => {
                   <div className="past-card-icon">{getCategoryIcon(trip.category_id)}</div>
                   <div className="past-card-title">{trip.trip_name}</div>
                   <div className="past-card-dates">
-                    {moment(trip.start_date).format('MMM D')} – {moment(trip.end_date).format('MMM D, YYYY')}
+                    {moment(trip.start_date).format('MMM D')} –{' '}
+                    {moment(trip.end_date).format('MMM D, YYYY')}
                     <span className="past-card-duration">
                       · {getTripDuration(trip.start_date, trip.end_date)}
                     </span>
                   </div>
-                  {trip.locales && (
-                    <div className="past-card-location">📍 {trip.locales}</div>
-                  )}
+                  {trip.locales && <div className="past-card-location">📍 {trip.locales}</div>}
                   <button
                     className="btn-past-secondary"
                     onClick={() => navigate(`/trip-details/${trip.trip_id}`)}

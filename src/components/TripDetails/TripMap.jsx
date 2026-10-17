@@ -1,7 +1,7 @@
 // TripMap.jsx
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Map, { Marker, Popup } from 'react-map-gl';
+import { useDispatch, useSelector } from 'react-redux';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Card } from 'react-bootstrap';
 import bbox from '@turf/bbox';
@@ -21,7 +21,7 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
   const [viewState, setViewState] = useState({
     latitude: 46.8772,
     longitude: -96.7898,
-    zoom: 10
+    zoom: 10,
   });
 
   const [selectedItinerary, setSelectedItinerary] = useState(null);
@@ -36,17 +36,19 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
         .map((l) => point([Number(l.longitude), Number(l.latitude)]))
     );
     const [minLng, minLat, maxLng, maxLat] = bbox(points);
-    return [[minLng, minLat], [maxLng, maxLat]];
+    return [
+      [minLng, minLat],
+      [maxLng, maxLat],
+    ];
   }, [locations]);
 
-
- const cursorFn = getCursorProp ?? ((state) => {
-    if (state?.isDragging) return 'grabbing';
-    if (state?.isHovering) return 'pointer';
-    return 'grab';
-  });
-
-
+  const cursorFn =
+    getCursorProp ??
+    ((state) => {
+      if (state?.isDragging) return 'grabbing';
+      if (state?.isHovering) return 'pointer';
+      return 'grab';
+    });
 
   // If itineraries load, fetch locations for this trip
   useEffect(() => {
@@ -55,41 +57,40 @@ const TripMap = ({ tripId, getCursor: getCursorProp, onMarkerClick }) => {
     }
   }, [itineraries, tripId, dispatch]);
 
-const didFitRef = useRef(false);
-const prevBoundsRef = useRef(null);
+  const didFitRef = useRef(false);
+  const prevBoundsRef = useRef(null);
 
-useEffect(() => {
-  if (!mapRef.current || !bounds) return;
+  useEffect(() => {
+    if (!mapRef.current || !bounds) return;
 
-  const [[minLng, minLat], [maxLng, maxLat]] = bounds;
-  const singlePoint = minLng === maxLng && minLat === maxLat;
+    const [[minLng, minLat], [maxLng, maxLat]] = bounds;
+    const singlePoint = minLng === maxLng && minLat === maxLat;
 
-  // Stringify bounds to detect actual content change
-  const boundsKey = bounds.toString();
-  const boundsChanged = prevBoundsRef.current !== boundsKey;
-  prevBoundsRef.current = boundsKey;
+    // Stringify bounds to detect actual content change
+    const boundsKey = bounds.toString();
+    const boundsChanged = prevBoundsRef.current !== boundsKey;
+    prevBoundsRef.current = boundsKey;
 
-  if (singlePoint) {
-    setViewState((vs) => ({
-      ...vs,
-      longitude: minLng,
-      latitude: minLat,
-      zoom: 14
-    }));
-    return;
-  }
+    if (singlePoint) {
+      setViewState((vs) => ({
+        ...vs,
+        longitude: minLng,
+        latitude: minLat,
+        zoom: 14,
+      }));
+      return;
+    }
 
-  // Re-fit whenever bounds actually change with real data
-  if (didFitRef.current && !boundsChanged) return;
-  didFitRef.current = true;
+    // Re-fit whenever bounds actually change with real data
+    if (didFitRef.current && !boundsChanged) return;
+    didFitRef.current = true;
 
-  mapRef.current.fitBounds(bounds, { padding: 60, duration: 50 });
-}, [bounds]);
+    mapRef.current.fitBounds(bounds, { padding: 60, duration: 50 });
+  }, [bounds]);
 
-useEffect(() => {
-  didFitRef.current = false;
-}, [tripId]);
-
+  useEffect(() => {
+    didFitRef.current = false;
+  }, [tripId]);
 
   const handleMarkerClick = (location) => {
     let matched = itineraries.find(
@@ -108,7 +109,7 @@ useEffect(() => {
       setSelectedItinerary({
         ...matched,
         latitude: location.latitude,
-        longitude: location.longitude
+        longitude: location.longitude,
       });
     } else {
       setSelectedItinerary({
@@ -116,7 +117,7 @@ useEffect(() => {
         longitude: location.longitude,
         location: 'No details available',
         activity: 'Activity not found',
-        notes: 'No additional notes'
+        notes: 'No additional notes',
       });
     }
   };
@@ -131,11 +132,11 @@ useEffect(() => {
       style={{ width: '100%', height: 800 }}
       viewState={viewState}
       onMoveEnd={(evt) => setViewState(evt.viewState)}
-	  getCursor={cursorFn}
-	  touchAction="pan-y"     // or "none" if you prefer to disable page scroll on touch
-	  dragPan={true}
-	  dragRotate={false}
-	  onResize={() => {}}  
+      getCursor={cursorFn}
+      touchAction="pan-y" // or "none" if you prefer to disable page scroll on touch
+      dragPan={true}
+      dragRotate={false}
+      onResize={() => {}}
     >
       {Array.isArray(locations) &&
         locations.map((location, idx) => {
@@ -149,7 +150,10 @@ useEffect(() => {
                 src={eyeMarkerIcon}
                 alt="Selection marker"
                 style={{ width: 25, height: 25, cursor: 'pointer' }}
-                 onClick={() => { onMarkerClick?.(location); handleMarkerClick(location); }}
+                onClick={() => {
+                  onMarkerClick?.(location);
+                  handleMarkerClick(location);
+                }}
               />
             </Marker>
           );

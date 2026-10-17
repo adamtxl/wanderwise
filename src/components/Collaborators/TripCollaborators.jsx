@@ -17,7 +17,10 @@ function TripCollaborators({ trip_id }) {
 
   const handleAddCollaborator = () => {
     if (selectedUser) {
-      dispatch({ type: 'ADD_COLLABORATOR', payload: { tripId: trip_id, userId: selectedUser.value } });
+      dispatch({
+        type: 'ADD_COLLABORATOR',
+        payload: { tripId: trip_id, userId: selectedUser.value },
+      });
       setSelectedUser(null);
       setInputValue('');
     }
@@ -89,7 +92,6 @@ function TripCollaborators({ trip_id }) {
 
   return (
     <div className="collab-wrapper">
-
       {/* Current collaborators */}
       {collaborators.length === 0 ? (
         <p className="collab-empty">No collaborators yet. Add someone below.</p>
@@ -121,7 +123,9 @@ function TripCollaborators({ trip_id }) {
               styles={selectStyles}
               inputValue={inputValue}
               onInputChange={(val) => setInputValue(val)}
-              noOptionsMessage={() => inputValue.length < 3 ? 'Type to search users' : 'No users found'}
+              noOptionsMessage={() =>
+                inputValue.length < 3 ? 'Type to search users' : 'No users found'
+              }
             />
           </div>
           <button

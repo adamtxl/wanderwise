@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
 function LoginForm({ from }) {
   const [username, setUsername] = useState('');
@@ -29,41 +29,41 @@ function LoginForm({ from }) {
   };
 
   return (
-    <form className='formPanel op margin-top' onSubmit={login}>
-      <h2 className='log-register'>Login</h2>
+    <form className="formPanel op margin-top" onSubmit={login}>
+      <h2 className="log-register">Login</h2>
       {errors.loginMessage && (
-        <h3 className='alert' role='alert'>
+        <h3 className="alert" role="alert">
           {errors.loginMessage}
         </h3>
       )}
-      <div className='form-group'>
-        <label htmlFor='username'>
+      <div className="form-group">
+        <label htmlFor="username">
           Username:
           <input
-            type='text'
-            name='username'
+            type="text"
+            name="username"
             required
             value={username}
             onChange={(event) => setUsername(event.target.value)}
-            autoComplete='username'
+            autoComplete="username"
           />
         </label>
       </div>
-      <div className='form-group'>
-        <label htmlFor='password'>
+      <div className="form-group">
+        <label htmlFor="password">
           Password:
           <input
-            type='password'
-            name='password'
+            type="password"
+            name="password"
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            autoComplete='current-password'
+            autoComplete="current-password"
           />
         </label>
       </div>
       <div>
-        <Button variant='primary' className='button-proceed' type='Submit'>
+        <Button variant="primary" className="button-proceed" type="Submit">
           Log In
         </Button>
       </div>

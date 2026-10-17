@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Card, Button, Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './trips.css';
 
 const TripsComponent = () => {
@@ -57,9 +57,17 @@ const TripsComponent = () => {
 
   const getCategoryIcon = (categoryId) => {
     const icons = {
-      1: '🏖️', 2: '🏔️', 3: '🌆', 4: '🛣️',
-      5: '🏜️', 6: '🌲', 7: '🌄', 8: '🏝️',
-      9: '❄️', 10: '🗺️', 11: '🎢',
+      1: '🏖️',
+      2: '🏔️',
+      3: '🌆',
+      4: '🛣️',
+      5: '🏜️',
+      6: '🌲',
+      7: '🌄',
+      8: '🏝️',
+      9: '❄️',
+      10: '🗺️',
+      11: '🎢',
     };
     return icons[categoryId] || '✈️';
   };
@@ -105,8 +113,8 @@ const TripsComponent = () => {
             <div className="trips-empty-icon">✦</div>
             <h2 className="trips-empty-heading">No trips planned yet</h2>
             <p className="trips-empty-text">
-              Every great adventure starts with a plan. Create your first trip to get started —
-              add your dates, build a day-by-day itinerary, map your destinations, and pack smarter.
+              Every great adventure starts with a plan. Create your first trip to get started — add
+              your dates, build a day-by-day itinerary, map your destinations, and pack smarter.
             </p>
             <div className="trips-empty-steps">
               <div className="trips-empty-step">
@@ -122,7 +130,10 @@ const TripsComponent = () => {
                 <span>Set up your packing list and invite collaborators</span>
               </div>
             </div>
-            <Button className="btn-ww-primary btn-lg-ww" onClick={() => navigate('/edit-create-trips')}>
+            <Button
+              className="btn-ww-primary btn-lg-ww"
+              onClick={() => navigate('/edit-create-trips')}
+            >
               Plan Your First Trip →
             </Button>
           </div>
@@ -136,7 +147,9 @@ const TripsComponent = () => {
               const isCollab = isCollaborator(trip);
               return (
                 <Col key={trip.trip_id} md={4} className="mb-4">
-                  <Card className={`ww-card ${isNext ? 'ww-card-next' : isCollab ? 'ww-card-collab' : ''}`}>
+                  <Card
+                    className={`ww-card ${isNext ? 'ww-card-next' : isCollab ? 'ww-card-collab' : ''}`}
+                  >
                     {isNext && <div className="ww-card-badge">Next Trip</div>}
                     {isCollab && <div className="ww-card-badge ww-badge-collab">Collaborating</div>}
                     <Card.Body>
@@ -147,7 +160,8 @@ const TripsComponent = () => {
                         <div className="ww-card-detail">
                           <span className="detail-label">Dates</span>
                           <span className="detail-value">
-                            {moment(trip.start_date).local().format('MMM D')} – {moment(trip.end_date).local().format('MMM D, YYYY')}
+                            {moment(trip.start_date).local().format('MMM D')} –{' '}
+                            {moment(trip.end_date).local().format('MMM D, YYYY')}
                           </span>
                         </div>
                         {trip.locales && (

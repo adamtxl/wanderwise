@@ -26,7 +26,11 @@ const PackingListItemCard = ({ item }) => {
   };
 
   const handleTogglePacked = () => {
-    dispatch({ type: 'UPDATE_PACKING_LIST_ITEM', payload: { ...item, packed: !item.packed }, tripId });
+    dispatch({
+      type: 'UPDATE_PACKING_LIST_ITEM',
+      payload: { ...item, packed: !item.packed },
+      tripId,
+    });
   };
 
   return (
@@ -36,7 +40,11 @@ const PackingListItemCard = ({ item }) => {
       data-cy="packing-item"
     >
       <div className="pl-item-check">
-        {item.packed ? <span className="pl-check-done">✓</span> : <span className="pl-check-empty" />}
+        {item.packed ? (
+          <span className="pl-check-done">✓</span>
+        ) : (
+          <span className="pl-check-empty" />
+        )}
       </div>
 
       {editMode ? (
@@ -68,13 +76,28 @@ const PackingListItemCard = ({ item }) => {
       <div className="pl-item-actions" onClick={(e) => e.stopPropagation()}>
         {editMode ? (
           <>
-            <button className="btn-pl-icon-save" onClick={handleUpdate}>Save</button>
-            <button className="btn-pl-icon-cancel" onClick={() => setEditMode(false)}>✕</button>
+            <button className="btn-pl-icon-save" onClick={handleUpdate}>
+              Save
+            </button>
+            <button className="btn-pl-icon-cancel" onClick={() => setEditMode(false)}>
+              ✕
+            </button>
           </>
         ) : (
           <>
-            <button className="btn-pl-icon" onClick={(e) => { e.stopPropagation(); setEditMode(true); setEditedItem({ ...item }); }}>✎</button>
-            <button className="btn-pl-icon btn-pl-icon-danger" onClick={handleDelete}>✕</button>
+            <button
+              className="btn-pl-icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                setEditMode(true);
+                setEditedItem({ ...item });
+              }}
+            >
+              ✎
+            </button>
+            <button className="btn-pl-icon btn-pl-icon-danger" onClick={handleDelete}>
+              ✕
+            </button>
           </>
         )}
       </div>

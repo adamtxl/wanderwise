@@ -10,7 +10,7 @@ It should be
 - longer than 8 characters
 - not "superDuperSecret"
 
-If this warning is showing on Heroku,
+If this warning is showing on a deployed app,
 add or change your SERVER_SESSION_SECRET environment variable!
 
 ----------------------------`;

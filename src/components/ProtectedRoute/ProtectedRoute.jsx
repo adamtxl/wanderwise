@@ -1,5 +1,5 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useLocation, Navigate, Outlet } from 'react-router-dom';
 
 function ProtectedRoute() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -11,11 +11,7 @@ function ProtectedRoute() {
   }
 
   // Redirect to landing page, preserving intended destination in state
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/" state={{ from: location }} />
-  );
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" state={{ from: location }} />;
 }
 
 export default ProtectedRoute;

@@ -26,3 +26,5 @@ coverage
 
 **/.eslintcache
 fly.toml
+
+build

@@ -7,16 +7,16 @@ class MapForm extends Component {
     description: '',
     latitude: '',
     longitude: '',
-  }
+  };
 
   onSubmit = (event) => {
     event.preventDefault();
     this.props.dispatch({
       type: 'CREATE_MAP_ITEM',
-      payload: this.state
+      payload: this.state,
     });
     this.setState({ title: '', description: '', latitude: '', longitude: '' });
-  }
+  };
 
   render = () => {
     return (
@@ -27,7 +27,12 @@ class MapForm extends Component {
         </div>
         <p className="mapform-hint">
           Need coordinates?{' '}
-          <a href="https://www.latlong.net/" target="_blank" rel="noreferrer" className="mapform-link">
+          <a
+            href="https://www.latlong.net/"
+            target="_blank"
+            rel="noreferrer"
+            className="mapform-link"
+          >
             LatLong.net ↗
           </a>
         </p>
@@ -82,7 +87,7 @@ class MapForm extends Component {
         </form>
       </div>
     );
-  }
+  };
 }
 
 export default connect()(MapForm);
