@@ -18,10 +18,15 @@
   run from scratch.
 
 ## Security rules (non-negotiable)
-- Every route uses rejectUnauthenticated (returns 403, not 401)
+- Every route uses rejectUnauthenticated (returns 401; 403 is for
+  logged in but not allowed, e.g. requireAdmin)
 - Anything user-owned is scoped by req.user.id in the query
-- Trip-scoped routes use checkTripAccess (reads params only).
-  Never use the old checkTripOwnerOrCollaborator.
+- Trip-scoped routes use checkTripAccess (server/modules/trip-access.js):
+  reads req.params.tripId only, one owner-or-collaborator query, sets
+  req.trip, 404 if no access. New routes use it.
+- requireTripAccess (same file) is the existing check. It takes an id
+  getter and doesn't set req.trip. Existing callers are being migrated
+  to checkTripAccess; don't add new ones.
 - Secrets never get a VITE_ prefix (those ship in the JS bundle)
 - .env is never committed or shipped in the image
 
@@ -52,6 +57,7 @@ The plan and PR checklist are in [docs/ai-plan.md](docs/ai-plan.md). Key decisio
 - `server/ai` is JS with `// @ts-check` + JSDoc, not TypeScript.
 - Packing categories are free-text strings, validated against the user's distinct `items.category` values plus a small default set.
 - Collaborators get suggestions from their own (`req.user`) library.
-- Use the new `checkTripAccess` middleware, never `checkTripOwnerOrCollaborator`.
+- Use the new `checkTripAccess` middleware (params-only, sets `req.trip`), not `requireTripAccess`.
 - Prod Postgres is Neon; schema changes are SQL files in `migrations/`, applied with `psql` to local and prod.
+- .env now points at a Neon dev branch, not prod.
 - Model: `claude-haiku-5-5`.
