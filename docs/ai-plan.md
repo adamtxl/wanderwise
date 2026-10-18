@@ -74,10 +74,12 @@ Done:
 - [x] Deploy hygiene (`.env` in `.dockerignore`, deploy from `master`)
 - [x] Land `ui-fixes-26` (it touches `PackingList.jsx` / `UserItems.jsx`)
 - [x] `checkTripAccess` middleware: params-only, one query, sets `req.trip`
+- [x] `ai_usage` migration: `migrations/001_ai_usage.sql`, documented in the README
 
 To do:
 
-- [ ] `ai_usage` migration: `migrations/001_ai_usage.sql`, documented in the README
+- [ ] Apply `migrations/001_ai_usage.sql` to prod (applied to the Neon dev
+      branch only)
 - [ ] `server/ai/aiClient` + env: SDK dependency, `ANTHROPIC_API_KEY` in
       `.env` / `.env.example`, Fly secret
 - [ ] `aiService` + validator + tests: unit tests on the validator against

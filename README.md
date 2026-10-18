@@ -21,10 +21,24 @@ A step-by-step series of examples that tell you how to get a development environ
 1. Clone the repository to your local machine.
 2. Install the necessary dependencies by running `npm install`.
 3. Create a `.env` file at the root of the project and configure the required environment variables (refer to the `.env.example` file for guidance).
-4. Create the database and tables using the provided SQL script in `database.sql`.
+4. Set up the database. `database.sql` is a reference snapshot of the schema
+   and can't build a fresh database on its own. Schema changes are SQL files
+   in `migrations/` (see [Database migrations](#database-migrations)).
 5. Start the server using `npm run server`.
 6. In a separate terminal, start the client using `npm run client`.
 7. Navigate to `http://localhost:5173` to view the application.
+
+### Database migrations
+
+Schema changes are SQL files in `migrations/`, numbered in the order they
+apply (`001_ai_usage.sql`, `002_...`). There is no migration tool, so apply
+each new file by hand with `psql`, first to the Neon dev branch, then to prod:
+
+```
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migrations/001_ai_usage.sql
+```
+
+Also copy each change into `database.sql` so the snapshot stays current.
 
 ## Built With
 
