@@ -75,15 +75,17 @@ Done:
 - [x] Land `ui-fixes-26` (it touches `PackingList.jsx` / `UserItems.jsx`)
 - [x] `checkTripAccess` middleware: params-only, one query, sets `req.trip`
 - [x] `ai_usage` migration: `migrations/001_ai_usage.sql`, documented in the README
+- [x] `server/ai/aiClient` + env: SDK dependency, `ANTHROPIC_API_KEY` in
+      `.env` / `.env.example`, Fly secret
 
 To do:
 
 - [ ] Apply `migrations/001_ai_usage.sql` to prod (applied to the Neon dev
       branch only)
-- [ ] `server/ai/aiClient` + env: SDK dependency, `ANTHROPIC_API_KEY` in
-      `.env` / `.env.example`, Fly secret
 - [ ] `aiService` + validator + tests: unit tests on the validator against
       fixture library/list data
+  - Enforce array size limits (max 20 suggestions) in the validator.
+    Structured-output schemas can't express them.
 - [ ] Route: `POST /api/ai/trips/:tripId/packing-suggestions` with usage and
       token logging
 - [ ] Saga + reducer: `aiSuggestions`, `takeLatest`, registered in
