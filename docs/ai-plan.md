@@ -15,7 +15,9 @@ The validator:
 
 - keeps `fromLibrary` suggestions only if their IDs exist in the user's library
 - checks each `newItems[].category` against the allowed category set
-- drops any suggestion whose name is already on the trip's list (case-insensitive)
+- moves any newItems whose name matches a library item (case-insensitive)
+  into fromLibrary
+- removes duplicate suggestions within the response
 
 Usage is tracked in an `ai_usage` table. The limit is enforced with an atomic
 `INSERT … ON CONFLICT … DO UPDATE … RETURNING count`. An in-memory limiter
@@ -53,6 +55,8 @@ when `tripId` changes. A saga handles `FETCH_PACKING_SUGGESTIONS` with
 - **Prod Postgres is Neon.** Schema changes are SQL files in `migrations/`,
   applied with `psql` to both local and prod. There is no migration tool yet.
 - **Model: `claude-haiku-5-5`.**
+
+
 
 Implementation notes from the fit report:
 
