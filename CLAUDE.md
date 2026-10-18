@@ -1,6 +1,50 @@
 # CLAUDE.md
 
+
+# WanderWise
+
+## Stack
+- Frontend: React 19 + Vite, Redux (legacy createStore) + Redux-Saga, Mapbox GL
+- Backend: Express 4 (CommonJS, plain node, no build step), Passport local,
+  express-session + connect-pg-simple
+- DB: Postgres on Neon. Hosting: Fly.io (scales to zero)
+- Default branch is `master`, not `main`
+
+## Commands
+- Dev: 'npm run dev'
+- Deploy: `npm run deploy`
+- Migrations: SQL files in migrations/, applied manually with psql
+  to local AND prod. database.sql is a reference snapshot and cannot
+  run from scratch.
+
+## Security rules (non-negotiable)
+- Every route uses rejectUnauthenticated (returns 403, not 401)
+- Anything user-owned is scoped by req.user.id in the query
+- Trip-scoped routes use checkTripAccess (reads params only).
+  Never use the old checkTripOwnerOrCollaborator.
+- Secrets never get a VITE_ prefix (those ship in the JS bundle)
+- .env is never committed or shipped in the image
+
+## Gotchas
+- Vite build output is build/, not dist/
+- VITE_ vars are build-time only; Fly secrets can't reach them
+- Express 4 doesn't catch async errors: wrap handlers in try/catch
+- Packing list items match library items by item_name, not ID
+- Item categories are free-text strings, no categories table
+
+## Conventions
+- Saga action types are plain strings: FETCH_X / SET_X / ADD_X
+- Use takeLatest for anything that costs money or quota
+- New sagas/reducers register in _root.saga.js / _root.reducer.js
+
+## How to work in this repo
+- Small, focused PRs. One concern per PR.
+- Don't modify files unrelated to the task
+- If unsure about something in the codebase, say so instead of guessing
+- No em dashes in docs or comments
+
 ## AI features
+See docs/ai-plan.md for architecture, decisions, and PR checklist.
 
 The plan and PR checklist are in [docs/ai-plan.md](docs/ai-plan.md). Key decisions:
 
