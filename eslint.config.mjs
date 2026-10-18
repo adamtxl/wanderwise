@@ -87,7 +87,7 @@ export default [
   },
   // Server-side CommonJS code.
   {
-    files: ['server/**/*.js', 'cypress.config.js'],
+    files: ['server/**/*.js', 'scripts/**/*.js', 'cypress.config.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'commonjs',
